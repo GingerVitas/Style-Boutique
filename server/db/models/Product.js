@@ -29,7 +29,11 @@ const Product = db.define("product", {
     primaryKey: true,
   },
   category: {
-    type: Sequelize.ENUM(categories),
+    type: Sequelize.STRING,
+    allowNull: false,
+    validate: {
+      notEmpty: true,
+    }
   },
   name: {
     type: Sequelize.STRING,
@@ -51,12 +55,18 @@ const Product = db.define("product", {
     type: Sequelize.ENUM(brands),
   },
   color: {
-    type: Sequelize.ENUM(colors),
+    type: Sequelize.STRING,
     allowNull: false,
+    validate: {
+      notEmpty: true,
+    }
   },
   size: {
-    type: Sequelize.ENUM(sizes),
+    type: Sequelize.STRING,
     allowNull: false,
+    validate: {
+      notEmpty: true,
+    }
   },
   availableStock: {
     type: Sequelize.INTEGER,
