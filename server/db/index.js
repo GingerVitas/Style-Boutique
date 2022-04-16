@@ -7,8 +7,8 @@ const Product = require("./models/Product");
 const Tag = require("./models/Tag");
 const User = require("./models/User");
 
-Product.hasMany(Tag, { through: "ProductTag" });
-Tag.belongsToMany(Product, { through: "ProductTag" });
+// Product.hasMany(Tag, { through: "ProductTag" });
+// Tag.belongsToMany(Product, { through: "ProductTag" });
 
 // ProductTag = join/pivot table
 
