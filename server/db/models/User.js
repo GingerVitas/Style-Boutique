@@ -17,7 +17,7 @@ const User = db.define("user", {
   },
   id: {
     type: Sequelize.UUID,
-    defaultValue: UUIDV4,
+    defaultValue: Sequelize.UUIDV4,
     allowNull: false,
     primaryKey: true,
   },
@@ -36,7 +36,7 @@ const User = db.define("user", {
     },
   },
   fullName: {
-    type: DataTypes.VIRTUAL,
+    type: Sequelize.VIRTUAL,
     get() {
       return `${this.firstName} ${this.lastName}`;
     },

@@ -1,10 +1,10 @@
 const Sequelize = require("sequelize");
-const db = require("./db");
+const db = require("../db");
 
 const Order = db.define("order", {
   id: {
     type: Sequelize.UUID,
-    defaultValue: UUIDV4,
+    defaultValue: Sequelize.UUIDV4,
     allowNull: false,
     primaryKey: true,
   },
