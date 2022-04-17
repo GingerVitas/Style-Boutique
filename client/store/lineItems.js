@@ -19,10 +19,31 @@ export const loadListItems = () =>  async dispatch => {
     }
 }
 
+let guest;
+
 export const addListItem = (product, auth) => async dispatch => {
     try {
-        console.log({ product: { ...product }, auth: { ...auth } })
-        const { data } = await axios.post('/api/lineitems', {product:{...product, price: parseFloat(product.price)}, auth:{...auth}});
+        console.log('Auth', auth);
+        let data;
+        if (!auth.id && !guest) {
+            console.log('entered')
+            guest = (await axios.post('/api/guests')).data;
+            const order = (await axios.post('/api/orders', { auth: {...guest} })).data;
+            data = (await axios.post('/api/lineitems', { product, order })).data; 
+        } else if (!auth.id && guest.id) {
+            console.log('entered')
+            const returnedGuest = (await axios.get(`/api/guests/${guest.id}`)).data;
+            console.log(returnedGuest[0].id)
+            const order = (await axios.get(`/api/orders/${returnedGuest[0].id}`)).data;
+            console.log(order)
+            data = (await axios.post('/api/lineitems', { product, order: order[0] })).data;
+        } else if (auth.id && count <= 1 ){
+            const order = (await axios.post('/api/orders', { auth })).data;
+            data = (await axios.post('/api/lineitems', { product, order })).data;
+        } else {
+            const order = (await axios.get(`/api/orders/${auth.id}`)).data; 
+            data = (await axios.post('/api/lineitems', { product, order })).data;
+        }
         dispatch(_addListItem(data));
     } catch (err) {
         console.log(err)

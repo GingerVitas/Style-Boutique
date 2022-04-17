@@ -11,7 +11,7 @@ const Order = db.define("order", {
   final: {
     type: Sequelize.BOOLEAN,
     defaultValue: false,
-  },
+  }
 });
 
 module.exports = Order;

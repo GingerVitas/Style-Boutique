@@ -1,7 +1,7 @@
 const Sequelize = require("sequelize");
 const db = require("../db");
 
-const LineItem = db.define('lineItem', {
+const LineItem = db.define("line_item", {
   id: {
     type: Sequelize.UUID,
     defaultValue: Sequelize.UUIDV4,
@@ -12,7 +12,7 @@ const LineItem = db.define('lineItem', {
     type: Sequelize.INTEGER,
     defaultValue: 1,
   },
-  price: {
+  total: {
     type: Sequelize.DECIMAL(10, 2),
     allowNull: false,
     validate: {

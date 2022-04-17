@@ -11,53 +11,15 @@ router.get('/', async (req, res, next) => {
     }
 })
 
-const addListItem = async (product, user) => {
-    if (user.currentOrder === false) {
-        const order = await Order.create({
-            userId: user.id
-        });
-        return listItem = await LineItem.create({
-            orderId: order.id,
-            productId: product.id,
-            quantity: 1,
-            total: product.price
-        })
-    } else {
-        const order = await Order.findAll({
-            where: {
-                userId: user.id
-            }
-        })
-        return listItem = await LineItem.create({
-            orderId: order.id,
-            productId: product.id,
-            quantity: 1,
-            total: product.price
-        })
-    }
-}
-
 router.post('/', async (req, res, next) => {
     try {
-        const { product, auth } = req.body;
-        // let user;
-        // if (auth.id) {
-        //     user = await User.findByPk(auth.id);
-        //     res.json(await addListItem(product, user))
-        // } else {
-        //     user = await Guest.create();
-        //     res.json(await addListItem(product, user))
-        // }
-
-        const order = await Order.create({
-            userId: auth.id
-        });
+        const { product, order } = req.body;
 
         const listItem = await LineItem.create({
             orderId: order.id,
             productId: product.id,
             quantity: 1,
-            price: product.price
+            total: product.price * 1
         })
         res.json(listItem)
     } catch (err) {

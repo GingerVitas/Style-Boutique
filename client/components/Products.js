@@ -4,6 +4,7 @@ import Product from './Product'
 
 export const Products = props => {
     const { products } = props
+    console.log(props)
     return (
         <div>
             {
