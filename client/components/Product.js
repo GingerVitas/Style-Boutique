@@ -1,7 +1,10 @@
 import React from 'react'
+import { addListItem } from '../store/lineItems'
+import { connect } from 'react-redux'
 
 export const Product = props => {
-    const { product } = props
+    const { product, auth, addToCart } = props
+    console.log('Product',props)
     return (
         <div>
             <ul>
@@ -12,9 +15,25 @@ export const Product = props => {
                 <li>{product.size}</li>
                 <li>{product.price}</li>
             </ul>
-            <button>Add to cart</button>
+            {props.location? '' :
+                <button onClick={() => addToCart(product, auth)}>Add to cart</button>
+
+            }
         </div>
     )
 }
+const mapState = state => {
+    return {
+        auth: state.auth
+    }
+}
 
-export default Product
+const mapDispatch = dispatch => {
+    return {
+        addToCart(product, auth){
+            dispatch(addListItem(product, auth))
+        }
+    }
+}
+
+export default connect(mapState, mapDispatch)(Product)
