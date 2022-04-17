@@ -1,33 +1,48 @@
 import React, {Component, Fragment} from 'react'
+
+//redux
 import {connect} from 'react-redux'
+import { me } from './store'
+import { loadProducts } from './store/products';
+
+//router
 import {withRouter, Route, Switch, Redirect} from 'react-router-dom'
+
+// child components
 import { Login, Signup } from './components/AuthForm';
 import Home from './components/Home';
-import {me} from './store'
+import Products from './components/Products'
+import Cart from './components/Cart';
 
 /**
  * COMPONENT
  */
 class Routes extends Component {
   componentDidMount() {
-    this.props.loadInitialData()
+    this.props.loadInitialData();
+    this.props.fetchProducts();
   }
 
   render() {
     const {isLoggedIn} = this.props
+    console.log(this.props)
+    console.log(this.props.history.length)
 
     return (
       <div>
         {isLoggedIn ? (
           <Switch>
             <Route path="/home" component={Home} />
+            <Route path="/cart" component={Cart} />
             <Redirect to="/home" />
           </Switch>
         ) : (
           <Switch>
-            <Route path='/' exact component={ Login } />
+            <Route path='/' exact component={ Home } />
+            <Route path="/home" component={Home} />
             <Route path="/login" component={Login} />
             <Route path="/signup" component={Signup} />
+            <Route path="/cart" component={Cart} />
           </Switch>
         )}
       </div>
@@ -50,6 +65,9 @@ const mapDispatch = dispatch => {
   return {
     loadInitialData() {
       dispatch(me())
+    },
+    fetchProducts() {
+      dispatch(loadProducts())
     }
   }
 }
