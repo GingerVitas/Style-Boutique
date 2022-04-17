@@ -52,7 +52,7 @@ const Product = db.define("product", {
     },
   },
   brand: {
-    type: Sequelize.ENUM(brands),
+    type: Sequelize.STRING
   },
   color: {
     type: Sequelize.STRING,

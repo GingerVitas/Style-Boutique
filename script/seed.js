@@ -1,5 +1,5 @@
 'use strict'
-
+const {  dresses, tops, jeans, leggings, pants, sweaters, skirts} = require('./seed-data')
 const {db, models: {User, Product} } = require('../server/db');
 const { faker } = require("@faker-js/faker");
 
@@ -35,33 +35,15 @@ async function seed() {
 
   // Creating Products ****************************************************************
 
-  const colors = ["white", "black", "red", "blue", "gray", "orange", "green"];
-  const sizes = ["XS", "S", "M", "L", "XL"];
+  await Product.bulkCreate(dresses).then(console.log('****Dresses Seeded****'));
+  await Product.bulkCreate(tops).then(console.log('****Tops Seeded****'))
+  await Product.bulkCreate(jeans).then(console.log('****Jeans Seeded****'));
+  await Product.bulkCreate(pants).then(console.log('****Pants Seeded****'));
+  await Product.bulkCreate(sweaters).then(console.log('****Sweaters Seeded****'));
+  await Product.bulkCreate(skirts).then(console.log('****Skirts Seeded****'));
+  await Product.bulkCreate(leggings).then(console.log('****Leggings Seeded****'));
 
-  let usedColors = [];
 
-  const generateColor = ()=>{
-    for (let i = 0; i < colors.length; i++){
-      if(!usedColors.includes(colors[i])){
-        usedColors.push(colors[i]);
-        return colors[i]
-      }
-    }
-  }
-
-  const dresses = await Promise.all(
-    Array(colors.length).fill().map(product => {
-      return Product.create({
-        category: 'dresses',
-        name: `${faker.word.adjective(1)} dress`,
-        imageUrl: faker.image.fashion(),
-        color: generateColor(),
-        size: 'S',
-        availableStock: 5,
-        price: 20.50
-      })
-    })
-  );
 
   console.log(`seeded successfully`)
   return {
