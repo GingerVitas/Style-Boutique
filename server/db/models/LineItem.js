@@ -14,7 +14,12 @@ const LineItem = db.define('lineItem', {
   },
   price: {
     type: Sequelize.DECIMAL(10, 2),
-  },
+    allowNull: false,
+    validate: {
+      notEmpty: true,
+      min: 0.01,
+    },
+  }
 });
 
 module.exports = LineItem;

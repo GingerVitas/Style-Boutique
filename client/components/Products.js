@@ -8,7 +8,7 @@ export const Products = props => {
         <div>
             {
                 products.map(product => {
-                    return <Product product={product}/>
+                    return <Product key={product.id} product={product}/>
                 })
             }
         </div>
