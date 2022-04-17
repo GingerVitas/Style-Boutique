@@ -3,7 +3,7 @@ const db = require("../db");
 const { faker } = require("@faker-js/faker");
 
 const categories = [
-  "Shirt",
+  "Top",
   "Skirt",
   "Dress",
   "Jeans",
@@ -52,7 +52,7 @@ const Product = db.define("product", {
     },
   },
   brand: {
-    type: Sequelize.ENUM(brands),
+    type: Sequelize.STRING
   },
   color: {
     type: Sequelize.STRING,
@@ -70,6 +70,7 @@ const Product = db.define("product", {
   },
   availableStock: {
     type: Sequelize.INTEGER,
+    defaultValue: 5,
     validate: {
       min: 0,
     },
