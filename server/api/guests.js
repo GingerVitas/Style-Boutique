@@ -16,7 +16,7 @@ router.get('/:guestId', async(req, res, next) => {
         const guest = await Guest.findAll({
             where: { id : req.params.guestId }
         });
-        res.json(guest)
+        res.json(guest[0])
     } catch (err) {
         next(err)
     }

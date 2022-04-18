@@ -13,16 +13,20 @@ const Guest = require("./models/Guest");
 
 // ProductTag = join/pivot table
 
-Address.belongsTo(User);
-User.hasMany(Address);
+Address.belongsTo(User, { foreignKey: 'userId' });
+User.hasMany(Address, {foreignKey: 'userId'});
 
-Order.belongsTo(User);
-User.hasMany(Order);
+Order.belongsTo(User, { foreignKey: 'userId' });
+User.hasMany(Order, { foreignKey: 'userId' });
 
-Order.hasMany(LineItem);
-LineItem.belongsTo(Order);
-LineItem.belongsTo(Product);
-Product.hasMany(LineItem);
+Order.belongsTo(Guest, {foreignKey: 'guestId'});
+Guest.hasMany(Order, { foreignKey: 'guestId'})
+
+LineItem.belongsTo(Order, { foreignKey: 'orderId' });
+Order.hasMany(LineItem, { foreignKey: 'orderId' } );
+
+LineItem.belongsTo(Product, { foreignKey: 'productId' });
+Product.hasMany(LineItem, { foreignKey: 'productId' });
 
 module.exports = {
   db,

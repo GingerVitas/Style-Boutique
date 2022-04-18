@@ -13,28 +13,36 @@ router.get('/', async (req, res, next) => {
 
 router.get('/:authId', async (req, res, next) => {
     try {
-        console.log('helooooooooo', req.params.authId)
-        const order = await Order.findAll({
-            where : {
-                userId: req.params.authId
-            }
-        })
-        console.log('returnnnnnnnnnnnnnn', order)
-        res.send(order);
+        let order;
+        if(req.body.auth) {
+            order = await Order.findAll({
+                where: {
+                    final: false,
+                    userId: req.body.auth.id
+                }
+            })
+        } else {
+            order = await Order.findAll({
+                where: {
+                    final: false,
+                    guestId: req.params.authId
+                }
+            })
+        }
+        res.send(order[0]);
     } catch (err) {
-
+        next(err)
     }
 })
 
 router.post('/', async (req, res, next) => {
     try {
-        const order = await Order.create();
-        order.userId = req.body.auth.id;
-        order.save();
-        // Order.update(
-        //     {userId: req.body.auth.id},
-        //     {where: {id: order.id}}
-        // )
+        let order;
+        if(req.body.guest) {
+            order = await Order.create({ guestId: req.body.guest.id });
+        } else {
+            order = await Order.create({ userId: req.body.auth.id });
+        }
         res.json(order);
     } catch (err) {
         next(err)
