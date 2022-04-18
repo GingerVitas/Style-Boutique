@@ -7,26 +7,22 @@ export const Cart = props => {
     console.log(props)
     return (
         <div>
-        Hello, {username? username : 'guest'}
+            <span style={{fontWeight:'bold'}}>Hello, {username ? username : 'guest'}</span>
             <div>
-                My Cart:
-                <ul>
+                <span style={{fontWeight:'bold', color: 'gray'}}>My Cart</span>
                     {
                         lineItems.map(item => {
                             const product = products.find(product => product.id === item.productId)
-                            return (
-                            <li key={item.id}>
-                            id: {item.id},
-                            Order Id:{item.orderId},
-                            Product Id:{item.productId}, 
-                            <Product product={product} location={location}/>,
-                            quantity: {item.quantity},
-                            total: {item.total}
-                            </li>
+                            return(
+                                <div>
+                                    <Product product={product} location={location} />
+                                    Order Id: {item.orderId}<br />
+                                    Quantity: {item.quantity}<br/>
+                                    Total: {item.total}
+                                </div>
                             )
                         })
                     }
-                </ul>
             </div>
         </div>
     )
@@ -41,3 +37,18 @@ const mapState = state => {
 }
 
 export default connect(mapState)(Cart);
+
+
+/* lineItems.map(item => {
+                            const product = products.find(product => product.id === item.productId)
+                            return (
+                            <li key={item.id}>
+                            id: {item.id},
+                            Order Id:{item.orderId},
+                            Product Id:{item.productId}, 
+                            <Product product={product} location={location}/>,
+                            quantity: {item.quantity},
+                            total: {item.total}
+                            </li>
+                            )
+                        }) */

@@ -7,13 +7,13 @@ export const Product = props => {
     console.log(props)
     return (
         <div>
-            <ul>
-                <li>{product.id}</li>
-                <li>{product.category}</li>
+            <img src={product.imageUrl} style={{width:'200px'}}/>
+            <ul style={{listStyleType:'none'}}>
+                <li style={{fontWeight:'bold'}}>{product.brand}</li>
                 <li>{product.name}</li>
+                <li>{product.price}</li>
                 <li>{product.color}</li>
                 <li>{product.size}</li>
-                <li>{product.price}</li>
             </ul>
             {props.location? '' :
                 <button onClick={() => addToCart(product, auth)}>Add to Cart</button>
