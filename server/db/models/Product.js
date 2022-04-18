@@ -63,7 +63,6 @@ const Product = db.define("product", {
   },
   size: {
     type: Sequelize.STRING,
-    allowNull: false,
     validate: {
       notEmpty: true,
     }
