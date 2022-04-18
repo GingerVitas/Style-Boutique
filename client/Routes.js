@@ -25,8 +25,7 @@ class Routes extends Component {
 
   render() {
     const {isLoggedIn} = this.props
-    console.log(this.props)
-    console.log(this.props.history.length)
+    console.log('auth', this.props.auth)
 
     return (
       <div>
@@ -50,14 +49,12 @@ class Routes extends Component {
   }
 }
 
-/**
- * CONTAINER
- */
 const mapState = state => {
   return {
     // Being 'logged in' for our purposes will be defined has having a state.auth that has a truthy id.
     // Otherwise, state.auth will be an empty object, and state.auth.id will be falsey
-    isLoggedIn: !!state.auth.id
+    isLoggedIn: !!state.auth.id,
+    auth : state.auth
   }
 }
 

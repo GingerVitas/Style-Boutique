@@ -19,15 +19,33 @@ export const loadListItems = () =>  async dispatch => {
     }
 }
 
+let guest;
+
 export const addListItem = (product, auth) => async dispatch => {
     try {
-        console.log({ product: { ...product }, auth: { ...auth } })
-        const { data } = await axios.post('/api/lineitems', {product:{...product, price: parseFloat(product.price)}, auth:{...auth}});
+        console.log('Auth', auth);
+        let data;
+        if (!auth.id && !guest) {
+            console.log('entered')
+            guest = (await axios.post('/api/guests')).data;
+            const order = (await axios.post('/api/orders', { guest })).data;
+            data = (await axios.post('/api/lineitems', { product, order })).data; 
+        } else if(!auth.id && guest.id){
+            console.log('entered', guest, guest.id);
+            const order = (await axios.get(`/api/orders/${guest.id}`)).data;
+            data = (await axios.post('/api/lineitems', { product, order })).data;
+        } else {
+            console.log('entered')
+            const order = (await axios.get(`/api/orders/${guest.id}`)).data;
+            data = (await axios.post('/api/lineitems', { product, order })).data;
+        } 
         dispatch(_addListItem(data));
     } catch (err) {
         console.log(err)
     }
 }
+
+
 
 export default (state = [], action) => {
     switch (action.type) {
