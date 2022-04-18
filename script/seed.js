@@ -42,9 +42,9 @@ async function seed() {
   await Product.bulkCreate(sweaters).then(console.log('****Sweaters Seeded****'));
   await Product.bulkCreate(skirts).then(console.log('****Skirts Seeded****'));
   await Product.bulkCreate(leggings).then(console.log('****Leggings Seeded****'));
-  await Product.bulkCreate(shoes).then(console.log('****Leggings Seeded****'));
-  await Product.bulkCreate(belts).then(console.log('****Leggings Seeded****'));
-  await Product.bulkCreate(accessories).then(console.log('****Leggings Seeded****'));
+  await Product.bulkCreate(shoes).then(console.log('****Shoes Seeded****'));
+  await Product.bulkCreate(belts).then(console.log('****Belts Seeded****'));
+  await Product.bulkCreate(accessories).then(console.log('****Accessories Seeded****'));
 
 
 
