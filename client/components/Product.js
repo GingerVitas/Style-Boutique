@@ -6,12 +6,12 @@ export const Product = props => {
     const { product, auth, addToCart } = props;
     console.log(props)
     return (
-        <div>
-            <img src={product.imageUrl} style={{width:'200px'}}/>
+        <div style={{ flexBasis: '33.333333%'}}>
+            <img src={product.imageUrl} style={{width:'150px'}}/>
             <ul style={{listStyleType:'none'}}>
                 <li style={{fontWeight:'bold'}}>{product.brand}</li>
                 <li>{product.name}</li>
-                <li>{product.price}</li>
+                <li>$ {product.price}</li>
                 <li>{product.color}</li>
                 <li>{product.size}</li>
             </ul>

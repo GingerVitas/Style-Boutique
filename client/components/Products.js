@@ -6,7 +6,7 @@ export const Products = props => {
     const { products } = props
     console.log(props)
     return (
-        <div>
+        <div style={{display:'flex', flexWrap:'wrap'}}>
             {
                 products.map(product => {
                     return <Product key={product.id} product={product}/>
