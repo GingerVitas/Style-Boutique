@@ -14,7 +14,7 @@ export const Cart = props => {
                         lineItems.map(item => {
                             const product = products.find(product => product.id === item.productId)
                             return(
-                                <div>
+                                <div key = {item.id}>
                                     <Product product={product} location={location} />
                                     Order Id: {item.orderId}<br />
                                     Quantity: {item.quantity}<br/>
