@@ -14,12 +14,13 @@ router.get('/', async (req, res, next) => {
 router.get('/:authId', async (req, res, next) => {
     try {
         let order;
-        if(req.body.auth) {
+        if (req.params.authId.includes('_user')) {
             order = await Order.findAll({
                 where: {
                     final: false,
-                    userId: req.body.auth.id
-                }
+                    userId: req.params.authId.slice(0,-5)
+                },
+                order: [['createdAt', 'DESC']]
             })
         } else {
             order = await Order.findAll({

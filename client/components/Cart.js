@@ -14,7 +14,7 @@ export const Cart = props => {
                         lineItems.map(item => {
                             const product = products.find(product => product.id === item.productId)
                             return(
-                                <div>
+                                <div key = {item.id}>
                                     <Product product={product} location={location} />
                                     Order Id: {item.orderId}<br />
                                     Quantity: {item.quantity}<br/>
@@ -38,17 +38,3 @@ const mapState = state => {
 
 export default connect(mapState)(Cart);
 
-
-/* lineItems.map(item => {
-                            const product = products.find(product => product.id === item.productId)
-                            return (
-                            <li key={item.id}>
-                            id: {item.id},
-                            Order Id:{item.orderId},
-                            Product Id:{item.productId}, 
-                            <Product product={product} location={location}/>,
-                            quantity: {item.quantity},
-                            total: {item.total}
-                            </li>
-                            )
-                        }) */
