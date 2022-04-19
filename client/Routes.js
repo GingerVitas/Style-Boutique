@@ -1,18 +1,18 @@
-import React, {Component, Fragment} from 'react'
+import React, { Component, Fragment } from "react";
 
 //redux
-import {connect} from 'react-redux'
-import { me } from './store'
-import { loadProducts } from './store/products';
+import { connect } from "react-redux";
+import { me } from "./store";
+import { loadProducts } from "./store/products";
 
 //router
-import {withRouter, Route, Switch, Redirect} from 'react-router-dom'
+import { withRouter, Route, Switch, Redirect } from "react-router-dom";
 
 // child components
-import { Login, Signup } from './components/AuthForm';
-import Home from './components/Home';
-import Products from './components/Products'
-import Cart from './components/Cart';
+import { Login, Signup } from "./components/AuthForm";
+import Home from "./components/pages/Home";
+import Products from "./components/Products";
+import Cart from "./components/pages/Cart";
 
 /**
  * COMPONENT
@@ -24,8 +24,8 @@ class Routes extends Component {
   }
 
   render() {
-    const {isLoggedIn} = this.props
-    console.log('auth', this.props.auth)
+    const { isLoggedIn } = this.props;
+    console.log("auth", this.props.auth);
 
     return (
       <div>
@@ -37,7 +37,7 @@ class Routes extends Component {
           </Switch>
         ) : (
           <Switch>
-            <Route path='/' exact component={ Home } />
+            <Route path="/" exact component={Home} />
             <Route path="/home" component={Home} />
             <Route path="/login" component={Login} />
             <Route path="/signup" component={Signup} />
@@ -45,30 +45,30 @@ class Routes extends Component {
           </Switch>
         )}
       </div>
-    )
+    );
   }
 }
 
-const mapState = state => {
+const mapState = (state) => {
   return {
     // Being 'logged in' for our purposes will be defined has having a state.auth that has a truthy id.
     // Otherwise, state.auth will be an empty object, and state.auth.id will be falsey
     isLoggedIn: !!state.auth.id,
-    auth : state.auth
-  }
-}
+    auth: state.auth,
+  };
+};
 
-const mapDispatch = dispatch => {
+const mapDispatch = (dispatch) => {
   return {
     loadInitialData() {
-      dispatch(me())
+      dispatch(me());
     },
     fetchProducts() {
-      dispatch(loadProducts())
-    }
-  }
-}
+      dispatch(loadProducts());
+    },
+  };
+};
 
 // The `withRouter` wrapper makes sure that updates are not blocked
 // when the url changes
-export default withRouter(connect(mapState, mapDispatch)(Routes))
+export default withRouter(connect(mapState, mapDispatch)(Routes));
