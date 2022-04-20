@@ -11,7 +11,6 @@ import {withRouter, Route, Switch, Redirect} from 'react-router-dom'
 // child components
 import { Login, Signup } from './components/AuthForm';
 import Home from './components/Home';
-import Products from './components/Products'
 import Cart from './components/Cart';
 
 /**
@@ -41,7 +40,7 @@ class Routes extends Component {
             <Route path="/home" component={Home} />
             <Route path="/login" component={Login} />
             <Route path="/signup" component={Signup} />
-            <Route path="/cart" component={Cart} />
+            <Route path="/cart" render={routeProps => <Cart routeProps={routeProps} />}/>
           </Switch>
         )}
       </div>
