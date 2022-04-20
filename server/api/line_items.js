@@ -26,3 +26,13 @@ router.post('/', async (req, res, next) => {
         next(err)
     }
 })
+
+router.delete('/:id', async(req, res, next) => {
+    try {
+        const item = await LineItem.findByPk(req.params.id);
+        await item.destroy();
+        res.send(item);
+    } catch (ex) {
+        next(ex)
+    }
+})

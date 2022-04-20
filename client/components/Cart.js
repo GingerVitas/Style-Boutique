@@ -16,8 +16,8 @@ export const Cart = props => {
                     lineItems.map(item => {
                         const product = products.find(product => product.id === item.productId)
                         return(
-                            <div>
-                                <LineItem key={item.id} item={item} product={product} location={location} />
+                            <div key={item.id}>
+                                <LineItem  item={item} product={product} location={location} />
                                 <hr />
                             </div>
                         ) 
