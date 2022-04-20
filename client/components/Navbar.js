@@ -32,7 +32,7 @@ const Navbar = ({handleClick, isLoggedIn, lineItems}) => (
 
 const mapState = state => {
   return {
-    lineItems: state.lineItems,
+    lineItems: state.cart,
     isLoggedIn: !!state.auth.id
   }
 }

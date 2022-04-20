@@ -1,9 +1,9 @@
 import React from 'react';
-import { addListItem } from '../store/lineItems'
+import { addListItem } from '../store/cart'
 import { connect } from 'react-redux'
 
 export const Product = props => {
-    const { product, auth, addToCart } = props;
+    const { product, auth, addToCart, routeProps } = props;
     console.log(props)
     return (
         <div style={{ flexBasis: '33.333333%'}}>
@@ -15,7 +15,7 @@ export const Product = props => {
                 <li>{product.color}</li>
                 <li>{product.size}</li>
             </ul>
-            {props.location? '' :
+            {props.routeProps? '' :
                 <button onClick={() => addToCart(product, auth)}>Add to Cart</button>
             }
         </div>

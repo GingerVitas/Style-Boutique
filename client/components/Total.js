@@ -1,5 +1,4 @@
 import React from 'react'
-import { connect } from 'react-redux'
 
 export const Total = props => {
     const { lineItems} = props
@@ -7,18 +6,11 @@ export const Total = props => {
         <div style={{fontWeight: 'bold', fontSize:'2rem'}}>
             Total: $
             {
-                lineItems.length > 0 ? lineItems.map(obj => +obj.total).reduce((a, b) => a + b) : 0
+                lineItems.length > 0 ? (lineItems.map(obj => +obj.total).reduce((a, b) => a + b)).toFixed(2) : 0
             }
         </div>
     )
 }
 
-const mapState = state => {
-    return {
-        lineItems: state.lineItems,
-    }
-}
-
-export default connect(mapState)(Total);
-
+export default Total;
 
