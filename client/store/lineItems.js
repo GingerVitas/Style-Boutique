@@ -4,10 +4,12 @@ import history from '../history';
 // ACTION TYPES
 const LOAD_LIST_ITEMS = 'LOAD_LIST_ITEMS';
 const ADD_LIST_ITEM = 'CREATE_LIST_ITEM';
+const REMOVE_LIST_ITEM = 'REMOVE_LIST_ITEM';
 
 // ACTION CREATORS
 const _loadListItems = lineItems => ({ type: LOAD_LIST_ITEMS, lineItems });
 const _addListItem = lineItem => ({ type: ADD_LIST_ITEM, lineItem });
+const _removeListItem = lineItem => ({ type: REMOVE_LIST_ITEM, lineItem });
 
 // THUNK CREATORS
 export const loadListItems = () =>  async dispatch => {
@@ -65,12 +67,23 @@ export const addListItem = (product, auth) => async dispatch => {
     }
 }
 
+export const removeListItem = (listitemId) => async dispatch => {
+    try {
+        const data = (await axios.delete(`/api/lineitems/${listitemId}`)).data;
+        dispatch(_removeListItem(data));
+    } catch(err) {
+        console.log(err)
+    }
+}
+
 export default (state = [], action) => {
     switch (action.type) {
         case LOAD_LIST_ITEMS:
-            return action.lineItems
+            return action.lineItems;
         case ADD_LIST_ITEM:
-            return state = [action.lineItem, ...state]
+            return state = [action.lineItem, ...state];
+        case REMOVE_LIST_ITEM:
+            return state.filter( item => item.id !== action.lineItem.id );
         default:
             return state
     }
