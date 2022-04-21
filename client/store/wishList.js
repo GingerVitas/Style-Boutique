@@ -12,7 +12,7 @@ const _addWishList = lineItem => ({ type: ADD_WISH_LIST, lineItem });
 const _removeWishList = lineItem => ({ type: REMOVE_WISH_LIST, lineItem });
 
 // THUNK CREATORS
-export const loadWishList = () => async dispatch => {
+export const loadWishList = () => dispatch => {
     try {
         dispatch(_loadWishList());
     } catch (err) {
@@ -20,7 +20,7 @@ export const loadWishList = () => async dispatch => {
     }
 }
 
-export const removeWishList = (listitem) => async dispatch => {
+export const removeWishList = (listitem) => dispatch => {
     try {
         dispatch(_removeWishList(listitem));
     } catch (err) {
@@ -28,7 +28,7 @@ export const removeWishList = (listitem) => async dispatch => {
     }
 }
 
-export const addWishList = (listitem) => async dispatch => {
+export const addWishList = (listitem) => dispatch => {
     try{
         dispatch(_addWishList(listitem));
     } catch (err) {
