@@ -35,16 +35,16 @@ async function seed() {
 
   // Creating Products ****************************************************************
 
-  await Product.bulkCreate(dresses).then(console.log('****Dresses Seeded****'));
-  await Product.bulkCreate(tops).then(console.log('****Tops Seeded****'))
-  await Product.bulkCreate(jeans).then(console.log('****Jeans Seeded****'));
-  await Product.bulkCreate(pants).then(console.log('****Pants Seeded****'));
-  await Product.bulkCreate(sweaters).then(console.log('****Sweaters Seeded****'));
-  await Product.bulkCreate(skirts).then(console.log('****Skirts Seeded****'));
-  await Product.bulkCreate(leggings).then(console.log('****Leggings Seeded****'));
-  await Product.bulkCreate(shoes).then(console.log('****Shoes Seeded****'));
-  await Product.bulkCreate(belts).then(console.log('****Belts Seeded****'));
-  await Product.bulkCreate(accessories).then(console.log('****Accessories Seeded****'));
+  await Product.bulkCreate(dresses).then(console.log(`**** ${dresses.length} Dresses Seeded****`));
+  await Product.bulkCreate(tops).then(console.log(`**** ${tops.length} Tops Seeded****`))
+  await Product.bulkCreate(jeans).then(console.log(`**** ${jeans.length} Jeans Seeded****`));
+  await Product.bulkCreate(pants).then(console.log(`**** ${pants.length} Pants Seeded****`));
+  await Product.bulkCreate(sweaters).then(console.log(`**** ${sweaters.length} Sweaters Seeded****`));
+  await Product.bulkCreate(skirts).then(console.log(`**** ${skirts.length} Skirts Seeded****`));
+  await Product.bulkCreate(leggings).then(console.log(`****${leggings.length} Leggings Seeded****`));
+  await Product.bulkCreate(shoes).then(console.log(`**** ${shoes.length} Shoes Seeded****`));
+  await Product.bulkCreate(belts).then(console.log(`**** ${belts.length} Belts Seeded****`));
+  await Product.bulkCreate(accessories).then(console.log(`**** ${accessories.length} Accessories Seeded****`));
 
 
 
