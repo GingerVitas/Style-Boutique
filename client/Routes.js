@@ -12,6 +12,7 @@ import {withRouter, Route, Switch, Redirect} from 'react-router-dom'
 import { Login, Signup } from './components/AuthForm';
 import Home from './components/Home';
 import Cart from './components/Cart';
+import Checkout from './components/Checkout';
 
 /**
  * COMPONENT
@@ -24,15 +25,17 @@ class Routes extends Component {
 
   render() {
     const {isLoggedIn} = this.props
-    console.log('auth', this.props.auth)
-
+    console.log('auth', this.props.auth, this.props, history)
     return (
       <div>
         {isLoggedIn ? (
           <Switch>
             <Route path="/home" component={Home} />
             <Route path="/cart" component={Cart} />
-            <Redirect to="/home" />
+            <Route path="/checkout" render={routeProps => <Checkout routeProps={routeProps} />} />
+            <Redirect to={
+              this.props.location.state && this.props.location.state.prevPath === '/cart' ? '/checkout' : '/home'
+            }/>
           </Switch>
         ) : (
           <Switch>
@@ -40,7 +43,8 @@ class Routes extends Component {
             <Route path="/home" component={Home} />
             <Route path="/login" component={Login} />
             <Route path="/signup" component={Signup} />
-            <Route path="/cart" render={routeProps => <Cart routeProps={routeProps} />}/>
+            <Route path="/cart" render={routeProps => <Cart routeProps={routeProps} />} />
+            <Route path="/checkout" render={routeProps => <Checkout routeProps={routeProps} />} />
           </Switch>
         )}
       </div>

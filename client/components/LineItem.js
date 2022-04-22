@@ -1,11 +1,11 @@
 import React from 'react'
 import { connect } from 'react-redux'
 import Product from './Product'
-import { removeListItem, hideListItem } from '../store/cart'
-import { addWishList } from '../store/wishList'
+import { removeListItem, hideListItem, addBackToCart } from '../store/cart'
+import { addWishList, removeWishList} from '../store/wishList'
 
 export const LineItem = props => {
-    const { item, product, routeProps, remove, save, hide } = props
+    const { item, product, routeProps, remove, save, hide, removeWish, addBackToCart } = props
     console.log(routeProps)
     return (
         <div style={{ transform: 'scale(0.6)', transformOrigin: 'left top', marginBottom: '-150px', display: 'flex' }}>
@@ -24,8 +24,8 @@ export const LineItem = props => {
                         </div> 
                         : 
                         <div>
-                            {/* <button onClick={() => remove(item.id)}>Remove</button><br />
-                            <button onClick={() => { save(item); hide(item) }}>Add back to cart</button> */}
+                            <button onClick={() => {remove(item.id); removeWish(item)}}>Remove</button><br />
+                                <button onClick={() => { addBackToCart(item); removeWish(item) }}>Add back to cart</button>
                         </div>
                     }
                     
@@ -40,11 +40,17 @@ const mapDispatch = dispatch => {
         remove(itemId) {
             dispatch(removeListItem(itemId))
          } ,
+        removeWish(item) {
+            dispatch(removeWishList(item))
+        },
         save(item) {
             dispatch(addWishList(item))
         },
         hide(item) {
             dispatch(hideListItem(item))
+        },
+        addBackToCart(item) {
+            dispatch(addBackToCart(item))
         }
     }
 }

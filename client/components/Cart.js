@@ -1,4 +1,4 @@
-import React from 'react'
+import * as React from 'react';
 
 // redux
 import { connect } from 'react-redux'
@@ -11,15 +11,31 @@ import CartList from './CartList'
 import { Link } from 'react-router-dom';
 import { Route } from 'react-router-dom';
 
+//MUI
+import ToggleButton from '@mui/material/ToggleButton';
+import ToggleButtonGroup from '@mui/material/ToggleButtonGroup';
+
 export const Cart = props => {
     const { cartlist, wishlist, username, routeProps } = props
-    console.log(routeProps)
+    // const [alignment, setAlignment] = React.useState < string | null > ('left');
+
+    // const handleAlignment = (
+    //     event: React.MouseEvent<HTMLElement>,
+    //     newAlignment: string | null,
+    // ) => {
+    //     setAlignment(newAlignment);
+    // };
+
     return (
         <div> 
             <p style={{ fontWeight: 'bold', marginBottom: '20px'}}>Hello, {username ? username : 'guest'}</p>
             <div style={{ display: 'flex'}}>
-                <Link to={`/cart`} style={{ border: '1px solid grey', padding: '10px 20px' }}>Cart({cartlist.length})</Link>
-                <Link to={`/cart/wishlist`} style={{ border: '1px solid grey' , padding:'10px 20px'}}>Wishlist({wishlist.length})</Link>
+            <ToggleButtonGroup>
+                {/* value={alignment}
+                onChange={handleAlignment}> */}
+                    <Link to={`/cart`}><ToggleButton>Cart({cartlist.length})</ToggleButton></Link>
+                    <Link to={`/cart/wishlist`}><ToggleButton>Wishlist({wishlist.length})</ToggleButton></Link>
+            </ToggleButtonGroup>
             </div>
             <div>  
                 <Route exact path="/cart" render={routeProps => <CartList routeProps={routeProps}/>} />
@@ -38,6 +54,3 @@ const mapState = state => {
 }
 
 export default connect(mapState)(Cart);
-
-
-{/* <LineItems lineItems={cartlist} routeProps={routeProps} /> */}
