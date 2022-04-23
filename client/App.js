@@ -13,17 +13,10 @@ import {theme} from '../public/styles'
 const App = () => {
   return (
     <div>
-<<<<<<< HEAD
       <ThemeProvider theme={theme}>
         <Navbar />
         <Routes />
       </ThemeProvider>
-=======
-    <ThemeProvider theme={theme}>
-        <Navbar />
-        <Routes />
-    </ThemeProvider>
->>>>>>> main
     </div>
   );
 };
