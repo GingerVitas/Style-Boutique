@@ -3,9 +3,11 @@ import Button from '@mui/material/Button';
 import { Link } from 'react-router-dom';
 import { connect } from 'react-redux'
 
-export const Total = props => {
+const Total = props => {
     const { lineItems, isLoggedIn} = props    
-    const total = lineItems.length > 0 ? (lineItems.map(obj => +obj.total).reduce((a, b) => a + b)).toFixed(2) : 0;
+    // DO NOT ERASE CMNT BELOW.
+    // const total = lineItems.length > 0 ? (lineItems.map(obj => +obj.total).reduce((a, b) => a + b)).toFixed(2) : 0;
+    const total = lineItems.length > 0 ? 1 : 0 ;
 
     const Component = () => {
         if (!isLoggedIn && +total > 0) return <Link to={{ pathname: '/login', state: { prevPath: location.pathname } }}><Button color='black' variant="contained">Checkout</Button></Link>;
@@ -33,4 +35,6 @@ const mapState = state => {
         auth: state.auth
     }
 }
+
+export default connect(mapState)(Total);
 

@@ -5,7 +5,7 @@ import Products from "../Products";
 /**
  * COMPONENT
  */
-export const Home = (props) => {
+const Home = (props) => {
   const { username } = props;
 
   return (

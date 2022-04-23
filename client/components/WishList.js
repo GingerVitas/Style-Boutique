@@ -6,7 +6,7 @@ import { connect } from 'react-redux'
 // child components
 import LineItems from './LineItems'
 
-export const WishList = props => {
+const WishList = props => {
     const { routeProps, wishlist } = props
     return (
         <div>

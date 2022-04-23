@@ -9,8 +9,7 @@ import { loadProducts } from "./store/products";
 import { withRouter, Route, Switch, Redirect } from "react-router-dom";
 
 // child components
-
-import { Login, Signup } from "./components/AuthForm";
+import { Login, Signup } from "./components/pages/AuthForm";
 import Home from "./components/pages/Home";
 import Cart from "./components/pages/Cart";
 import Checkout from "./components/Checkout";

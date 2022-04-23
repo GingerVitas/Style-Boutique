@@ -3,7 +3,7 @@ import { addListItem } from '../store/cart'
 import { connect } from 'react-redux'
 import Button from '@mui/material/Button';
 
-export const Product = props => {
+const Product = props => {
     const { product, auth, addToCart, routeProps } = props;
     return (
         <div style={{ flexBasis: '33.333333%'}}>

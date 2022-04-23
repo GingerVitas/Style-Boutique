@@ -7,9 +7,6 @@ import Routes from "./Routes";
 import { ThemeProvider } from "@mui/material/styles";
 import { theme } from "../public/styles";
 
-import { ThemeProvider } from '@mui/material/styles'
-import {theme} from '../public/styles'
-
 const App = () => {
   return (
     <div>

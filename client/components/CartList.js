@@ -7,12 +7,12 @@ import { connect } from 'react-redux'
 import LineItems from './LineItems'
 import Total from './Total'
 
-export const CartList = props => {
+const CartList = props => {
     const { routeProps, cartlist } = props
     return (
         <div>
             <LineItems lineItems={cartlist} routeProps={routeProps} />
-            {/* <Total lineItems={cartlist}/> */}
+            <Total lineItems={cartlist}/>
         </div>
     )
 }
