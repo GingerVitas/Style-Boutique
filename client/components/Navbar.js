@@ -30,12 +30,21 @@
 //   </div>
 // )
 
+<<<<<<< HEAD
 // const mapState = state => {
 //   return {
 //     lineItems: state.cart,
 //     isLoggedIn: !!state.auth.id
 //   }
 // }
+=======
+const mapState = state => {
+  return {
+    lineItems: state.cart,
+    isLoggedIn: !!state.auth.id
+  }
+}
+>>>>>>> main
 
 // const mapDispatch = dispatch => {
 //   return {

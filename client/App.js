@@ -7,13 +7,23 @@ import Routes from "./Routes";
 import { ThemeProvider } from "@mui/material/styles";
 import { theme } from "../public/styles";
 
+import { ThemeProvider } from '@mui/material/styles'
+import {theme} from '../public/styles'
+
 const App = () => {
   return (
     <div>
+<<<<<<< HEAD
       <ThemeProvider theme={theme}>
         <Navbar />
         <Routes />
       </ThemeProvider>
+=======
+    <ThemeProvider theme={theme}>
+        <Navbar />
+        <Routes />
+    </ThemeProvider>
+>>>>>>> main
     </div>
   );
 };
