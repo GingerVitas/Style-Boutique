@@ -7,6 +7,8 @@ const Product = require("./models/Product");
 const Tag = require("./models/Tag");
 const User = require("./models/User");
 const Guest = require("./models/Guest");
+const ProductSKU = require('./models/ProductSKU');
+const Category = require('./models/Category');
 
 // Product.hasMany(Tag, { through: "ProductTag" });
 // Tag.belongsToMany(Product, { through: "ProductTag" });
@@ -28,6 +30,13 @@ Order.hasMany(LineItem, { foreignKey: 'orderId' } );
 LineItem.belongsTo(Product, { foreignKey: 'productId' });
 Product.hasMany(LineItem, { foreignKey: 'productId' });
 
+Category.hasMany(Product);
+Product.belongsTo(Category);
+
+Product.hasMany(ProductSKU);
+ProductSKU.belongsTo(Product);
+
+
 module.exports = {
   db,
   models: {
@@ -37,6 +46,8 @@ module.exports = {
     Product,
     Tag,
     User,
-    Guest
+    Guest,
+    ProductSKU,
+    Category
   },
 };

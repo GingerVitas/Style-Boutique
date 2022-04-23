@@ -1,44 +1,68 @@
-import React from "react";
+import * as React from "react";
+
+// redux
 import { connect } from "react-redux";
-import LineItem from "../LineItem";
-import Total from "../Total";
+
+// child components
+import WishList from "../WishList";
+import CartList from "../CartList";
+
+// react-router
+import { Link } from "react-router-dom";
+import { Route } from "react-router-dom";
+
+//MUI
+import ToggleButton from "@mui/material/ToggleButton";
+import ToggleButtonGroup from "@mui/material/ToggleButtonGroup";
 
 export const Cart = (props) => {
-  const { lineItems, username, products, location } = props;
+  const { cartlist, wishlist, username, routeProps } = props;
+  // const [alignment, setAlignment] = React.useState < string | null > ('left');
+
+  // const handleAlignment = (
+  //     event: React.MouseEvent<HTMLElement>,
+  //     newAlignment: string | null,
+  // ) => {
+  //     setAlignment(newAlignment);
+  // };
+
   return (
     <div>
       <p style={{ fontWeight: "bold", marginBottom: "20px" }}>
         Hello, {username ? username : "guest"}
-        <br />
-        <span style={{ fontWeight: "bold", color: "gray" }}>My Cart</span>
       </p>
-      <div>
-        {lineItems.map((item) => {
-          const product = products.find(
-            (product) => product.id === item.productId
-          );
-          return (
-            <div>
-              <LineItem
-                key={item.id}
-                item={item}
-                product={product}
-                location={location}
-              />
-              <hr />
-            </div>
-          );
-        })}
+      <div style={{ display: "flex" }}>
+        <ToggleButtonGroup>
+          {/* value={alignment}
+                onChange={handleAlignment}> */}
+          <Link to={`/cart`}>
+            <ToggleButton>Cart({cartlist.length})</ToggleButton>
+          </Link>
+          <Link to={`/cart/wishlist`}>
+            <ToggleButton>Wishlist({wishlist.length})</ToggleButton>
+          </Link>
+        </ToggleButtonGroup>
       </div>
-      <Total />
+      <div>
+        <Route
+          exact
+          path="/cart"
+          render={(routeProps) => <CartList routeProps={routeProps} />}
+        />
+        <Route
+          exact
+          path="/cart/wishlist"
+          render={(routeProps) => <WishList routeProps={routeProps} />}
+        />
+      </div>
     </div>
   );
 };
 
 const mapState = (state) => {
   return {
-    products: state.products,
-    lineItems: state.lineItems,
+    cartlist: state.cart,
+    wishlist: state.wishlist,
     username: state.auth.username,
   };
 };

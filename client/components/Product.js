@@ -1,10 +1,10 @@
 import React from "react";
-import { addListItem } from "../store/lineItems";
+import { addListItem } from "../store/cart";
 import { connect } from "react-redux";
+import Button from "@mui/material/Button";
 
 export const Product = (props) => {
-  const { product, auth, addToCart } = props;
-  // console.log(props)
+  const { product, auth, addToCart, routeProps } = props;
   return (
     <div style={{ flexBasis: "33.333333%" }}>
       <img src={product.imageUrl} style={{ width: "150px" }} />
@@ -15,10 +15,16 @@ export const Product = (props) => {
         <li>{product.color}</li>
         <li>{product.size}</li>
       </ul>
-      {props.location ? (
+      {props.routeProps ? (
         ""
       ) : (
-        <button onClick={() => addToCart(product, auth)}>Add to Cart</button>
+        <Button
+          color="black"
+          variant="contained"
+          onClick={() => addToCart(product, auth)}
+        >
+          Add to Cart
+        </Button>
       )}
     </div>
   );
