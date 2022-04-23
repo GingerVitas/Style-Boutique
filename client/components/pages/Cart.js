@@ -15,7 +15,7 @@ import { Route } from "react-router-dom";
 import ToggleButton from "@mui/material/ToggleButton";
 import ToggleButtonGroup from "@mui/material/ToggleButtonGroup";
 
-export const Cart = (props) => {
+const Cart = (props) => {
   const { cartlist, wishlist, username, routeProps } = props;
   // const [alignment, setAlignment] = React.useState < string | null > ('left');
 

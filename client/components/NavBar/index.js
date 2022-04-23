@@ -17,16 +17,16 @@ const Navbar = ({ handleClick, isLoggedIn, lineItems }) => (
           <AppBar position="static">
             <Toolbar>
               {/* The navbar will show these links after you log in */}
-
-              <Typography
-                variant="h5"
-                noWrap
-                component="div"
-                sx={{ flexGrow: 1, display: { xs: "none", sm: "block" } }}
-              >
-                OUR NAME HERE
-              </Typography>
-
+              <Link to="/home">
+                <Typography
+                  variant="h5"
+                  noWrap
+                  component="div"
+                  sx={{ flexGrow: 1, display: { xs: "none", sm: "block" } }}
+                >
+                  OUR NAME HERE
+                </Typography>
+              </Link>
               <a href="#" onClick={handleClick}>
                 Logout
               </a>
@@ -41,16 +41,16 @@ const Navbar = ({ handleClick, isLoggedIn, lineItems }) => (
           <AppBar position="static">
             <Toolbar>
               {/* The navbar will show these links before you log in */}
-
-              <Typography
-                variant="h5"
-                noWrap
-                component="div"
-                sx={{ flexGrow: 1, display: { xs: "none", sm: "block" } }}
-              >
-                OUR NAME HERE
-              </Typography>
-
+                <Link to="/home">
+                  <Typography
+                    variant="h5"
+                    noWrap
+                    component="div"
+                    sx={{ flexGrow: 1, display: { xs: "none", sm: "block" } }}
+                  >
+                    OUR NAME HERE
+                  </Typography>
+                </Link>
               <Link to="/login">Login</Link>
               <Link to="/signup">Sign Up </Link>
               <Link to="/cart">Cart ({lineItems.length})</Link>

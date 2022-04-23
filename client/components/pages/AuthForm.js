@@ -1,6 +1,10 @@
 import React from 'react'
 import {connect} from 'react-redux'
-import {authenticate} from '../store'
+import {authenticate} from '../../store/auth'
+
+//MUI
+import TextField from '@mui/material/TextField';
+import Button from '@mui/material/Button';
 
 /**
  * COMPONENT
@@ -24,7 +28,7 @@ const AuthForm = props => {
           <input name="password" type="password" />
         </div>
         <div>
-          <button type="submit">{displayName}</button>
+          <Button color='black' variant="contained" type="submit">{displayName}</Button>
         </div>
         {error && error.response && <div> {error.response.data} </div>}
       </form>

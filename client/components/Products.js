@@ -2,7 +2,7 @@ import React from "react";
 import { connect } from "react-redux";
 import Product from "./Product";
 
-export const Products = (props) => {
+const Products = (props) => {
   const { products } = props;
   //console.log(props);
   return (
