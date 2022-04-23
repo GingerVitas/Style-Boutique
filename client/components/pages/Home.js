@@ -10,12 +10,12 @@ export const Home = (props) => {
 
   return (
     <div
-      style={{
-        display: "flex",
-        justifyContent: "Right",
-        alignItems: "Right",
-        height: "100vh",
-      }}
+    // style={{
+    //   display: "flex",
+    //   justifyContent: "Right",
+    //   alignItems: "Right",
+    //   height: "100vh",
+    // }}
     >
       <h3>Welcome, {username ? username : "Guest"}</h3>
       <Products />

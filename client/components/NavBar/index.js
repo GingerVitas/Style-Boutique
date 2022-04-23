@@ -1,65 +1,73 @@
 import React from "react";
 import { connect } from "react-redux";
-import { logout } from "../store";
-import { Nav, NavLink, Bars, NavMenu, NavBtn, NavBtnLink } from "./NavBarElems";
+import { Link } from "react-router-dom";
+import { logout } from "../../store";
+import Search, { SearchIconWrapper, StyledInputBase } from "./NavBarElems";
+
+import { AppBar, Toolbar, IconButton, Box } from "@mui/material";
+import { Button, Typography } from "@material-ui/core";
+import { styled, alpha } from "@mui/material/styles";
+import { SearchIcon } from "@mui/icons-material/";
 
 const Navbar = ({ handleClick, isLoggedIn, lineItems }) => (
-    <Nav>
-        {isLoggedIn ? (
-        {/* The navbar will show these links after you log in */}
-        <Bars >
-          <NavMenu>
-          <NavLink to="/home" activeStyle>
-            Logo here
-          </NavLink>
-          <NavLink to="/clothing" activeStyle>
-            Clothing
-          </NavLink>
-          <NavLink to="/accessories" activeStyle>
-            Accessories
-          </NavLink>
-          <NavLink to="/footwear" activeStyle>
-            Footwear
-          </NavLink>
-          <a href="#" onClick={handleClick}>
-            Logout
-          </a>
-          <NavLink to="/cart" activeStyle>
-            Cart ({lineItems.length})
-                        </NavLink>
-                       
-        </NavMenu>
-        ) : (
-       
-        <NavMenu>
-        {/* The navbar will show these links before you log in */}
-          <NavLink to="/home" activeStyle>
-            Logo here
-          </NavLink>
-          <NavLink to="/clothing" activeStyle>
-            Clothing
-          </NavLink>
-          <NavLink to="/accessories" activeStyle>
-            Accessories
-          </NavLink>
-          <NavLink to="/footwear" activeStyle>
-            Footwear
-          </NavLink>
-          <NavBtn>
-            <NavBtnLink to="/login">Login</NavBtnLink>
-          </NavBtn>
-          <NavBtn>
-            <NavBtnLink to="/signup" activeStyle>
-              Sign Up
-            </NavBtnLink>{" "}
-          </NavBtn>
-          <NavLink to="/cart" activeStyle>
-            Cart ({lineItems.length})
-          </NavLink>
-        </NavMenu>
+  <div>
+    <nav>
+      {isLoggedIn ? (
+        <div>
+          <AppBar position="static">
+            <Toolbar>
+              {/* The navbar will show these links after you log in */}
+
+              <Typography
+                variant="h5"
+                noWrap
+                component="div"
+                sx={{ flexGrow: 1, display: { xs: "none", sm: "block" } }}
+              >
+                OUR NAME HERE
+              </Typography>
+
+              <a href="#" onClick={handleClick}>
+                Logout
+              </a>
+              <Link to="/cart" activeStyle>
+                Cart ({lineItems.length})
+              </Link>
+            </Toolbar>
+          </AppBar>
+        </div>
+      ) : (
+        <div>
+          <AppBar position="static">
+            <Toolbar>
+              {/* The navbar will show these links before you log in */}
+
+              <Typography
+                variant="h5"
+                noWrap
+                component="div"
+                sx={{ flexGrow: 1, display: { xs: "none", sm: "block" } }}
+              >
+                OUR NAME HERE
+              </Typography>
+
+              <Link to="/login">Login</Link>
+              <Link to="/signup">Sign Up </Link>
+              <Link to="/cart">Cart ({lineItems.length})</Link>
+            </Toolbar>
+          </AppBar>
+        </div>
       )}
+    </nav>
     <hr />
-  </Nav>
+    <div>
+      <Box>
+        <Link to="/clothing">Clothing</Link>
+        <Link to="/accessories">Accessories</Link>
+        <Link to="/footwear">Footwear</Link>
+      </Box>
+    </div>
+  </div>
 );
 
 const mapState = (state) => {
