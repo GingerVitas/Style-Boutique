@@ -12,7 +12,7 @@ export const CartList = props => {
     return (
         <div>
             <LineItems lineItems={cartlist} routeProps={routeProps} />
-            <Total lineItems={cartlist}/>
+            {/* <Total lineItems={cartlist}/> */}
         </div>
     )
 }
