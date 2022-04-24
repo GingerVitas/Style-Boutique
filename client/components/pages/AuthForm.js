@@ -5,10 +5,8 @@ import {authenticate} from '../../store/auth'
 //MUI
 import TextField from '@mui/material/TextField';
 import Button from '@mui/material/Button';
+import Box from '@mui/material/Box';
 
-/**
- * COMPONENT
- */
 const AuthForm = props => {
   const {name, displayName, handleSubmit, error} = props
   console.log('*************** previous path', props.location.state)
@@ -19,16 +17,16 @@ const AuthForm = props => {
           <label htmlFor="username">
             <small>Username</small>
           </label>
-          <input name="username" type="text" />
+          <TextField name="username" type="text" />
         </div>
         <div>
           <label htmlFor="password">
             <small>Password</small>
           </label>
-          <input name="password" type="password" />
+          <TextField name="password" type="password" />
         </div>
         <div>
-          <Button color='black' variant="contained" type="submit">{displayName}</Button>
+          <Button type="submit" color='black' variant="contained">{displayName}</Button>
         </div>
         {error && error.response && <div> {error.response.data} </div>}
       </form>
@@ -62,12 +60,11 @@ const mapSignup = state => {
 const mapDispatch = dispatch => {
   return {
     handleSubmit(evt) {
-      evt.preventDefault()
+      evt.preventDefault();
       const formName = evt.target.name
       const username = evt.target.username.value
       const password = evt.target.password.value
       dispatch(authenticate(username, password, formName));
-
     }
   }
 }

@@ -1,9 +1,13 @@
 import { createTheme } from '@mui/material/styles';
 import {blue, red} from '@mui/material/colors'
 
+import { Badge } from "@mui/material";
+import { styled} from "@mui/material/styles";
+
+const font = "'Lato', Arial"
+
 export const theme = createTheme({
     palette: {
-        primary: blue,
         black: {
             light:'#484848',
             main: '#000000',
@@ -18,25 +22,37 @@ export const theme = createTheme({
                     borderRadius: 0
                 }
             }
+        },
+        MuiToggleButton: {
+            styleOverrides: {
+                root: {
+                    borderRadius: 0,
+                    width:200,
+                    fontSize: '1rem',
+                    color: '#444444',
+                    fontWeight: '500',
+                    textTransform: 'capitalize'
+                }
+            }
         }
     }, 
     root: {
         display: "flex",
     },
     typography: {
-        fontFamily: "Lato, Arial",
+        fontFamily: font,
         fontSize: 12,
         h1: {
-            fontFamily: "Lato, Arial",
+            fontFamily: font,
             fontSize: 30,
             fontWeight: 700,
         },
         h2: {
-            fontFamily: "Lato, Arial",
+            fontFamily: font,
             fontSize: 20,
-            fontWeight: 700,
+            fontWeight: 500,
             paddingBottom: 20,
-        },
+        }
     },
     overrides: {
         MuiAppBar: {
@@ -45,5 +61,15 @@ export const theme = createTheme({
             },
         },
     },
-})
+});
+
+
+export const StyledBadge = styled(Badge)(({ theme }) => ({
+    '& .MuiBadge-badge': {
+        right: -3,
+        top: 13,
+        border: `2px solid ${theme.palette.background.paper}`,
+        padding: '0 4px',
+    },
+}));
 
