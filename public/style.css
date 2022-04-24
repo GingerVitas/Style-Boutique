@@ -1,5 +1,6 @@
 body {
   font-family: sans-serif;
+  color: #2C2C2C;
 }
 
 a {
@@ -18,4 +19,26 @@ nav a {
 form div {
   margin: 1em;
   display: inline-block;
+}
+
+h4 {
+  font-size: 1.5rem;
+  font-weight: 400;
+  color: #444444;
+  margin: 20px 0
+}
+
+p {
+  color: #444444;
+}
+
+.totalBox {
+  float: right;
+  width: 50%;
+  background-color: #EFEFEF;
+  padding: 30px;
+}
+
+.totalBox div {
+  margin-bottom: 10px;
 }

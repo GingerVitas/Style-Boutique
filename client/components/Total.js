@@ -7,22 +7,28 @@ const Total = props => {
     const { lineItems, isLoggedIn} = props    
     // DO NOT ERASE CMNT BELOW.
     // const total = lineItems.length > 0 ? (lineItems.map(obj => +obj.total).reduce((a, b) => a + b)).toFixed(2) : 0;
-    const total = lineItems.length > 0 ? 1 : 0 ;
+    const subtotal = lineItems.length > 0 ? 1 : 0 ;
+    const shipping = subtotal >= 50 ? (0).toFixed(2) : (5).toFixed(2);
+    const tax = (0).toFixed(2);
+    const total = ((+subtotal) + (+shipping) + (+tax)).toFixed(2)
 
     const Component = () => {
-        if (!isLoggedIn && +total > 0) return <Link to={{ pathname: '/login', state: { prevPath: location.pathname } }}><Button color='black' variant="contained">Checkout</Button></Link>;
-        if (!isLoggedIn && +total <= 0) return <Link to={`/home`}><Button color='black' variant="contained">Start Shopping</Button></Link>
-        if (isLoggedIn && +total > 0) return <Link to={`/checkout`}><Button color='black' variant="contained">Checkout</Button></Link>;
-        if (isLoggedIn && +total <= 0) return <Link to={`/home`}><Button color='black' variant="contained">Start Shopping</Button></Link>
+        if (!isLoggedIn && +subtotal > 0) return <Link to={{ pathname: '/login', state: { prevPath: location.pathname } }}><Button color='black' style={{ width: '100%', padding: '10px', fontSize: '1rem' }} variant="contained">Checkout</Button></Link>;
+        if (!isLoggedIn && +subtotal <= 0) return <Link to={`/home`}><Button color='black' style={{width: '100%', padding: '10px', fontSize: '1rem'}} variant="contained">Start Shopping</Button></Link>
+        if (isLoggedIn && +subtotal > 0) return <Link to={`/checkout`}><Button color='black' style={{ width: '100%', padding: '10px', fontSize: '1rem' }} variant="contained">Checkout</Button></Link>;
+        if (isLoggedIn && +subtotal <= 0) return <Link to={`/home`}><Button color='black' style={{ width: '100%', padding: '10px', fontSize: '1rem' }} variant="contained">Start Shopping</Button></Link>
     }
 
     return (
-        <div style={{fontWeight: 'bold', fontSize:'2rem'}}>
-            Subtotal: $
-            {
-                total
-            }<br/>
-            <Component />
+        <div>
+            <div className='totalBox'>
+                <div style={{fontSize: '1.1rem'}}>Subtotal <span style={{ float: 'right' }}>${subtotal}</span></div>
+                <div>Estimated shipping <span style={{ float: 'right' }}>${shipping}</span></div>
+                <div>Estimated tax <span style={{ float: 'right' }}>${tax}</span></div>
+                <hr />
+                <div style={{ fontSize: '1.3rem' }}>Estimated total <span style={{ float: 'right' }}>${total}</span></div>
+                <Component />
+            </div>
         </div>
     )
 }
