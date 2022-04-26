@@ -28,7 +28,7 @@ const Navbar = ({ handleClick, isLoggedIn, lineItems }) => (
                   OUR NAME HERE
                 </Typography>
               </Link>
-              <a href="#" onClick={handleClick}>
+              <a href="/" onClick={handleClick}>
                 Logout
               </a>
               <IconButton component={Link} to={'/cart'} aria-label="cart">

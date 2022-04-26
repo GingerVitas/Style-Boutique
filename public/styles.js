@@ -42,6 +42,15 @@ export const theme = createTheme({
                     margin: '10px 0px'
                 }
             }
+        },
+        MuiAlert: {
+            styleOverrides: {
+                root: {
+                    " .MuiAlert-message": {
+                        padding: "18px 0"
+                    }
+                }
+            }
         }
     }, 
     root: {
