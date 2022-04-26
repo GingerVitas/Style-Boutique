@@ -1,13 +1,14 @@
 import React, {useEffect} from 'react';
 import {useSelector, useDispatch} from 'react-redux';
 import {useParams} from 'react-router-dom';
-import {loadProducts} from '../../store/products';
 import {loadSKUs} from '../../store/skus';
 
 const singleProduct = () => {
   const dispatch = useDispatch();
   const {name} = useParams();
-  const product = useSelector(state=>state.products.filter(product => product.name === name));
+  const products = useSelector(state=>state.products.filter(product => product.name === name));
+  const product = products[0];
+  console.log(product)
   const skus = useSelector(state=>state.skus);
   console.log('sku loader', skus)
 
@@ -15,7 +16,7 @@ const singleProduct = () => {
     dispatch(loadSKUs(name))
   },[])
 
-  if (!product.id) return (
+  if (!product || !skus.length) return (
     <div>Loading...</div>
   )
   return (
