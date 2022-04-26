@@ -14,9 +14,9 @@ const Total = props => {
 
     const Component = () => {
         if (!isLoggedIn && +subtotal > 0) return <Link to={{ pathname: '/login', state: { prevPath: location.pathname } }}><Button color='black' style={{ width: '100%', padding: '10px', fontSize: '1rem' }} variant="contained">Checkout</Button></Link>;
-        if (!isLoggedIn && +subtotal <= 0) return <Link to={`/home`}><Button color='black' style={{width: '100%', padding: '10px', fontSize: '1rem'}} variant="contained">Start Shopping</Button></Link>
+        // if (!isLoggedIn && +subtotal <= 0) return <Link to={`/home`}><Button color='black' style={{width: '100%', padding: '10px', fontSize: '1rem'}} variant="contained">Start Shopping</Button></Link>
         if (isLoggedIn && +subtotal > 0) return <Link to={`/checkout`}><Button color='black' style={{ width: '100%', padding: '10px', fontSize: '1rem' }} variant="contained">Checkout</Button></Link>;
-        if (isLoggedIn && +subtotal <= 0) return <Link to={`/home`}><Button color='black' style={{ width: '100%', padding: '10px', fontSize: '1rem' }} variant="contained">Start Shopping</Button></Link>
+        // if (isLoggedIn && +subtotal <= 0) return <Link to={`/home`}><Button color='black' style={{ width: '100%', padding: '10px', fontSize: '1rem' }} variant="contained">Start Shopping</Button></Link>
     }
 
     return (
