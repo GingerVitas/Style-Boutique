@@ -42,3 +42,31 @@ p {
 .totalBox div {
   margin-bottom: 10px;
 }
+
+/* SIGN IN  _____________________________________________________*/
+.signin-intro {
+  width: 50%;
+  text-align: center;
+  padding: 10px 70px;
+  margin: auto;
+}
+.fbbttn {
+  margin-bottom: 30px;
+}
+.fbbttn div{
+  padding: 0;
+  margin: 0;
+  font-size: 0.75rem;
+}
+
+.ggbttn div{
+  padding: 0;
+  margin: 0;
+  font-size: 0.75rem;
+}
+
+.applbttn div {
+  padding: 0;
+  margin: 0;
+  font-size: 0.75rem;
+}

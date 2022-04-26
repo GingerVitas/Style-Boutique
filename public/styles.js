@@ -19,7 +19,8 @@ export const theme = createTheme({
         MuiButton: {
             styleOverrides: {
                 root: {
-                    borderRadius: 0
+                    borderRadius: 0,
+                    height: '40px'
                 }
             }
         },
@@ -32,6 +33,13 @@ export const theme = createTheme({
                     color: '#444444',
                     fontWeight: '500',
                     textTransform: 'capitalize'
+                }
+            }
+        },
+        MuiOutlinedInput: {
+            styleOverrides: {
+                root: {
+                    margin: '10px 0px'
                 }
             }
         }
