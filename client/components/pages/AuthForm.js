@@ -7,41 +7,37 @@ import {authenticate} from '../../store/auth'
 //MUI
 import {TextField} from '@mui/material';
 import Button from '@mui/material/Button';
-import Box from '@mui/material/Box';
+import Alert from '@mui/material/Alert';
 
 //SOCIAL BTNS
 import { FacebookLoginButton, GoogleLoginButton, AppleLoginButton } from "react-social-login-buttons";
 
 const AuthForm = props => {
-  const {name, displayName, handleSubmit, error} = props
-  console.log('*************** previous path', props.location.state)
+  const { name, displayName, handleSubmit, error, routeProps } = props
+  // const path = routeProps && routeProps.match.path;
   return (
     <div className='signin-intro'>
-      <div>
-        <h4>Sign In</h4>
-        <p style={{fontSize:'.75rem'}}>Enter your username and password to get started.</p>
-      </div>
+    {
+        routeProps && routeProps.match.path === '/login' ?
+          <div>
+            <h4>Sign In</h4>
+            <p style={{ fontSize: '.75rem' }}>Enter your username and password to get started.</p>
+          </div>
+          :
+          <div>
+            <h4>Create Account</h4>
+            <p style={{ fontSize: '.75rem' }}>Create a username and password to get started.</p>
+          </div>
+    }
       <form onSubmit={handleSubmit} name={name}>
-        {/* <div>
-          <label htmlFor="username">
-            <small>Username</small>
-          </label>
-          <TextField name="username" type="text" /> 
-        </div> */}
-        {/* <div>
-          <label htmlFor="password">
-            <small>Password</small>
-          </label>
-          <TextField name="password" type="password" />
-        </div> */}
         <TextField id="outlined-basic" label="Username" variant="outlined" name="username" type="text" style={{ width: '100%' }}/><br/>
-        <TextField id="outlined-basic" label="Password" variant="outlined" name="password" type="text" style={{ width: '100%' }}/><br/>
+        <TextField id="outlined-password-input" label="Password" variant="outlined" name="password" type="password" style={{ width: '100%' }}/><br/>
         <Button type="submit" color='black' variant="contained" fullWidth>{displayName}</Button>
         <hr />
         <FacebookLoginButton onClick={() => alert("Hello")} className='fbbttn' align='center'>CONTINUE WITH FACEBOOK</FacebookLoginButton>
         <GoogleLoginButton onClick={() => alert("Hello")} className='ggbttn' align='center'>CONTINUE WITH GOOGLE</GoogleLoginButton>
         <AppleLoginButton onClick={() => alert("Hello")} className='applbttn' align='center'>CONTINUE WITH APPLE</AppleLoginButton>
-        {error && error.response && <div> {error.response.data} </div>}
+        {error && error.response &&<Alert severity="error">{error.response.data}</Alert>}
       </form>
     </div>
   )
@@ -65,7 +61,7 @@ const mapLogin = state => {
 const mapSignup = state => {
   return {
     name: 'signup',
-    displayName: 'Sign Up',
+    displayName: 'Create Account',
     error: state.auth.error
   }
 }

@@ -13,6 +13,7 @@ import { Login, Signup } from "./components/pages/AuthForm";
 import Home from "./components/pages/Home";
 import Cart from "./components/pages/Cart";
 import Checkout from "./components/Checkout";
+import SignOut from "./components/pages/SignOut";
 
 /**
  * COMPONENT
@@ -31,10 +32,7 @@ class Routes extends Component {
           <Switch>
             <Route path="/home" component={Home} />
             <Route path="/cart" component={Cart} />
-            <Route
-              path="/checkout"
-              render={(routeProps) => <Checkout routeProps={routeProps} />}
-            />
+            <Route path="/checkout" render={(routeProps) => <Checkout routeProps={routeProps} />} />
             <Redirect
               to={
                 this.props.location.state &&
@@ -48,16 +46,11 @@ class Routes extends Component {
           <Switch>
             <Route path="/" exact component={Home} />
             <Route path="/home" component={Home} />
-            <Route path="/login" component={Login} />
-            <Route path="/signup" component={Signup} />
-            <Route
-              path="/cart"
-              render={(routeProps) => <Cart routeProps={routeProps} />}
-            />
-            <Route
-              path="/checkout"
-              render={(routeProps) => <Checkout routeProps={routeProps} />}
-            />
+            <Route path="/login" render={(routeProps) => <Login routeProps={routeProps} />}/>
+            <Route path="/signup" render={(routeProps) => <Signup routeProps={routeProps}/>}/>
+            <Route path="/cart" render={(routeProps) => <Cart routeProps={routeProps} />}/>
+            <Route path="/checkout" render={(routeProps) => <Checkout routeProps={routeProps} />}/>
+            <Route path="/logout" component={SignOut}/>
           </Switch>
         )}
       </div>
