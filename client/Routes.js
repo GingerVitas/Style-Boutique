@@ -14,6 +14,7 @@ import { Login, Signup } from "./components/AuthForm";
 import Home from "./components/pages/Home";
 import Cart from "./components/pages/Cart";
 import Checkout from "./components/Checkout";
+import SingleProduct from './components/pages/SingleProduct';
 
 /**
  * COMPONENT
@@ -60,6 +61,7 @@ class Routes extends Component {
               path="/checkout"
               render={(routeProps) => <Checkout routeProps={routeProps} />}
             />
+            <Route path='/:categoryId/:name' component={SingleProduct} />
           </Switch>
         )}
       </div>

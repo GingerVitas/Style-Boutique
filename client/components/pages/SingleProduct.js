@@ -1,6 +1,41 @@
-import React from 'react';
-import {useSelector} from 'react-redux';
+import React, {useEffect} from 'react';
+import {useSelector, useDispatch} from 'react-redux';
+import {useParams} from 'react-router-dom';
+import {loadProducts} from '../../store/products';
+import {loadSKUs} from '../../store/skus';
 
 const singleProduct = () => {
-  const products = useSelector(state=>state.products)
+  const dispatch = useDispatch();
+  const {name} = useParams();
+  const product = useSelector(state=>state.products.filter(product => product.name === name));
+  const skus = useSelector(state=>state.skus);
+  console.log('sku loader', skus)
+
+  useEffect(()=> {
+    dispatch(loadSKUs(name))
+  },[])
+
+  if (!product.id) return (
+    <div>Loading...</div>
+  )
+  return (
+    <div>
+      <table>
+        <tbody>
+          <tr>
+            <th>Product Brand</th>
+            <th>Product Name</th>
+            <th>Price</th>
+          </tr>
+          <tr>
+            <td>{product.brand}</td>
+            <td>{product.name}</td>
+            <td>{skus[0].price}</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  )
 }
+
+export default singleProduct
