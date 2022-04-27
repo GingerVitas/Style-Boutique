@@ -7,7 +7,7 @@ export const Products = (props) => {
   const { products } = props;
   //console.log(props);
   return (
-    <Container style={{width:'85%', float:'right'}}>
+    <Container style={{width:'85%', float:'center', textAlign:'center'}}>
       <Grid container spacing={2} columnSpacing={1} style={{gridTemplateColumns: "repeat(4, 1fr)"}}>
         {products.map((product) => {
           return <Grid item xs={3} key={product.id}><ProductCard product={product} /></Grid>;

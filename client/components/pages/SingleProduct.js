@@ -6,11 +6,8 @@ import {loadSKUs} from '../../store/skus';
 const singleProduct = () => {
   const dispatch = useDispatch();
   const {name} = useParams();
-  const products = useSelector(state=>state.products.filter(product => product.name === name));
-  const product = products[0];
-  console.log(product)
+  const product = useSelector((state)=>(state.products.filter(product => product.name === name))[0]);
   const skus = useSelector(state=>state.skus);
-  console.log('sku loader', skus)
 
   useEffect(()=> {
     dispatch(loadSKUs(name))
