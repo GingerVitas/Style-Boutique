@@ -24,9 +24,9 @@ const Cart = (props) => {
   };
 
   return (
-    <div>
+    <div className='content'>
       {/* <h4>Hello, {username ? username : "guest"}</h4> */}
-      <div style={{ display: "flex" }}>
+      <div style={{ display: "flex", padding:'30px 0' }}>
         <ToggleButtonGroup
           value={newToggle}
           exclusive

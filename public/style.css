@@ -3,6 +3,11 @@ body {
   color: #2C2C2C;
 }
 
+.content{
+  width: 80%;
+  margin: auto;
+}
+
 a {
   text-decoration: none;
 }
