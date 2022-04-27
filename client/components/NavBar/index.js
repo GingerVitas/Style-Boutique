@@ -31,8 +31,9 @@ const Navbar = ({ handleClick, isLoggedIn, lineItems }) => (
               <a href="/" onClick={handleClick}>
                 Logout
               </a>
-              <IconButton component={Link} to={'/cart'} aria-label="cart">
-                <StyledBadge badgeContent={ lineItems.length } color="secondary">
+              <Link to="/account">Account</Link>
+              <IconButton component={Link} to={"/cart"} aria-label="cart">
+                <StyledBadge badgeContent={lineItems.length} color="secondary">
                   <ShoppingCart />
                 </StyledBadge>
               </IconButton>
@@ -48,24 +49,24 @@ const Navbar = ({ handleClick, isLoggedIn, lineItems }) => (
           <AppBar position="static">
             <Toolbar>
               {/* The navbar will show these links before you log in */}
-                <Link to="/home">
-                  <Typography
-                    variant="h5"
-                    noWrap
-                    component="div"
-                    sx={{ flexGrow: 1, display: { xs: "none", sm: "block" } }}
-                  >
-                    OUR NAME HERE
-                  </Typography>
-                </Link>
+              <Link to="/home">
+                <Typography
+                  variant="h5"
+                  noWrap
+                  component="div"
+                  sx={{ flexGrow: 1, display: { xs: "none", sm: "block" } }}
+                >
+                  OUR NAME HERE
+                </Typography>
+              </Link>
               <Link to="/login">Login</Link>
               <Link to="/signup">Sign Up </Link>
               {/* <Link to="/cart">Cart ({lineItems.length})</Link> */}
-                <IconButton component={Link} to={'/cart'} aria-label="cart">
-                  <StyledBadge badgeContent={lineItems.length} color="secondary">
-                    <ShoppingCart />
-                  </StyledBadge>
-                </IconButton>
+              <IconButton component={Link} to={"/cart"} aria-label="cart">
+                <StyledBadge badgeContent={lineItems.length} color="secondary">
+                  <ShoppingCart />
+                </StyledBadge>
+              </IconButton>
             </Toolbar>
           </AppBar>
         </div>
