@@ -268,7 +268,7 @@ async function seed() {
 
   const belts = (await Promise.all(beltProduct.map(async(belt)=>{
     const foundCategory = await categoryFinder('Belts');
-    return {...belt, categoryid: foundCategory.id}
+    return {...belt, categoryId: foundCategory.id}
   })));
   await Product.bulkCreate(belts).then(console.log(`**** ${belts.length} Belts Seeded****`));
   const beltSKUs = (await Promise.all(beltData.flatMap(async(belt)=>{
