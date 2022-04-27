@@ -1,4 +1,4 @@
-import * as React from "react";
+import React, { useState } from 'react';
 
 // redux
 import { connect } from "react-redux";
@@ -12,35 +12,29 @@ import { Link } from "react-router-dom";
 import { Route } from "react-router-dom";
 
 //MUI
-import ToggleButton from "@mui/material/ToggleButton";
-import ToggleButtonGroup from "@mui/material/ToggleButtonGroup";
+import {ToggleButton }from "@mui/material";
+import {ToggleButtonGroup} from "@mui/material";
 
-export const Cart = (props) => {
-  const { cartlist, wishlist, username, routeProps } = props;
-  // const [alignment, setAlignment] = React.useState < string | null > ('left');
+const Cart = (props) => {
+  const { cartlist, wishlist, username } = props;
 
-  // const handleAlignment = (
-  //     event: React.MouseEvent<HTMLElement>,
-  //     newAlignment: string | null,
-  // ) => {
-  //     setAlignment(newAlignment);
-  // };
+  const [newToggle, setToggle] = useState('cart');
+  const handleToggle = (e, newToggle) => {
+    setToggle(newToggle);
+  };
 
   return (
     <div>
-      <p style={{ fontWeight: "bold", marginBottom: "20px" }}>
-        Hello, {username ? username : "guest"}
-      </p>
+      {/* <h4>Hello, {username ? username : "guest"}</h4> */}
       <div style={{ display: "flex" }}>
-        <ToggleButtonGroup>
-          {/* value={alignment}
-                onChange={handleAlignment}> */}
-          <Link to={`/cart`}>
-            <ToggleButton>Cart({cartlist.length})</ToggleButton>
-          </Link>
-          <Link to={`/cart/wishlist`}>
-            <ToggleButton>Wishlist({wishlist.length})</ToggleButton>
-          </Link>
+        <ToggleButtonGroup
+          value={newToggle}
+          exclusive
+          onChange={handleToggle}
+          aria-label="text alignment"
+        >
+        <ToggleButton value="cart" component={Link} to={'/cart'}>Shopping Bag ({cartlist.length})</ToggleButton>
+          <ToggleButton value="wishlist" component={Link} to={'/cart/wishlist'}>Wishlist ({wishlist.length})</ToggleButton>
         </ToggleButtonGroup>
       </div>
       <div>

@@ -3,7 +3,7 @@ import { connect } from "react-redux";
 import ProductCard from "./ProductCard";
 import {Grid, Container} from '@mui/material';
 
-export const Products = (props) => {
+const Products = (props) => {
   const { products } = props;
   //console.log(props);
   return (

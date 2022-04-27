@@ -6,13 +6,22 @@ import { connect } from 'react-redux'
 // child components
 import LineItems from './LineItems'
 import Total from './Total'
+import EmptyCart from './EmptyCart'
 
-export const CartList = props => {
+const CartList = props => {
     const { routeProps, cartlist } = props
     return (
         <div>
-            <LineItems lineItems={cartlist} routeProps={routeProps} />
-            {/* <Total lineItems={cartlist}/> */}
+            {cartlist.length > 0 ? 
+                <div>
+                    <h4>Shopping Bag</h4>
+                    <p>Enjoy free shipping on orders of $50 or more.</p>
+                    <LineItems lineItems={cartlist} routeProps={routeProps} />
+                    <Total lineItems={cartlist} />
+                </div>
+                :
+                <EmptyCart />
+            }     
         </div>
     )
 }

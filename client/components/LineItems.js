@@ -6,7 +6,7 @@ import { connect } from 'react-redux'
 // child components
 import LineItem from './LineItem'
 
-export const LineItems = props => {
+const LineItems = props => {
     const { lineItems, products, routeProps } = props
     console.log(routeProps)
     return (

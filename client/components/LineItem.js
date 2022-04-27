@@ -4,7 +4,7 @@ import Product from './Product'
 import { removeListItem, hideListItem, addBackToCart } from '../store/cart'
 import { addWishList, removeWishList} from '../store/wishList'
 
-export const LineItem = props => {
+const LineItem = props => {
     const { item, product, routeProps, remove, save, hide, removeWish, addBackToCart } = props
     console.log(routeProps)
     return (
@@ -56,8 +56,6 @@ const mapDispatch = dispatch => {
 }
 
 export default connect(null, mapDispatch)(LineItem)
-
-    // < Product product = { product } location = { location } />
 
 
 

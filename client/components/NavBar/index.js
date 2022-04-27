@@ -7,7 +7,8 @@ import Search, { SearchIconWrapper, StyledInputBase } from "./NavBarElems";
 import { AppBar, Toolbar, IconButton, Box } from "@mui/material";
 import { Button, Typography } from "@material-ui/core";
 import { styled, alpha } from "@mui/material/styles";
-import { SearchIcon } from "@mui/icons-material/";
+import { SearchIcon, ShoppingCart } from "@mui/icons-material";
+import { StyledBadge } from "../../../public/styles";
 
 const Navbar = ({ handleClick, isLoggedIn, lineItems }) => (
   <div>
@@ -17,22 +18,28 @@ const Navbar = ({ handleClick, isLoggedIn, lineItems }) => (
           <AppBar position="static">
             <Toolbar>
               {/* The navbar will show these links after you log in */}
-
-              <Typography
-                variant="h5"
-                noWrap
-                component="div"
-                sx={{ flexGrow: 1, display: { xs: "none", sm: "block" } }}
-              >
-                OUR NAME HERE
-              </Typography>
-
-              <a href="#" onClick={handleClick}>
+              <Link to="/home">
+                <Typography
+                  variant="h5"
+                  noWrap
+                  component="div"
+                  sx={{ flexGrow: 1, display: { xs: "none", sm: "block" } }}
+                >
+                  OUR NAME HERE
+                </Typography>
+              </Link>
+              <a href="/" onClick={handleClick}>
                 Logout
               </a>
-              <Link to="/cart" activeStyle>
+              <IconButton component={Link} to={'/cart'} aria-label="cart">
+                <StyledBadge badgeContent={ lineItems.length } color="secondary">
+                  <ShoppingCart />
+                </StyledBadge>
+              </IconButton>
+
+              {/* <Link to="/cart" activeStyle>
                 Cart ({lineItems.length})
-              </Link>
+              </Link> */}
             </Toolbar>
           </AppBar>
         </div>
@@ -41,19 +48,24 @@ const Navbar = ({ handleClick, isLoggedIn, lineItems }) => (
           <AppBar position="static">
             <Toolbar>
               {/* The navbar will show these links before you log in */}
-
-              <Typography
-                variant="h5"
-                noWrap
-                component="div"
-                sx={{ flexGrow: 1, display: { xs: "none", sm: "block" } }}
-              >
-                OUR NAME HERE
-              </Typography>
-
+                <Link to="/home">
+                  <Typography
+                    variant="h5"
+                    noWrap
+                    component="div"
+                    sx={{ flexGrow: 1, display: { xs: "none", sm: "block" } }}
+                  >
+                    OUR NAME HERE
+                  </Typography>
+                </Link>
               <Link to="/login">Login</Link>
               <Link to="/signup">Sign Up </Link>
-              <Link to="/cart">Cart ({lineItems.length})</Link>
+              {/* <Link to="/cart">Cart ({lineItems.length})</Link> */}
+                <IconButton component={Link} to={'/cart'} aria-label="cart">
+                  <StyledBadge badgeContent={lineItems.length} color="secondary">
+                    <ShoppingCart />
+                  </StyledBadge>
+                </IconButton>
             </Toolbar>
           </AppBar>
         </div>
