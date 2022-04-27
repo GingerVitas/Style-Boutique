@@ -12,11 +12,12 @@ import { withRouter, Route, Switch, Redirect } from "react-router-dom";
 // child components
 import { Login, Signup } from "./components/pages/AuthForm";
 import Home from "./components/pages/Home";
+import Account from "./components/pages/Account";
 import Cart from "./components/pages/Cart";
 import Checkout from "./components/Checkout";
-import SingleProduct from './components/pages/SingleProduct';
+import OrderHistory from "./components/pages/OrderHistory";
+import SingleProduct from "./components/pages/SingleProduct";
 import SignOut from "./components/pages/SignOut";
-
 
 /**
  * COMPONENT
@@ -29,12 +30,14 @@ class Routes extends Component {
   }
 
   render() {
-    const {isLoggedIn} = this.props
+    const { isLoggedIn } = this.props;
     return (
       <div>
         {isLoggedIn ? (
           <Switch>
             <Route path="/home" component={Home} />
+            <Route path="/account" component={Account} />
+            <Route path="/order_history" component={OrderHistory} />
             <Route path="/cart" component={Cart} />
             <Route path='/:categoryName/:name' component={SingleProduct} />
             <Route path="/checkout" render={(routeProps) => <Checkout routeProps={routeProps} />} />
