@@ -1,12 +1,16 @@
 import React from 'react';
-import {Link} from 'react-router-dom';
-import {Card, CardActions, CardContent, CardMedia, Button, Typography, Grid, Item } from '@mui/material';
+import {useSelector} from 'react-redux'
+import {Link, useParams} from 'react-router-dom';
+import {Card, FormControl, InputLabel, Select, MenuItem, CardContent, CardMedia, Typography,} from '@mui/material';
 
 
 const ProductCard = (props) => {
   const product = props.product
+  const skus = useSelector(state=>state.skus)
+  const category = props.categories.filter(category => category.id === product.categoryId)[0]
+  const {pageName} = useParams()
   return(
-        <Link to={`/${product.categoryId}/${product.name}`}>
+        <Link to={`/${category.categoryName}/${product.name}`}>
           <Card sx={{maxWidth:'280', margin:'.5rem'}} style={{height:'100%'}}>
             <CardMedia
               component='img'
@@ -21,6 +25,21 @@ const ProductCard = (props) => {
               <Typography variant='subtitle2'>
                 {product.name}
               </Typography>
+              {pageName ? <FormControl size='small'>
+                <InputLabel id='skuColor'>Color</InputLabel>
+                <Select 
+                  labelId='skuColor'
+                  id='skuColor'
+                  value={color}
+                  label='color'
+                  onChange={handleChange}
+                >
+                  {skus.map(sku => (
+                    <MenuItem key={sku.id} value={sku.id}>{sku.color}</MenuItem>
+                  ))}
+                </Select>
+
+              </FormControl> : ''}
             </CardContent>
           </Card>
         </Link> 
