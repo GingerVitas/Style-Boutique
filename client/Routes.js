@@ -13,7 +13,9 @@ import { Login, Signup } from "./components/pages/AuthForm";
 import Home from "./components/pages/Home";
 import Cart from "./components/pages/Cart";
 import Checkout from "./components/Checkout";
+import SingleProduct from './components/pages/SingleProduct';
 import SignOut from "./components/pages/SignOut";
+
 
 /**
  * COMPONENT
@@ -49,6 +51,7 @@ class Routes extends Component {
             <Route path="/login" render={(routeProps) => <Login routeProps={routeProps} />}/>
             <Route path="/signup" render={(routeProps) => <Signup routeProps={routeProps}/>}/>
             <Route path="/cart" render={(routeProps) => <Cart routeProps={routeProps} />}/>
+            <Route path='/:categoryId/:name' component={SingleProduct} />
             <Route path="/checkout" render={(routeProps) => <Checkout routeProps={routeProps} />}/>
             <Route path="/logout" component={SignOut}/>
           </Switch>
