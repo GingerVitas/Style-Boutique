@@ -4,13 +4,13 @@ import ProductCard from "./ProductCard";
 import {Grid, Container} from '@mui/material';
 
 const Products = (props) => {
-  const { products } = props;
+  const { products, categories } = props;
   //console.log(props);
   return (
     <Container style={{width:'85%', float:'center', textAlign:'center'}}>
       <Grid container spacing={2} columnSpacing={1} style={{gridTemplateColumns: "repeat(4, 1fr)"}}>
         {products.map((product) => {
-          return <Grid item xs={3} key={product.id}><ProductCard product={product} /></Grid>;
+          return <Grid item xs={3} key={product.id}><ProductCard product={product} categories={categories}/></Grid>;
         })}
       </Grid>
     </Container>
@@ -21,6 +21,7 @@ const Products = (props) => {
 const mapState = (state) => {
   return {
     products: state.products,
+    categories: state.categories
   };
 };
 

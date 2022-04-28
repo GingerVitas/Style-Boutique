@@ -4,6 +4,7 @@ import React, { Component, Fragment } from "react";
 import { connect } from "react-redux";
 import { me } from "./store";
 import { loadProducts } from "./store/products";
+import {loadCategories} from './store/categories';
 
 //router
 import { withRouter, Route, Switch, Redirect } from "react-router-dom";
@@ -11,11 +12,12 @@ import { withRouter, Route, Switch, Redirect } from "react-router-dom";
 // child components
 import { Login, Signup } from "./components/pages/AuthForm";
 import Home from "./components/pages/Home";
+import Account from "./components/pages/Account";
 import Cart from "./components/pages/Cart";
 import Checkout from "./components/Checkout";
-import SingleProduct from './components/pages/SingleProduct';
+import OrderHistory from "./components/pages/OrderHistory";
+import SingleProduct from "./components/pages/SingleProduct";
 import SignOut from "./components/pages/SignOut";
-
 
 /**
  * COMPONENT
@@ -24,16 +26,20 @@ class Routes extends Component {
   componentDidMount() {
     this.props.loadInitialData();
     this.props.fetchProducts();
+    this.props.fetchCategories();
   }
 
   render() {
-    const {isLoggedIn} = this.props
+    const { isLoggedIn } = this.props;
     return (
       <div>
         {isLoggedIn ? (
           <Switch>
             <Route path="/home" component={Home} />
+            <Route path="/account" component={Account} />
+            <Route path="/order_history" component={OrderHistory} />
             <Route path="/cart" component={Cart} />
+            <Route path='/:categoryName/:name' component={SingleProduct} />
             <Route path="/checkout" render={(routeProps) => <Checkout routeProps={routeProps} />} />
             <Redirect
               to={
@@ -51,7 +57,7 @@ class Routes extends Component {
             <Route path="/login" render={(routeProps) => <Login routeProps={routeProps} />}/>
             <Route path="/signup" render={(routeProps) => <Signup routeProps={routeProps}/>}/>
             <Route path="/cart" render={(routeProps) => <Cart routeProps={routeProps} />}/>
-            <Route path='/:categoryId/:name' component={SingleProduct} />
+            <Route path='/:categoryName/:name' component={SingleProduct} />
             <Route path="/checkout" render={(routeProps) => <Checkout routeProps={routeProps} />}/>
             <Route path="/logout" component={SignOut}/>
           </Switch>
@@ -78,6 +84,9 @@ const mapDispatch = (dispatch) => {
     fetchProducts() {
       dispatch(loadProducts());
     },
+    fetchCategories() {
+      dispatch(loadCategories());
+    }
   };
 };
 
