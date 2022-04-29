@@ -27,14 +27,19 @@ Guest.hasMany(Order, { foreignKey: 'guestId'})
 LineItem.belongsTo(Order, { foreignKey: 'orderId' });
 Order.hasMany(LineItem, { foreignKey: 'orderId' } );
 
-LineItem.belongsTo(Product, { foreignKey: 'productId' });
-Product.hasMany(LineItem, { foreignKey: 'productId' });
+// LineItem.belongsTo(Product, { foreignKey: 'productId' });
+// Product.hasMany(LineItem, { foreignKey: 'productId' });
+
+LineItem.belongsTo(ProductSKU, { foreignKey: 'productSkuId'});
+ProductSKU.hasMany(LineItem, { foreignKey: 'productSkuId'});
 
 Category.hasMany(Product);
 Product.belongsTo(Category);
 
 Product.hasMany(ProductSKU);
 ProductSKU.belongsTo(Product);
+
+
 
 
 module.exports = {

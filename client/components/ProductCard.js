@@ -7,10 +7,10 @@ import {Card, FormControl, InputLabel, Select, MenuItem, CardContent, CardMedia,
 const ProductCard = (props) => {
   const product = props.product
   const skus = useSelector(state=>state.skus)
-  const category = props.categories.filter(category => category.id === product.categoryId)[0]
+  const category = props.categories? props.categories.filter(category => category.id === product.categoryId)[0] : []
   const {pageName} = useParams()
   return(
-        <Link to={`/${category.categoryName}/${product.name}`}>
+        <Link to={`/${category&& category.categoryName}/${product.name}`}>
           <Card sx={{maxWidth:'280', margin:'.5rem'}} style={{height:'100%'}}>
             <CardMedia
               component='img'

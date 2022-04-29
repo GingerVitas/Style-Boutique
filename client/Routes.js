@@ -5,6 +5,7 @@ import { connect } from "react-redux";
 import { me } from "./store";
 import { loadProducts } from "./store/products";
 import {loadCategories} from './store/categories';
+import { loadCart } from './store/cart';
 
 //router
 import { withRouter, Route, Switch, Redirect } from "react-router-dom";
@@ -15,9 +16,9 @@ import Home from "./components/pages/Home";
 import Account from "./components/pages/Account";
 import Cart from "./components/pages/Cart";
 import Checkout from "./components/Checkout";
-import OrderHistory from "./components/pages/OrderHistory";
-import SingleProduct from "./components/pages/SingleProduct";
+import SingleProduct from './components/pages/SingleProduct';
 import SignOut from "./components/pages/SignOut";
+
 
 /**
  * COMPONENT
@@ -37,7 +38,6 @@ class Routes extends Component {
           <Switch>
             <Route path="/home" component={Home} />
             <Route path="/account" component={Account} />
-            <Route path="/order_history" component={OrderHistory} />
             <Route path="/cart" component={Cart} />
             <Route path='/:categoryName/:name' component={SingleProduct} />
             <Route path="/checkout" render={(routeProps) => <Checkout routeProps={routeProps} />} />
@@ -86,6 +86,9 @@ const mapDispatch = (dispatch) => {
     },
     fetchCategories() {
       dispatch(loadCategories());
+    },
+    fetchCart(){
+      dispatch(loadCart());
     }
   };
 };

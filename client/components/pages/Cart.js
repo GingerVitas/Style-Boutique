@@ -22,7 +22,7 @@ const Cart = (props) => {
   const handleToggle = (e, newToggle) => {
     setToggle(newToggle);
   };
-
+  console.log(cartlist);
   return (
     <div className='content'>
       {/* <h4>Hello, {username ? username : "guest"}</h4> */}
