@@ -5,7 +5,8 @@ import {Grid, Container} from '@mui/material';
 
 const Products = (props) => {
   const { products, categories } = props;
-  //console.log(props);
+  console.log('************Categories*********', categories)
+  if(!categories.length) return <h1>Loading...</h1>
   return (
     <Container style={{width:'85%', float:'center', textAlign:'center'}}>
       <Grid container spacing={2} columnSpacing={1} style={{gridTemplateColumns: "repeat(4, 1fr)"}}>

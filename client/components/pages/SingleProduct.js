@@ -1,51 +1,54 @@
-import React, {useEffect } from 'react';
+import React, {useEffect, useState } from 'react';
 import {useParams} from 'react-router-dom';
 
 //REDUX
 import { useSelector, useDispatch } from 'react-redux';
-import { addToCart } from '../../store/cart'
+import { addToCart } from '../../store/cart';
+import {loadSKUs} from '../../store/skus';
+import {loadColors} from '../../store/productColors';
 
 //MUI
 import { Button, InputLabel, MenuItem, FormControl, Select } from '@mui/material';
 
-import {loadSKUs} from '../../store/skus';
-import ProductCard from '../ProductCard';
+
+// import ProductCard from '../ProductCard';
 
 
 const singleProduct = () => {
   const dispatch = useDispatch();
-  const {name} = useParams();
-  const product = useSelector((state)=>(state.products.filter(product => product.name === name))[0]);
-  const skus = useSelector(state=>state.skus);
-  const [sku, setSku] = React.useState('');
-  const [size, setSize] = React.useState('');
-  const [color, setColor] = React.useState('');
-  const quantity = 1;
-  const categories = useSelector(state=>state.categories)
+  const {productName} = useParams();
+  const product = useSelector((state)=>(state.products.filter(product => product.name === productName))[0]);
+  const colors = useSelector(state=>state.productColors);
+  const [size, setSize] = useState('');
+  const [color, setColor] = useState('');
+  // const categories = useSelector(state=>state.categories)
 
 
   useEffect(()=> {
-    dispatch(loadSKUs(name))
+    dispatch(loadColors(productName))
+  }, [])
+  useEffect(()=> {
+    dispatch(loadSKUs(productName))
   },[])
 
-  if (!product || !skus.length) return (
+
+  console.log('***Colors****', colors);
+  console.log('****Product****', product)
+  if (!product || !colors.length) return (
     <div>Loading...</div>
   )
 
   // For Size DropDown
   const handleSize = (event) => {
-    setSku(event.target.value);
-    setSize(event.target.value.size);
+    setSize(event.target.value);
   };
   console.log('size selected:', size)
 
   // For Color DropDown
   const handleColor = (event) => {
-    setSku(event.target.value);
-    setColor(event.target.value.color);
+    setColor(event.target.value);
   };
   console.log('color selected:', color)
-  console.log('selected sku:', sku)
   // We could have 1 select that has color/size = 10 options?
   // 1. how to render only 2 colors instead of 10 repeated colors, same for sizes
   // 2. make thunk call to check sku's availabelStock if <= 0, grey out
@@ -56,7 +59,7 @@ const singleProduct = () => {
  
   return (
     <div>
-      <ProductCard product={product} skus={skus} categories={categories} />
+      {/* <ProductCard product={product} skus={skus} categories={categories} /> */}
       <table>
         <tbody>
           <tr>
@@ -67,7 +70,6 @@ const singleProduct = () => {
           <tr>
             <td>{product.brand}</td>
             <td>{product.name}</td>
-            <td>{skus[0].price}</td>
           </tr>
         </tbody>
       </table>
@@ -80,8 +82,10 @@ const singleProduct = () => {
           label="Size"
           onChange={handleSize}
         >
-          {
-            skus.map(sku => <MenuItem key={sku.id} value={sku}>{sku.size}</MenuItem>)
+          { !color ? <MenuItem value={''}>Please Select a Color</MenuItem> :
+            color.productSKUs.map(sku => sku.availableStock === 0 ? 
+            <MenuItem key={sku.id} value={sku} disabled={true} >{sku.size}  Out of Stock, check back soon!</MenuItem> 
+            : <MenuItem key={sku.id} value={sku}>{sku.size}  {sku.availableStock <= 3 ? `Only ${sku.availableStock} left!` : `${sku.availableStock}`}</MenuItem>)
           }
         </Select>
       </FormControl>
@@ -96,7 +100,7 @@ const singleProduct = () => {
           onChange={handleColor}
         >
           {
-            skus.map(sku => <MenuItem key={sku.id} value={sku}>{sku.color}</MenuItem>)
+            colors.map(color => <MenuItem key={color.id} value={color}>{color.color}</MenuItem>)
           }
         </Select>
       </FormControl>

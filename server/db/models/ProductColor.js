@@ -1,7 +1,7 @@
 const Sequelize = require("sequelize");
 const db = require("../db");
 
-const ProductColor = db.define('ProductColor', {
+const ProductColor = db.define('productColor', {
   id: {
     type: Sequelize.UUID,
     defaultValue: Sequelize.UUIDV4,
