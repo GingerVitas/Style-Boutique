@@ -56,6 +56,7 @@ module.exports = {
     User,
     Guest,
     ProductSKU,
-    Category
+    Category,
+    ProductColor
   },
 };

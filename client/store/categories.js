@@ -7,6 +7,7 @@ const _loadCategories = (categories) => ({type:LOAD_CATS, categories});
 export const loadCategories = () => {
   return async(dispatch) => {
     const categories = (await axios.get('/api/categories')).data;
+    console.log(categories)
     dispatch(_loadCategories(categories));
   }
 };
