@@ -5,11 +5,12 @@ import { removeListItem, hideListItem, addBackToCart } from '../store/cart'
 import { addWishList, removeWishList} from '../store/wishList'
 
 const LineItem = props => {
-    const { item, product, routeProps, remove, save, hide, removeWish, addBackToCart } = props
+    const { item, routeProps, remove, save, hide, removeWish, addBackToCart } = props
     console.log(routeProps)
     return (
         <div style={{ transform: 'scale(0.6)', transformOrigin: 'left top', marginBottom: '-150px', display: 'flex' }}>
-            <Product product={product} routeProps={routeProps} />
+            <Product routeProps={routeProps} item={item} />
+            
             <div>
                 Line Item Id: {item.id}<br />
                 Order Id: {item.orderId}<br />

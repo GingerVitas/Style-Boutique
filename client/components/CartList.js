@@ -9,7 +9,7 @@ import Total from './Total'
 import EmptyCart from './EmptyCart'
 
 const CartList = props => {
-    const { routeProps, cartlist } = props
+    const { routeProps, cartlist } = props;
     return (
         <div>
             {cartlist.length > 0 ? 
@@ -32,4 +32,4 @@ const mapState = state => {
     }
 }
 
-export default connect(mapState)(CartList);
+export default connect(mapState)(CartList)

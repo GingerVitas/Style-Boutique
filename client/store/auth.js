@@ -24,6 +24,7 @@ export const me = () => async dispatch => {
         authorization: token
       }
     })
+    console.log('user signed in!!', res.data)
     return dispatch(setAuth(res.data))
   }
 }
@@ -39,7 +40,8 @@ export const authenticate = (username, password, method) => async dispatch => {
 }
 
 export const logout = () => {
-  window.localStorage.removeItem(TOKEN)
+  window.localStorage.removeItem(TOKEN);
+  window.localStorage.removeItem('cart');
   history.push('/logout')
   return {
     type: SET_AUTH,
