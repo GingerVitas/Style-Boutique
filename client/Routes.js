@@ -39,7 +39,7 @@ class Routes extends Component {
             <Route path="/home" component={Home} />
             <Route path="/account" component={Account} />
             <Route path="/cart" component={Cart} />
-            <Route path='/:categoryName/:name' component={SingleProduct} />
+            <Route path='/:categoryName/:productName' component={SingleProduct} />
             <Route path="/checkout" render={(routeProps) => <Checkout routeProps={routeProps} />} />
             <Redirect
               to={
@@ -57,7 +57,7 @@ class Routes extends Component {
             <Route path="/login" render={(routeProps) => <Login routeProps={routeProps} />}/>
             <Route path="/signup" render={(routeProps) => <Signup routeProps={routeProps}/>}/>
             <Route path="/cart" render={(routeProps) => <Cart routeProps={routeProps} />}/>
-            <Route path='/:categoryName/:name' component={SingleProduct} />
+            <Route path='/:categoryName/:productName' component={SingleProduct} />
             <Route path="/checkout" render={(routeProps) => <Checkout routeProps={routeProps} />}/>
             <Route path="/logout" component={SignOut}/>
           </Switch>

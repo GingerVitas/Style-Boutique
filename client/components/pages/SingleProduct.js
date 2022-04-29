@@ -3,11 +3,14 @@ import {useParams} from 'react-router-dom';
 
 //REDUX
 import { useSelector, useDispatch } from 'react-redux';
-import { loadSKUs } from '../../store/skus';
 import { addToCart } from '../../store/cart'
 
 //MUI
 import { Button, InputLabel, MenuItem, FormControl, Select } from '@mui/material';
+
+import {loadSKUs} from '../../store/skus';
+import ProductCard from '../ProductCard';
+
 
 const singleProduct = () => {
   const dispatch = useDispatch();
@@ -18,6 +21,8 @@ const singleProduct = () => {
   const [size, setSize] = React.useState('');
   const [color, setColor] = React.useState('');
   const quantity = 1;
+  const categories = useSelector(state=>state.categories)
+
 
   useEffect(()=> {
     dispatch(loadSKUs(name))
@@ -51,6 +56,7 @@ const singleProduct = () => {
  
   return (
     <div>
+      <ProductCard product={product} skus={skus} categories={categories} />
       <table>
         <tbody>
           <tr>
