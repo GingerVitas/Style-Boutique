@@ -9,29 +9,6 @@ const ProductSKU = db.define("productSKU", {
     allowNull: false,
     primaryKey: true,
   },
-  productName:{
-    type: Sequelize.STRING,
-    allowNull: false,
-    validate: {
-      notEmpty: true,
-    },
-  },
-  imageUrl: {
-    type: Sequelize.STRING,
-    allowNull: false,
-    defaultValue: "placeholderImage.jpg",
-    validate: {
-      notEmpty: true,
-      isUrl: true,
-    },
-  },
-  color: {
-    type: Sequelize.STRING,
-    allowNull: false,
-    validate: {
-      notEmpty: true,
-    }
-  },
   size: {
     type: Sequelize.STRING,
     validate: {

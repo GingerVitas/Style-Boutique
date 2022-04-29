@@ -2,12 +2,14 @@ import React, {useEffect} from 'react';
 import {useSelector, useDispatch} from 'react-redux';
 import {useParams} from 'react-router-dom';
 import {loadSKUs} from '../../store/skus';
+import ProductCard from '../ProductCard';
 
 const singleProduct = () => {
   const dispatch = useDispatch();
   const {name} = useParams();
   const product = useSelector((state)=>(state.products.filter(product => product.name === name))[0]);
   const skus = useSelector(state=>state.skus);
+  const categories = useSelector(state=>state.categories)
 
   useEffect(()=> {
     dispatch(loadSKUs(name))
@@ -18,6 +20,7 @@ const singleProduct = () => {
   )
   return (
     <div>
+      <ProductCard product={product} skus={skus} categories={categories} />
       <table>
         <tbody>
           <tr>
