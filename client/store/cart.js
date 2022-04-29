@@ -30,6 +30,16 @@ let cart = [];
 export const addToCart = (sku, quantity ) => async dispatch => {
     try {
         console.log('adding product to listitem', sku);
+        const token = window.localStorage.getItem('token');
+        if (token) {
+
+        } else {
+            const line_item = (await axios.post('/api/lineitems', { sku, quantity })).data;
+            cart.push(line_item);
+            console.log(cart);
+            window.localStorage.setItem("cart", JSON.stringify(cart));
+            dispatch(_addToCart(line_item));
+        }
         // if local storage has token (user logged in) 
             //1. find user with the token '/users'
             //2. search thru orders with the user id && it's not closed '/orders'
@@ -45,13 +55,7 @@ export const addToCart = (sku, quantity ) => async dispatch => {
             //1. create line item w/ sku and quantity, no header(no auth)
             //2. push to lineitems array
             //3. add to local storage cart
-        const line_item = (await axios.post('/api/lineitems', { sku, quantity })).data;
-        // line_item w no orderid returned
-        cart.push(line_item);
-        console.log(cart);
-        // <-- ask scott sequelize command to find sku w sku id
-        window.localStorage.setItem("cart", JSON.stringify(cart));
-        dispatch(_addToCart(line_item));
+        
     } catch(err) {
         console.log(err)
     }
