@@ -24,8 +24,11 @@ router.post('/', async ({ body: { sku, quantity }}, res, next) => {
             productSkuId: sku.id,
             quantity,
             total: (sku.price * quantity)
+            
         });
         
+        await LineItem.
+
         res.json(line_item)
     } catch (err) {
         next(err)

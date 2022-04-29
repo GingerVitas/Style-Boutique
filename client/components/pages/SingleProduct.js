@@ -10,9 +10,8 @@ import {loadColors} from '../../store/productColors';
 //MUI
 import { Button, InputLabel, MenuItem, FormControl, Select } from '@mui/material';
 
-
+//Child Component
 // import ProductCard from '../ProductCard';
-
 
 const singleProduct = () => {
   const dispatch = useDispatch();
@@ -31,7 +30,6 @@ const singleProduct = () => {
   })
   // const categories = useSelector(state=>state.categories)
 
-
   useEffect(()=> {
     dispatch(loadColors(productName))
   }, [])
@@ -39,34 +37,24 @@ const singleProduct = () => {
     dispatch(loadSKUs(productName))
   },[])
 
-
-  console.log('***Colors****', colors);
-  console.log('****Product****', product)
   if (!product || !colors.length) return (
     <div>Loading...</div>
   )
 
   // For Size DropDown
   const handleSize = (event) => {
-    const selectedSKU = event.target.value
-    console.log('********* SELECTEDSKU **********', selectedSKU)
+    const selectedSKU = event.target.value;
     setSize(selectedSKU);
-    // console.log('size check', size)
-    setLineItem({productPrice: selectedSKU.price*1, productSize: selectedSKU.size});
-    console.log('LINE ITEM CHECK', lineItem);
+    setLineItem({...lineItem, productPrice: +(selectedSKU.price), productSize: selectedSKU.size})
   };
-  // console.log('size selected:', size)
 
   // For Color DropDown
   const handleColor = (event) => {
-    const selectedColor = event.target.value
-    console.log('handleColor', selectedColor)
+    const selectedColor = event.target.value;
     setColor(selectedColor);
-    setLineItem({productName: product.name, productColor: selectedColor.color, imageUrl: selectedColor.imageUrl})
+    setLineItem({ ...lineItem, productName: product.name, productColor: selectedColor.color, imageUrl: selectedColor.imageUrl});
   };
-  // console.log('color selected:', color)
 
- 
   return (
     <div>
       <table>
@@ -90,7 +78,6 @@ const singleProduct = () => {
           value={size}
           label="Size"
           onChange={(e)=> handleSize(e)}
-          defaultValue={null}
         >
           { !color ? <MenuItem value={''}>Please Select a Color</MenuItem> :
             color.productSKUs.map(sku => sku.availableStock === 0 ? 
@@ -116,7 +103,7 @@ const singleProduct = () => {
         </Select>
       </FormControl>
       <br />
-      <Button color='black' variant="contained" onClick={() => dispatch(addToCart(sku, quantity))}>Add to Cart</Button>
+      <Button color='black' variant="contained" onClick={() => console.log(lineItem)}>Add to Cart</Button>
     </div>
   )
 }
@@ -124,3 +111,5 @@ const singleProduct = () => {
 export default singleProduct
 
 // addToCart(product)
+
+// dispatch(addToCart(sku, quantity))
