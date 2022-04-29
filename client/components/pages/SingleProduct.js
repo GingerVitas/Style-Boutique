@@ -21,6 +21,14 @@ const singleProduct = () => {
   const colors = useSelector(state=>state.productColors);
   const [size, setSize] = useState('');
   const [color, setColor] = useState('');
+  const [lineItem, setLineItem] = useState({
+    productName: '',
+    productColor: '',
+    productSize: '',
+    productPrice: 1,
+    imageUrl: '',
+    quantity: 1
+  })
   // const categories = useSelector(state=>state.categories)
 
 
@@ -40,26 +48,27 @@ const singleProduct = () => {
 
   // For Size DropDown
   const handleSize = (event) => {
-    setSize(event.target.value);
+    const selectedSKU = event.target.value
+    console.log('********* SELECTEDSKU **********', selectedSKU)
+    setSize(selectedSKU);
+    // console.log('size check', size)
+    setLineItem({productPrice: selectedSKU.price*1, productSize: selectedSKU.size});
+    console.log('LINE ITEM CHECK', lineItem);
   };
-  console.log('size selected:', size)
+  // console.log('size selected:', size)
 
   // For Color DropDown
   const handleColor = (event) => {
-    setColor(event.target.value);
+    const selectedColor = event.target.value
+    console.log('handleColor', selectedColor)
+    setColor(selectedColor);
+    setLineItem({productName: product.name, productColor: selectedColor.color, imageUrl: selectedColor.imageUrl})
   };
-  console.log('color selected:', color)
-  // We could have 1 select that has color/size = 10 options?
-  // 1. how to render only 2 colors instead of 10 repeated colors, same for sizes
-  // 2. make thunk call to check sku's availabelStock if <= 0, grey out
-  // 3. when color selected, re-render sizes drop down.
-  //     size selected -> if last size of the color, also grey out the color- re-render colors drop down.
+  // console.log('color selected:', color)
 
-  // problem: MUI MenuItem, sku for value is too big. sku id for value is too big.
  
   return (
     <div>
-      {/* <ProductCard product={product} skus={skus} categories={categories} /> */}
       <table>
         <tbody>
           <tr>
@@ -80,7 +89,8 @@ const singleProduct = () => {
           id="demo-simple-select"
           value={size}
           label="Size"
-          onChange={handleSize}
+          onChange={(e)=> handleSize(e)}
+          defaultValue={null}
         >
           { !color ? <MenuItem value={''}>Please Select a Color</MenuItem> :
             color.productSKUs.map(sku => sku.availableStock === 0 ? 
@@ -98,6 +108,7 @@ const singleProduct = () => {
           value={color}
           label="Color"
           onChange={handleColor}
+          defaultValue={0}
         >
           {
             colors.map(color => <MenuItem key={color.id} value={color}>{color.color}</MenuItem>)

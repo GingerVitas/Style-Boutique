@@ -8,16 +8,51 @@ const LineItem = db.define("line_item", {
     allowNull: false,
     primaryKey: true,
   },
+  productName: {
+    type: Sequelize.STRING,
+    allowNull: false,
+    validate: {
+      notEmpty: true
+    }
+  },
+  productColor: {
+    type: Sequelize.STRING,
+    allowNull: false,
+    validate: {
+      notEmpty: true
+    }
+  },
+  productSize: {
+    type: Sequelize.STRING,
+    allowNull: false,
+    validate: {
+      notEmpty: true
+    }
+  },
+  productPrice: {
+    type: Sequelize.DECIMAL(10, 2),
+    allowNull: false,
+    validate: {
+      notEmpty: true,
+      min: 0.01,
+    },
+  },
+  imageUrl: {
+    type: Sequelize.STRING,
+    allowNull: false,
+    validate: {
+      notEmpty: true,
+      isUrl: true
+    }
+  },
   quantity: {
     type: Sequelize.INTEGER,
     defaultValue: 1,
   },
   total: {
     type: Sequelize.DECIMAL(10, 2),
-    allowNull: false,
     validate: {
-      notEmpty: true,
-      min: 0.01,
+      min: 0.00,
     },
   }
 });
