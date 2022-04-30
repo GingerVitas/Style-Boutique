@@ -1,6 +1,8 @@
 body {
   font-family: sans-serif;
   color: #2C2C2C;
+  margin: 0;
+  margin-top: 120px;
 }
 
 .content{

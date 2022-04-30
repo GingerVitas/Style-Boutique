@@ -16,7 +16,7 @@ import { Button, InputLabel, MenuItem, FormControl, Select } from '@mui/material
 const singleProduct = () => {
   const dispatch = useDispatch();
   const {productName} = useParams();
-  const product = useSelector((state)=>(state.products.filter(product => product.name === productName))[0]);
+  const product = useSelector(state => (state.products.find(product => product.name === productName)));
   const colors = useSelector(state=>state.productColors);
   const [size, setSize] = useState('');
   const [color, setColor] = useState('');
@@ -33,9 +33,6 @@ const singleProduct = () => {
   useEffect(()=> {
     dispatch(loadColors(productName))
   }, [])
-  useEffect(()=> {
-    dispatch(loadSKUs(productName))
-  },[])
 
   if (!product || !colors.length) return (
     <div>Loading...</div>
@@ -103,13 +100,9 @@ const singleProduct = () => {
         </Select>
       </FormControl>
       <br />
-      <Button color='black' variant="contained" onClick={() => console.log(lineItem)}>Add to Cart</Button>
+      <Button color='black' variant="contained" onClick={() => dispatch(addToCart(lineItem))}>Add to Cart</Button>
     </div>
   )
 }
 
 export default singleProduct
-
-// addToCart(product)
-
-// dispatch(addToCart(sku, quantity))
