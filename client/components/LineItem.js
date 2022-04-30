@@ -9,11 +9,16 @@ const LineItem = props => {
     console.log(routeProps)
     return (
         <div style={{ transform: 'scale(0.6)', transformOrigin: 'left top', marginBottom: '-150px', display: 'flex' }}>
-            <Product routeProps={routeProps} item={item} />
+            {/* <Product routeProps={routeProps} item={item} /> */}
             
             <div>
+                <img src={item.imageUrl} style={{ width: '150px' }} /><br />
                 Line Item Id: {item.id}<br />
                 Order Id: {item.orderId}<br />
+                Product Name: {item.productName}<br />
+                Product Color: {item.productColor}<br />
+                Product Size: {item.productSize}<br />
+                Product Price: {item.productPrice}<br />
                 Quantity: {item.quantity}<br />
                 Total: {item.total}<br />
                 <div style={{ transform: 'scale(1.5)', marginLeft: '70px', marginTop:'30px'}}>

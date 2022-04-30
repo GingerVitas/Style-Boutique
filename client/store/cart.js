@@ -27,40 +27,31 @@ export const loadCart = () =>  async dispatch => {
 
 let cart = [];
 
-export const addToCart = ( lineitem ) => async dispatch => {
+export const addToCart = ( lineitem, order ) => async dispatch => {
     try {
         const token = window.localStorage.getItem('token');
-
         if (token) {
-            
+            const line_item = (await axios.post('/api/lineitems', { lineitem, orderId: order.id})).data;
+            console.log('CREATED LINEITEM', line_item)
+            dispatch(_addToCart(line_item));
+
+            //update guest cart w/order id
+            const cart = JSON.parse(window.localStorage.getItem('cart'));
+
+            await Promise.all(
+                cart.map(async(line_item) => {
+                    (await axios.put('/api/lineitems', { line_item, orderId: order.id })).data
+                })  
+            )
+                    
         } else {
-            const line_item = (await axios.post('/api/lineitems', { lineitem })).data;
+            const line_item = (await axios.post(`/api/lineitems/`, { lineitem })).data;
             cart.push(line_item);
             window.localStorage.setItem("cart", JSON.stringify(cart));
+            console.log('CREATED LINEITEM', JSON.parse(window.localStorage.getItem('cart')))
+            //returns cart: [{lineitem}, {lineitem}]
+            dispatch(_addToCart(line_item));
         }
-        // if local storage has token (user logged in) 
-            //1. find user with the token '/users'
-            //2. search thru orders with the user id && it's not closed '/orders'
-                //a. get order instance .get('api/orders/:orderId')
-                //b. get cart from redux store, loop thru the lineitems and add the order id to them. which route?? <-- for case: prev user was janie, now murphy, this doesn't work.
-                //c. find all lineitems with that order id .get('/:orderId/lineItems) <--confirm w Scott
-                //d. combine guest cart + existing cart of the user
-
-                //a. create order instance
-                //b. go to local storage to get the cart (has multiple line_items).
-                        // a. local storage: empty
-                                //1. 
-                        // b. local storage: full
-                                //1. iterate thru the cart, add orderId .save()
-
-
-            //3. at auth store, logged out, local storage cart is emptied out.
-
-        // if local storage doesn't have token (guest)
-            //1. create line item w/ sku and quantity, no header(no auth)
-            //2. push to lineitems array
-            //3. add to local storage cart
-        
     } catch(err) {
         console.log(err)
     }

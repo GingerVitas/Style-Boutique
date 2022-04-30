@@ -4,9 +4,8 @@ import React, { Component, Fragment } from "react";
 import { connect } from "react-redux";
 import { me } from "./store";
 import { loadProducts } from "./store/products";
-import {loadCategories} from './store/categories';
-import { loadCart } from './store/cart';
-import { loadOrCreate } from "./store/order";
+import { loadCategories } from './store/categories';
+import { loadOrCreate, clearOrder } from "./store/order";
 
 //router
 import { withRouter, Route, Switch, Redirect } from "react-router-dom";
@@ -20,8 +19,6 @@ import Checkout from "./components/Checkout";
 import SingleProduct from './components/pages/SingleProduct';
 import SignOut from "./components/pages/SignOut";
 
-import axios from "axios"
-
 /**
  * COMPONENT
  */
@@ -30,12 +27,22 @@ class Routes extends Component {
     this.props.loadInitialData();
     this.props.fetchProducts();
     this.props.fetchCategories();
-    this.props.fetchOrder(this.props.auth);
+  }
+
+  componentDidUpdate(prevProps) {
+    if ( prevProps.auth !== this.props.auth ) {
+      console.log('COMPONENT DID UPDATE ENTERED')
+        if (this.props.auth.id) {
+          this.props.fetchOrder(this.props.auth);
+        } else {
+          this.props.clearOrder();
+        }
+    }
   }
 
   render() {
     const { isLoggedIn } = this.props;
-    console.log('logggggeedd', this.props.auth, this.props.order);
+    console.log('this.props.auth: ', this.props.auth,'this.props.order: ', this.props.order);
     return (
       <div>
         {isLoggedIn ? (
@@ -92,11 +99,11 @@ const mapDispatch = (dispatch) => {
     fetchCategories() {
       dispatch(loadCategories());
     },
-    fetchCart(){
-      dispatch(loadCart());
-    },
     fetchOrder(auth){
-      dispatch(loadOrCreate(auth))
+      dispatch(loadOrCreate(auth));
+    },
+    clearOrder(){
+      dispatch(clearOrder());
     }
   };
 };

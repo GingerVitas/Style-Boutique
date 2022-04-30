@@ -30,7 +30,6 @@ class Account extends React.Component {
 
   render() {
     const auth = this.props.auth;
-
     return (
       <div>
         <h1>User Account Information</h1>
@@ -99,13 +98,14 @@ class Account extends React.Component {
 
 const mapDispatch = (dispatch) => {
   return {
-    updateUser: (user) => dispatch(updateUser(user)),
+    updateUser: (user) => dispatch(updateUser(user))
   };
 };
 
 const mapState = (state) => {
   return {
     auth: state.auth,
+    order: state.order
   };
 };
 

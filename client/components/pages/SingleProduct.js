@@ -4,7 +4,6 @@ import {useParams} from 'react-router-dom';
 //REDUX
 import { useSelector, useDispatch } from 'react-redux';
 import { addToCart } from '../../store/cart';
-import {loadSKUs} from '../../store/skus';
 import {loadColors} from '../../store/productColors';
 
 //MUI
@@ -18,6 +17,7 @@ const singleProduct = () => {
   const {productName} = useParams();
   const product = useSelector(state => (state.products.find(product => product.name === productName)));
   const colors = useSelector(state=>state.productColors);
+  const order = useSelector( state => state.order );
   const [size, setSize] = useState('');
   const [color, setColor] = useState('');
   const [lineItem, setLineItem] = useState({
@@ -28,7 +28,6 @@ const singleProduct = () => {
     imageUrl: '',
     quantity: 1
   })
-  // const categories = useSelector(state=>state.categories)
 
   useEffect(()=> {
     dispatch(loadColors(productName))
@@ -37,7 +36,7 @@ const singleProduct = () => {
   if (!product || !colors.length) return (
     <div>Loading...</div>
   )
-
+  console.log('ORDER', order)
   // For Size DropDown
   const handleSize = (event) => {
     const selectedSKU = event.target.value;
@@ -67,7 +66,7 @@ const singleProduct = () => {
           </tr>
         </tbody>
       </table>
-      <FormControl sx={{ width: '10%' }}>
+      <FormControl sx={{ width: '50%' }}>
         <InputLabel id="demo-simple-select-label">Size</InputLabel>
         <Select
           labelId="demo-simple-select-label"
@@ -84,7 +83,7 @@ const singleProduct = () => {
         </Select>
       </FormControl>
       <br />
-      <FormControl sx={{ width: '10%' }}>
+      <FormControl sx={{ width: '50%' }}>
         <InputLabel id="demo-simple-select-label">Color</InputLabel>
         <Select
           labelId="demo-simple-select-label"
@@ -100,7 +99,7 @@ const singleProduct = () => {
         </Select>
       </FormControl>
       <br />
-      <Button color='black' variant="contained" onClick={() => dispatch(addToCart(lineItem))}>Add to Cart</Button>
+      <Button color='black' variant="contained" onClick={()=> dispatch(addToCart(lineItem, order))}>Add to Cart</Button>
     </div>
   )
 }
