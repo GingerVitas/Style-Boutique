@@ -49,11 +49,17 @@ const LineItem = db.define("line_item", {
     type: Sequelize.INTEGER,
     defaultValue: 1,
   },
+  // tota: {
+  //   type: Sequelize.DECIMAL(10, 2),
+  //   validate: {
+  //     min: 0.00,
+  //   },
+  // },
   total: {
-    type: Sequelize.DECIMAL(10, 2),
-    validate: {
-      min: 0.00,
-    },
+    type: Sequelize.VIRTUAL,
+    get() {
+      return this.productPrice * this.quantity
+    }
   }
 });
 

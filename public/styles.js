@@ -1,12 +1,21 @@
 import { createTheme } from '@mui/material/styles';
-import {blue, red} from '@mui/material/colors'
 
 import { Badge } from "@mui/material";
 import { styled} from "@mui/material/styles";
 
-const font = "'Lato', Arial"
-
 export const theme = createTheme({
+    typography: {
+        logo: {
+            fontSize: '30px',
+            fontFamily: 'Radio Canada, sans- serif',
+            color: 'black'
+        },
+        menuitem: {
+            fontSize: '15px',
+            color: 'black',
+            fontWeight: '500'
+        }
+    },
     palette: {
         black: {
             light:'#484848',
@@ -52,32 +61,32 @@ export const theme = createTheme({
                 }
             }
         }
-    }, 
-    root: {
-        display: "flex",
     },
-    typography: {
-        fontFamily: font,
-        fontSize: 12,
-        h1: {
-            fontFamily: font,
-            fontSize: 30,
-            fontWeight: 700,
-        },
-        h2: {
-            fontFamily: font,
-            fontSize: 20,
-            fontWeight: 500,
-            paddingBottom: 20,
-        }
-    },
-    overrides: {
-        MuiAppBar: {
-            colorPrimary: {
-                backgroundColor: "#662E9B",
-            },
-        },
-    },
+    // root: {
+    //     display: "flex",
+    // },
+    // typography: {
+    //     fontFamily: font,
+    //     fontSize: 12,
+    //     h1: {
+    //         fontFamily: font,
+    //         fontSize: 30,
+    //         fontWeight: 700,
+    //     },
+    //     h2: {
+    //         fontFamily: font,
+    //         fontSize: 20,
+    //         fontWeight: 500,
+    //         paddingBottom: 20,
+    //     }
+    // },
+    // overrides: {
+    //     MuiAppBar: {
+    //         colorPrimary: {
+    //             backgroundColor: "#662E9B",
+    //         },
+    //     },
+    // },
 });
 
 

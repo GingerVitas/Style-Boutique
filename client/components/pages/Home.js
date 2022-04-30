@@ -17,7 +17,7 @@ const Home = (props) => {
     //   height: "100vh",
     // }}
     >
-      <h3>Welcome, {username ? username : "Guest"}</h3>
+      <h3 style={{marginLeft: '40px'}}>Welcome, {username ? username : "Guest"}</h3>
       <Products />
     </div>
   );

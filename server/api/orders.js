@@ -10,27 +10,17 @@ router.get('/', async (req, res, next) => {
         next(err)
     }
 })
+//     order: [['createdAt', 'DESC']]
 
 router.get('/:authId', async (req, res, next) => {
     try {
-        let order;
-        if (req.params.authId.includes('_user')) {
-            order = await Order.findAll({
-                where: {
-                    final: false,
-                    userId: req.params.authId.slice(0,-5)
-                },
-                order: [['createdAt', 'DESC']]
-            })
-        } else {
-            order = await Order.findAll({
-                where: {
-                    final: false,
-                    guestId: req.params.authId
-                }
-            })
-        }
-        res.send(order[0]);
+        const order = await Order.findOne({
+            where: {
+                final: false,
+                // wishList: false,
+                userId: req.params.authId
+            }
+        })
     } catch (err) {
         next(err)
     }
@@ -39,10 +29,10 @@ router.get('/:authId', async (req, res, next) => {
 router.post('/', async (req, res, next) => {
     try {
         let order;
-        if(req.body.guest) {
-            order = await Order.create({ guestId: req.body.guest.id });
-        } else {
+        if(req.body.auth.id) {
             order = await Order.create({ userId: req.body.auth.id });
+        } else {
+            order = await Order.create();
         }
         res.json(order);
     } catch (err) {

@@ -6,6 +6,7 @@ import { me } from "./store";
 import { loadProducts } from "./store/products";
 import {loadCategories} from './store/categories';
 import { loadCart } from './store/cart';
+import { loadOrCreate } from "./store/order";
 
 //router
 import { withRouter, Route, Switch, Redirect } from "react-router-dom";
@@ -19,6 +20,7 @@ import Checkout from "./components/Checkout";
 import SingleProduct from './components/pages/SingleProduct';
 import SignOut from "./components/pages/SignOut";
 
+import axios from "axios"
 
 /**
  * COMPONENT
@@ -28,10 +30,12 @@ class Routes extends Component {
     this.props.loadInitialData();
     this.props.fetchProducts();
     this.props.fetchCategories();
+    this.props.fetchOrder(this.props.auth);
   }
 
   render() {
     const { isLoggedIn } = this.props;
+    console.log('logggggeedd', this.props.auth, this.props.order);
     return (
       <div>
         {isLoggedIn ? (
@@ -73,6 +77,7 @@ const mapState = (state) => {
     // Otherwise, state.auth will be an empty object, and state.auth.id will be falsey
     isLoggedIn: !!state.auth.id,
     auth: state.auth,
+    order: state.order
   };
 };
 
@@ -89,6 +94,9 @@ const mapDispatch = (dispatch) => {
     },
     fetchCart(){
       dispatch(loadCart());
+    },
+    fetchOrder(auth){
+      dispatch(loadOrCreate(auth))
     }
   };
 };

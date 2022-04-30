@@ -10,25 +10,12 @@ router.get('/', async (req, res, next) => {
         next(err)
     }
 })
-router.post('/', async ({ body: { sku, quantity }}, res, next) => {
+router.post('/', async ({ body: { lineitem }}, res, next) => {
     try {
-        console.log('***********************POST /api/lineitems ', sku, quantity, typeof quantity)
+        console.log('***********************POST /api/lineitems ', lineitem )
 
-        // decrementing sku's quantity.
-        const prodsku = await ProductSKU.findByPk(sku.id);
-        prodsku.availableStock -= 1;
-        prodsku.save();
-        console.log('**********************SKU quantity now:', prodsku.availableStock)
-
-        const line_item = await LineItem.create({
-            productSkuId: sku.id,
-            quantity,
-            total: (sku.price * quantity)
-            
-        });
-        
-        await LineItem.
-
+        const line_item = await LineItem.create(lineitem);
+        console.log('***********************POST /api/lineitems', line_item, line_item.total)
         res.json(line_item)
     } catch (err) {
         next(err)
