@@ -10,12 +10,18 @@ router.get('/', async (req, res, next) => {
         next(err)
     }
 })
-router.post('/', async ({ body: { lineitem }}, res, next) => {
+router.post('/', async ({ body: { lineitem, orderId }}, res, next) => {
     try {
-        console.log('***********************POST /api/lineitems ', lineitem )
+        console.log('***********************POST /api/lineitems ', lineitem, orderId )
 
         const line_item = await LineItem.create(lineitem);
         console.log('***********************POST /api/lineitems', line_item, line_item.total)
+
+        if(orderId) {
+            line_item.orderId = orderId;
+            line_item.save();
+        }
+
         res.json(line_item)
     } catch (err) {
         next(err)
@@ -24,11 +30,7 @@ router.post('/', async ({ body: { lineitem }}, res, next) => {
 
 router.put('/:lineitem', async({body: { lineitem }}, res, next) => {
     try { 
-        // from cart, user added more quantity of the line item.
-        // find line item w/ id
-        // find sku by productId of lineitem.
-        // decrement sku availableStock.
-        // add quantity of the line item, return lineitem.
+        
     } catch (err) {
         next(err)
     }

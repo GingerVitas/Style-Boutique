@@ -22,8 +22,8 @@ User.hasMany(Address, {foreignKey: 'userId'});
 Order.belongsTo(User, { foreignKey: 'userId' });
 User.hasMany(Order, { foreignKey: 'userId' });
 
-Order.belongsTo(Guest, {foreignKey: 'guestId'});
-Guest.hasMany(Order, { foreignKey: 'guestId'})
+// Order.belongsTo(Guest, {foreignKey: 'guestId'});
+// Guest.hasMany(Order, { foreignKey: 'guestId'})
 
 LineItem.belongsTo(Order, { foreignKey: 'orderId' });
 Order.hasMany(LineItem, { foreignKey: 'orderId' } );
@@ -33,6 +33,9 @@ Order.hasMany(LineItem, { foreignKey: 'orderId' } );
 
 // LineItem.belongsTo(ProductSKU, { foreignKey: 'productSkuId'});
 // ProductSKU.hasMany(LineItem, { foreignKey: 'productSkuId'});
+
+// LineItem.belongsTo(ProductSKU);
+// ProductSKU.hasMany(LineItem);
 
 Category.hasMany(Product);
 Product.belongsTo(Category);

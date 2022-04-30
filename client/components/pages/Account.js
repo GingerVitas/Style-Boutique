@@ -1,4 +1,5 @@
 import React from "react";
+import { connect } from "react-redux";
 import { Link } from "react-router-dom";
 
 class Account extends React.Component {
@@ -8,6 +9,8 @@ class Account extends React.Component {
   }
 
   render() {
+    const {auth} = this.props;
+    console.log('ACOUNTTTTTTT', auth)
     return (
       <div>
         <h1>User Account Information</h1>
@@ -44,4 +47,12 @@ class Account extends React.Component {
   }
 }
 
-export default Account;
+const mapState = (state) => {
+  return {
+    auth: state.auth,
+    order: state.order
+  };
+};
+
+
+export default connect(mapState)(Account);

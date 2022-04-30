@@ -21,6 +21,7 @@ router.get('/:authId', async (req, res, next) => {
                 userId: req.params.authId
             }
         })
+        res.json(order)
     } catch (err) {
         next(err)
     }
