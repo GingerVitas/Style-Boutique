@@ -22,10 +22,11 @@ export const me = () => async (dispatch) => {
   if (token) {
     const res = await axios.get("/auth/me", {
       headers: {
-        authorization: token,
+        authorization: token
       },
     });
-    return dispatch(setAuth(res.data));
+    console.log('user signed in!!', res.data)
+    return dispatch(setAuth(res.data))
   }
 };
 
@@ -60,7 +61,8 @@ export const authenticate =
 
 export const logout = () => {
   window.localStorage.removeItem(TOKEN);
-  history.push("/logout");
+  window.localStorage.removeItem('cart');
+  history.push('/logout')
   return {
     type: SET_AUTH,
     auth: {},

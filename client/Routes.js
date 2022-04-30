@@ -5,6 +5,8 @@ import { connect } from "react-redux";
 import { me } from "./store";
 import { loadProducts } from "./store/products";
 import {loadCategories} from './store/categories';
+import { loadCart } from './store/cart';
+import { loadOrCreate } from "./store/order";
 
 //router
 import { withRouter, Route, Switch, Redirect } from "react-router-dom";
@@ -15,9 +17,10 @@ import Home from "./components/pages/Home";
 import Account from "./components/pages/Account";
 import Cart from "./components/pages/Cart";
 import Checkout from "./components/Checkout";
-import OrderHistory from "./components/pages/OrderHistory";
-import SingleProduct from "./components/pages/SingleProduct";
+import SingleProduct from './components/pages/SingleProduct';
 import SignOut from "./components/pages/SignOut";
+
+import axios from "axios"
 
 /**
  * COMPONENT
@@ -27,19 +30,20 @@ class Routes extends Component {
     this.props.loadInitialData();
     this.props.fetchProducts();
     this.props.fetchCategories();
+    this.props.fetchOrder(this.props.auth);
   }
 
   render() {
     const { isLoggedIn } = this.props;
+    console.log('logggggeedd', this.props.auth, this.props.order);
     return (
       <div>
         {isLoggedIn ? (
           <Switch>
             <Route path="/home" component={Home} />
             <Route path="/account" component={Account} />
-            <Route path="/order_history" component={OrderHistory} />
             <Route path="/cart" component={Cart} />
-            <Route path='/:categoryName/:name' component={SingleProduct} />
+            <Route path='/:categoryName/:productName' component={SingleProduct} />
             <Route path="/checkout" render={(routeProps) => <Checkout routeProps={routeProps} />} />
             <Redirect
               to={
@@ -57,7 +61,7 @@ class Routes extends Component {
             <Route path="/login" render={(routeProps) => <Login routeProps={routeProps} />}/>
             <Route path="/signup" render={(routeProps) => <Signup routeProps={routeProps}/>}/>
             <Route path="/cart" render={(routeProps) => <Cart routeProps={routeProps} />}/>
-            <Route path='/:categoryName/:name' component={SingleProduct} />
+            <Route path='/:categoryName/:productName' component={SingleProduct} />
             <Route path="/checkout" render={(routeProps) => <Checkout routeProps={routeProps} />}/>
             <Route path="/logout" component={SignOut}/>
           </Switch>
@@ -73,6 +77,7 @@ const mapState = (state) => {
     // Otherwise, state.auth will be an empty object, and state.auth.id will be falsey
     isLoggedIn: !!state.auth.id,
     auth: state.auth,
+    order: state.order
   };
 };
 
@@ -86,6 +91,12 @@ const mapDispatch = (dispatch) => {
     },
     fetchCategories() {
       dispatch(loadCategories());
+    },
+    fetchCart(){
+      dispatch(loadCart());
+    },
+    fetchOrder(auth){
+      dispatch(loadOrCreate(auth))
     }
   };
 };

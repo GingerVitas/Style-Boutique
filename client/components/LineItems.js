@@ -13,10 +13,10 @@ const LineItems = props => {
         <div>
             {
                 lineItems.map(item => {
-                    const product = products.find(product => product.id === item.productId)
+                    
                     return (
                         <div key={item.id}>
-                            <LineItem item={item} product={product} routeProps={routeProps} />
+                            <LineItem item={item} routeProps={routeProps} />
                             <hr />
                         </div>
                     )
@@ -28,7 +28,7 @@ const LineItems = props => {
 
 const mapState = state => {
     return {
-        products: state.products,
+        products: state.skus,
     }
 }
 

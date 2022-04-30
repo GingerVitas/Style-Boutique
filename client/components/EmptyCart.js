@@ -14,9 +14,11 @@ const EmptyCart = props => {
             </div>
             {
                 !isLoggedIn ?
-                <div>
-                        <Button component={Link} to={'/login'} color='black' variant="contained" style={{ width: '30%', padding: '10px', fontSize: '1rem', marginRight: '20px'}}>Sign In</Button>
-                        <Button component={Link} to={'/home'} color='black' variant="contained" style={{ width: '30%', padding: '10px', fontSize: '1rem' }}>Start Shopping</Button>
+                <div style={{paddingTop: '20px'}}>
+                        <div style={{marginBottom: '20px'}}><Button component={Link} to={'/login'} color='black' variant="contained" style={{ width: '30%', padding: '10px', fontSize: '1rem', marginRight: '20px' }}>Sign In</Button></div>
+                        <div><Button component={Link} to={'/home'} color='black' variant="contained" style={{ width: '30%', padding: '10px', fontSize: '1rem' }}>Start Shopping</Button></div>
+                        
+                        
                 </div>
                 :
                 <div>

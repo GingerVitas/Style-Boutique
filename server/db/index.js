@@ -9,6 +9,7 @@ const User = require("./models/User");
 const Guest = require("./models/Guest");
 const ProductSKU = require('./models/ProductSKU');
 const Category = require('./models/Category');
+const ProductColor = require('./models/ProductColor');
 
 // Product.hasMany(Tag, { through: "ProductTag" });
 // Tag.belongsToMany(Product, { through: "ProductTag" });
@@ -27,14 +28,21 @@ Guest.hasMany(Order, { foreignKey: 'guestId'})
 LineItem.belongsTo(Order, { foreignKey: 'orderId' });
 Order.hasMany(LineItem, { foreignKey: 'orderId' } );
 
-LineItem.belongsTo(Product, { foreignKey: 'productId' });
-Product.hasMany(LineItem, { foreignKey: 'productId' });
+// LineItem.belongsTo(Product, { foreignKey: 'productId' });
+// Product.hasMany(LineItem, { foreignKey: 'productId' });
+
+// LineItem.belongsTo(ProductSKU, { foreignKey: 'productSkuId'});
+// ProductSKU.hasMany(LineItem, { foreignKey: 'productSkuId'});
 
 Category.hasMany(Product);
 Product.belongsTo(Category);
 
-Product.hasMany(ProductSKU);
-ProductSKU.belongsTo(Product);
+Product.hasMany(ProductColor);
+ProductColor.belongsTo(Product);
+
+ProductColor.hasMany(ProductSKU);
+ProductSKU.belongsTo(ProductColor);
+
 
 
 module.exports = {
@@ -48,6 +56,7 @@ module.exports = {
     User,
     Guest,
     ProductSKU,
-    Category
+    Category,
+    ProductColor
   },
 };

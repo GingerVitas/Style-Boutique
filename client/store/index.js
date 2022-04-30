@@ -8,8 +8,19 @@ import cart from './cart'
 import wishlist from './wishList';
 import skus from './skus';
 import categories from './categories';
+import productColors from './productColors';
+import order from './order';
 
-const reducer = combineReducers({ auth, products, cart, wishlist, skus, categories})
+const reducer = combineReducers({ 
+  auth,
+  products,
+  cart,
+  wishlist,
+  skus,
+  categories,
+  productColors,
+  order});
+  
 const middleware = composeWithDevTools(
   applyMiddleware(thunkMiddleware, createLogger({collapsed: true}))
 )

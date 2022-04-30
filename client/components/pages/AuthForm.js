@@ -14,7 +14,6 @@ import { FacebookLoginButton, GoogleLoginButton, AppleLoginButton } from "react-
 
 const AuthForm = props => {
   const { name, displayName, handleSubmit, error, routeProps } = props
-  // const path = routeProps && routeProps.match.path;
   return (
     <div className='signin-intro'>
     {
