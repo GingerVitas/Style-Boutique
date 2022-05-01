@@ -15,4 +15,16 @@ router.get('/:name', async(req, res, next)=> {
   }
 })
 
+router.put('/:skuId', async ({ body: { lineitem } }, res, next) => {
+  try {
+    console.log('lineitem in skus api:', lineitem)
+    const sku = await ProductSKU.findByPk(lineitem.productSKUId);
+    sku.availableStock = sku.availableStock - lineitem.quantity;
+    sku.save();
+    res.json(sku)
+  } catch (err) {
+    next(err)
+  }
+})
+
 //add category to url

@@ -26,7 +26,8 @@ const singleProduct = () => {
     productSize: '',
     productPrice: 1,
     imageUrl: '',
-    quantity: 1
+    quantity: 1,
+    productSKUId: ''
   })
 
   useEffect(()=> {
@@ -41,7 +42,7 @@ const singleProduct = () => {
   const handleSize = (event) => {
     const selectedSKU = event.target.value;
     setSize(selectedSKU);
-    setLineItem({...lineItem, productPrice: +(selectedSKU.price), productSize: selectedSKU.size})
+    setLineItem({...lineItem, productPrice: +(selectedSKU.price), productSize: selectedSKU.size, productSKUId: selectedSKU.id})
   };
 
   // For Color DropDown
@@ -99,7 +100,7 @@ const singleProduct = () => {
         </Select>
       </FormControl>
       <br />
-      <Button color='black' variant="contained" onClick={()=> dispatch(addToCart(lineItem, order))}>Add to Cart</Button>
+      <Button color='black' variant="contained" onClick={() => {dispatch(addToCart(lineItem, order))}}>Add to Cart</Button>
     </div>
   )
 }

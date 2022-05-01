@@ -7,25 +7,47 @@ const ADD_TO_CART = 'ADD_TO_CART';
 const REMOVE_LIST_ITEM = 'REMOVE_LIST_ITEM';
 const HIDE_LIST_ITEM = 'HIDE_LIST_ITEM';
 const ADD_BACK_TO_CART = 'ADD_BACK_TO_CART';
+const UPDATE_CART = 'UPDATE_CART';
+const EMPTY_CART = 'EMPTY_CART';
 
 // ACTION CREATORS
 const _loadCart = lineItems => ({ type: LOAD_CART, lineItems });
 const _addToCart = lineItem => ({ type: ADD_TO_CART, lineItem });
+const _updateCart = lineItem => ({ type: UPDATE_CART, lineItem });
 const _removeListItem = lineItem => ({ type: REMOVE_LIST_ITEM, lineItem });
 const _hideListItem = lineItem => ({ type: HIDE_LIST_ITEM, lineItem });
 const _addBackToCart = lineItem => ({ type: ADD_BACK_TO_CART, lineItem });
+const _emptyCart = () => ({ type: EMPTY_CART});
 
 // THUNK CREATORS
-export const loadCart = () =>  async dispatch => {
+export const loadCart = (order) =>  async dispatch => {
     try {
-        const { data } = await axios.get('/api/lineitems');
-        dispatch(_loadCart(data));
+        const line_items = (await axios.get(`/api/lineitems/${order.id}`)).data
+        dispatch(_loadCart(line_items));
     } catch (err){
         console.log(err)
     }
 }
 
 let cart = [];
+export const transformGuestCartToUserCart = (order) => async dispatch => {
+    try {
+        let guestCart = JSON.parse(window.localStorage.getItem('cart'));
+        if(guestCart) {
+            await Promise.all(
+                guestCart.map(async (lineitem) => {
+                    const line_item = (await axios.put(`/api/lineitems/${lineitem.id}`, { lineitem, orderId: order.id })).data;
+                    console.log('RETURNED UPDATED line_item', line_item);
+                    dispatch(_updateCart(line_item));
+                })
+            );
+            window.localStorage.removeItem('cart');
+            cart = [];
+        }     
+    } catch (err) {
+        console.log(err)
+    }
+}
 
 export const addToCart = ( lineitem, order ) => async dispatch => {
     try {
@@ -35,21 +57,14 @@ export const addToCart = ( lineitem, order ) => async dispatch => {
             console.log('CREATED LINEITEM', line_item)
             dispatch(_addToCart(line_item));
 
-            //update guest cart w/order id
-            const cart = JSON.parse(window.localStorage.getItem('cart'));
-
-            await Promise.all(
-                cart.map(async(line_item) => {
-                    (await axios.put('/api/lineitems', { line_item, orderId: order.id })).data
-                })  
-            )
-                    
+            //decrement SKU available quantity, so product detail pg's drop down updates automatically.
+            const sku = (await axios.put(`/api/skus/${lineitem.productSKUId}`, { lineitem })).data;
+            console.log('RETURNED UPDATED SKU', sku);
         } else {
             const line_item = (await axios.post(`/api/lineitems/`, { lineitem })).data;
             cart.push(line_item);
             window.localStorage.setItem("cart", JSON.stringify(cart));
             console.log('CREATED LINEITEM', JSON.parse(window.localStorage.getItem('cart')))
-            //returns cart: [{lineitem}, {lineitem}]
             dispatch(_addToCart(line_item));
         }
     } catch(err) {
@@ -57,19 +72,61 @@ export const addToCart = ( lineitem, order ) => async dispatch => {
     }
 }
 
-// export const loadListItems = () =>  async dispatch => {
-//     try {
-//         const { data } = await axios.get('/api/lineitems');
-//         dispatch(_loadListItems(data));
-//     } catch (err){
-//         console.log(err)
-//     }
-// }
+export const emptyCart = () => async dispatch => {
+    try {
+        dispatch(_emptyCart());
+    } catch(err) {
+        console.log(err)
+    }
+}
 
+export const removeListItem = (listitemId) => async dispatch => {
+    try {
+        const data = (await axios.delete(`/api/lineitems/${listitemId}`)).data;
+        dispatch(_removeListItem(data));
+    } catch(err) {
+        console.log(err)
+    }
+}
 
-//add quantity @ cart.
-// .put(/api/lineitems/:lineitem)
-// fine the lineitem, add quantity, decrease quantity of the sku
+export const hideListItem = (listItem) => dispatch => {
+    try {
+        dispatch(_hideListItem(listItem));
+    } catch(err) {
+        console.log(err)
+    }
+}
+
+export const addBackToCart = (listItem) => dispatch => {
+    try {
+        dispatch(_addBackToCart(listItem))
+    } catch(err) {
+        console.log(err)
+    }
+}
+
+export default (state = [], action) => {
+    switch (action.type) {
+        case LOAD_CART:
+            return state = [...state, ...action.lineItems];
+        case ADD_TO_CART:
+            return state = [action.lineItem, ...state];
+        case UPDATE_CART:
+            console.log('Before Mapping thru', action.lineItem);
+            return state.map( item => item.id ===  action.lineItem.id ? action.lineItem : item )
+        case REMOVE_LIST_ITEM:
+            return state.filter( item => item.id !== action.lineItem.id );
+        case HIDE_LIST_ITEM:
+            return state.filter(item => item.id !== action.lineItem.id);
+        case ADD_BACK_TO_CART:
+            return state = [action.lineItem, ...state];
+        case EMPTY_CART:
+            return [];
+        default:
+            return state
+    }
+}
+
 
 // let guest;
 // let user;
@@ -116,45 +173,3 @@ export const addToCart = ( lineitem, order ) => async dispatch => {
 //         console.log(err)
 //     }
 // }
-
-export const removeListItem = (listitemId) => async dispatch => {
-    try {
-        const data = (await axios.delete(`/api/lineitems/${listitemId}`)).data;
-        dispatch(_removeListItem(data));
-    } catch(err) {
-        console.log(err)
-    }
-}
-
-export const hideListItem = (listItem) => dispatch => {
-    try {
-        dispatch(_hideListItem(listItem));
-    } catch(err) {
-        console.log(err)
-    }
-}
-
-export const addBackToCart = (listItem) => dispatch => {
-    try {
-        dispatch(_addBackToCart(listItem))
-    } catch(err) {
-        console.log(err)
-    }
-}
-
-export default (state = [], action) => {
-    switch (action.type) {
-        case LOAD_CART:
-            return action.lineItems;
-        case ADD_TO_CART:
-            return state = [action.lineItem, ...state];
-        case REMOVE_LIST_ITEM:
-            return state.filter( item => item.id !== action.lineItem.id );
-        case HIDE_LIST_ITEM:
-            return state.filter(item => item.id !== action.lineItem.id);
-        case ADD_BACK_TO_CART:
-            return state = [action.lineItem, ...state];
-        default:
-            return state
-    }
-}
