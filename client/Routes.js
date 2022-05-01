@@ -6,6 +6,7 @@ import { me } from "./store";
 import { loadProducts } from "./store/products";
 import { loadCategories } from './store/categories';
 import { loadOrCreate, clearOrder } from "./store/order";
+import { loadCart, transformGuestCartToUserCart } from "./store/cart";
 
 //router
 import { withRouter, Route, Switch, Redirect } from "react-router-dom";
@@ -30,13 +31,18 @@ class Routes extends Component {
   }
 
   componentDidUpdate(prevProps) {
-    if ( prevProps.auth !== this.props.auth ) {
-      console.log('COMPONENT DID UPDATE ENTERED')
-        if (this.props.auth.id) {
-          this.props.fetchOrder(this.props.auth);
-        } else {
-          this.props.clearOrder();
-        }
+    if (prevProps.auth !== this.props.auth) {
+      console.log('COMPONENT DID UPDATE ENTERED');
+      if (this.props.auth.id) {
+        this.props.fetchOrder(this.props.auth);
+      } else {
+        this.props.clearOrder();
+      }
+    } else if (prevProps.order !== this.props.order) {
+      if (this.props.order.id) {
+        this.props.fetchCart(this.props.order);
+        this.props.transformGuestCartToUserCart(this.props.order);
+      }
     }
   }
 
@@ -104,6 +110,12 @@ const mapDispatch = (dispatch) => {
     },
     clearOrder(){
       dispatch(clearOrder());
+    },
+    fetchCart(order){
+      dispatch(loadCart(order));
+    },
+    transformGuestCartToUserCart(order){
+      dispatch(transformGuestCartToUserCart(order))
     }
   };
 };

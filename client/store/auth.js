@@ -40,7 +40,6 @@ export const authenticate = (username, password, method) => async dispatch => {
 }
 
 export const logout = () => {
-  window.localStorage.removeItem('cart');
   window.localStorage.removeItem(TOKEN);
   history.push('/logout')
   return {
