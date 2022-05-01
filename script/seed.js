@@ -103,6 +103,14 @@ async function seed() {
       lastName: "Kim",
       email: "dummy_email@gmail.com",
     }),
+    User.create({
+      username: "Scott",
+      password: "123",
+      firstName: "Scott",
+      lastName: "Johnson",
+      email: "dummyEmail@comcast.net",
+      isAdmin: true
+    })
   ]);
 
   console.log(`seeded ${users.length} users`);

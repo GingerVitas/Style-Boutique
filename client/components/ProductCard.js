@@ -1,22 +1,26 @@
 import React from 'react';
 import {useSelector} from 'react-redux'
 import {Link, useParams} from 'react-router-dom';
-import {Card, FormControl, InputLabel, Select, MenuItem, CardContent, CardMedia, Typography,} from '@mui/material';
+import {Card, CardActionArea, FormControl, InputLabel, Select, MenuItem, CardContent, CardMedia, Typography,} from '@mui/material';
 
 
 const ProductCard = (props) => {
-  const product = props.product;
+  const {product, adminView} = props;
   const category = props.categories.filter(category => category.id === product.categoryId)[0];
   const {productName} = useParams();
 
-  const handleChange = (ev) => {
-    ev.preventDefault();
+  // const handleChange = (ev) => {
+  //   ev.preventDefault();
 
-  }
+  // }
   
   // if (!productName) 
     return(
-         <Link to={`/${category.categoryName}/${product.name}`}>
+        //  <Link to={`/${category.categoryName}/${product.name}`}>
+        <CardActionArea component={Link} to={`/${category.categoryName}/${product.name}`}>
+          {adminView ? <Typography variant='body2'>
+            Admin Test
+          </Typography> : ''}
           <Card sx={{maxWidth:'280', margin:'.5rem'}} style={{height:'100%'}}>
             <CardMedia
               component='img'
@@ -24,16 +28,17 @@ const ProductCard = (props) => {
               height='435'
               width='300'
             />
-            <CardContent>
-              <Typography gutterBottom variant='subtitle1'>
-                {product.brand}
-              </Typography>
-              <Typography variant='subtitle2'>
-                {product.name}
-              </Typography>
-            </CardContent>
+              <CardContent>
+                <Typography gutterBottom variant='subtitle1'>
+                  {product.brand}
+                </Typography>
+                <Typography variant='subtitle2'>
+                  {product.name}
+                </Typography>
+              </CardContent>
           </Card>
-        </Link>
+        </CardActionArea>
+        /* </Link> */
   )
   // else return (
   //   <Card sx={{maxWidth:'280', margin:'.5rem'}} style={{height:'100%'}}>
