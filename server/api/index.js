@@ -9,6 +9,7 @@ router.use('/guests', require('./guests'));
 router.use('/skus', require('./skus'));
 router.use('/categories', require('./categories'));
 router.use('/colors/', require('./productColors'));
+router.use('/admin', require('./admin'));
 
 router.use((req, res, next) => {
   const error = new Error('Not Found')
