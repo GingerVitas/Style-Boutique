@@ -26,7 +26,7 @@ const Home = (props) => {
   else return (
     <div>
       <h3 style={{marginLeft: '40px'}}>Welcome, {firstName}</h3>
-      <Button onClick={()=>adminView ? setAdminView(false) : setAdminView(true)} className={adminView ? 'selected' : ''}>Toggle Admin View</Button>
+      <Button variant={adminView ? 'contained' : 'outlined'} onClick={()=>adminView ? setAdminView(false) : setAdminView(true)} className={adminView ? 'selected' : ''} sx={{padding:'.5rem', margin:'1rem'}}>Toggle Admin View</Button>
       <Products adminView={adminView}/>
     </div>
   )
