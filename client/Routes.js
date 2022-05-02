@@ -19,6 +19,8 @@ import Cart from "./components/pages/Cart";
 import Checkout from "./components/Checkout";
 import SingleProduct from './components/pages/SingleProduct';
 import SignOut from "./components/pages/SignOut";
+import AdminDashboard from './components/pages/AdminDashboard';
+import Unauthorized from './components/pages/Unauthorized';
 
 /**
  * COMPONENT
@@ -47,7 +49,7 @@ class Routes extends Component {
   }
 
   render() {
-    const { isLoggedIn } = this.props;
+    const { isLoggedIn, auth } = this.props;
     console.log('this.props.auth: ', this.props.auth,'this.props.order: ', this.props.order);
     return (
       <div>
@@ -58,6 +60,7 @@ class Routes extends Component {
             <Route path="/cart" component={Cart} />
             <Route path='/:categoryName/:productName' component={SingleProduct} />
             <Route path="/checkout" render={(routeProps) => <Checkout routeProps={routeProps} />} />
+            <Route path='/adminDashboard' component={auth.isAdmin ? AdminDashboard : Unauthorized} />
             <Redirect
               to={
                 this.props.location.state &&

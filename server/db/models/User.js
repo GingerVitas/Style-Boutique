@@ -105,6 +105,22 @@ User.findByToken = async function (token) {
   }
 };
 
+User.isAdmin = async (token) => {
+  try{
+    const {id} = await jwt.verify(token, process.env.JWT);
+    const user = await User.findByPk(id);
+    if (!user.isAdmin) {
+      throw 'Noooooo!';
+    }
+    return user
+  }
+  catch(err){
+    const error = Error('User is not admin');
+    error.status = 401;
+    throw error
+  }
+}
+
 /**
  * hooks
  */

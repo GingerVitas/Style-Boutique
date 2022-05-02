@@ -10,6 +10,7 @@ import skus from './skus';
 import categories from './categories';
 import productColors from './productColors';
 import order from './order';
+import {adminUsers, adminProducts, adminOrders} from './admin';
 
 const reducer = combineReducers({ 
   auth,
@@ -19,7 +20,11 @@ const reducer = combineReducers({
   skus,
   categories,
   productColors,
-  order});
+  order,
+  adminUsers,
+  adminProducts,
+  adminOrders
+});
   
 const middleware = composeWithDevTools(
   applyMiddleware(thunkMiddleware, createLogger({collapsed: true}))
@@ -35,3 +40,4 @@ export * from './auth'
 // export * from './categories'
 // export * from './productColors'
 // export * from './order'
+export * from './admin';
