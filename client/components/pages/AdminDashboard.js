@@ -28,20 +28,18 @@ const AdminDashboard = () => {
     dispatch(loadAdminOrders());
   }, [])
 
-  if(!auth || !auth.isAdmin) return (
-    <h1>Oops! It looks like you are not authorized to view this content. If you believe you are receiving this message in error, please contact a system administrator.</h1>
+  if(auth.isAdmin) return (
+    <div>
+    <h1 style={{textAlign:'center'}}>Welcome Administrator {auth.lastName}</h1>
+    <Box sx={buttonBoxStyle}>
+      <Button sx={buttonStyle} variant={display === 'users' ? 'contained' : 'outlined'} onClick={()=> setDisplay('users')}>Manage Users</Button>
+      <Button sx={buttonStyle} variant={display === 'inventory' ? 'contained' : 'outlined'} onClick={()=> setDisplay('inventory')}>Manage Inventory</Button>
+      <Button sx={buttonStyle} variant={display === 'orders' ? 'contained' : 'outlined'} onClick={()=> setDisplay('orders')}>Manage Orders</Button>
+    </Box>
+  </div>
   );
   return(
-    <div>
-      <h1 style={{textAlign:'center'}}>Welcome Administrator {auth.lastName}</h1>
-      <Box sx={buttonBoxStyle}>
-        <Button sx={buttonStyle} variant={display === 'users' ? 'contained' : 'outlined'} onClick={()=> setDisplay('users')}>Manage Users</Button>
-        <Button sx={buttonStyle} variant={display === 'inventory' ? 'contained' : 'outlined'} onClick={()=> setDisplay('inventory')}>Manage Inventory</Button>
-        <Button sx={buttonStyle} variant={display === 'orders' ? 'contained' : 'outlined'} onClick={()=> setDisplay('orders')}>Manage Orders</Button>
-      </Box>
-    </div>
-
-
+    <h1>Oops! It looks like you are not authorized to view this content. If you believe you are receiving this message in error, please contact a system administrator.</h1>
   )
 }
 
