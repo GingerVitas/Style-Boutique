@@ -10,9 +10,6 @@ import { loadSKUs } from '../../store/skus';
 //MUI
 import { Button, InputLabel, MenuItem, FormControl, Select, Grid } from '@mui/material';
 
-//Child Component
-// import ProductCard from '../ProductCard';
-
 const singleProduct = () => {
   const dispatch = useDispatch();
   const {productName} = useParams();
@@ -30,14 +27,13 @@ const singleProduct = () => {
     imageUrl: '',
     quantity: 1,
     productSKUId: ''
-  })
-
+  });
+  
   useEffect(()=> {
     dispatch(loadColors(productName)),
     dispatch(loadSKUs(productName))
   }, [])
 
-  console.log('SKUS', sku)
   // For Size DropDown
   const handleSize = (event) => {
     const selectedSKU = event.target.value;
