@@ -80,6 +80,7 @@ class Routes extends Component {
             <Route path='/:categoryName/:productName' component={SingleProduct} />
             <Route path="/checkout" render={(routeProps) => <Checkout routeProps={routeProps} />}/>
             <Route path="/logout" component={SignOut}/>
+            <Route path='/adminDashboard' component={Unauthorized} />
           </Switch>
         )}
       </div>
