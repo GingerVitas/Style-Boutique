@@ -1,6 +1,6 @@
 const router = require('express').Router()
 module.exports = router
-const {models: {User, Order, Address, Product, ProductColor, ProductSKU}} = require('../db/');
+const {models: {User, Order, Address, Product, ProductColor, ProductSKU, LineItem}} = require('../db/');
 
 const isAdmin = async(req, res, next) => {
   try{
@@ -44,7 +44,9 @@ router.get('/products', isAdmin, async(req, res, next)=> {
 //Managing Orders
 router.get('/orders', isAdmin, async(req, res, next) => {
   try{
-    const orders = await Order.findAll();
+    const orders = await Order.findAll({
+      include: [{model: LineItem}, {model: User}]
+    });
     res.send(orders)
   }
   catch(err){
