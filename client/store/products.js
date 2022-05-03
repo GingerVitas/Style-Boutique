@@ -21,7 +21,6 @@ export const loadProducts = () => async dispatch => {
 
 export const deleteProduct = (product) => async dispatch => {
     try{
-        console.log('********* IN DELETE THUNK **********', product)
         await axios.delete(`/api/products/${product.id}`)
         dispatch(_deleteProduct(product))
     }
