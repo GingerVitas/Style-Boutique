@@ -1,5 +1,5 @@
 import * as React from 'react';
-import {Box,  Table, TableBody, TableCell, TableContainer, TablePagination, TableRow, Paper, Checkbox, FormControlLabel, Switch} from '@mui/material';
+import {Box, Button, Modal, Card, Typography, Table, TableBody, TableCell, TableContainer, TablePagination, TableRow, Paper, Checkbox, FormControlLabel, Switch} from '@mui/material';
 import AdminTableToolbar from './AdminTableToolbar';
 import AdminInventoryTableHeader from './AdminInventoryTableHeader';
 
@@ -27,6 +27,25 @@ export default function AdminInventoryTable(props) {
   const [page, setPage] = React.useState(0);
   const [dense, setDense] = React.useState(false);
   const [rowsPerPage, setRowsPerPage] = React.useState(5);
+  const [open, setOpen] = React.useState(false);
+  const [selectedProduct, setSelectedProduct] = React.useState({});
+  const handleClose = () => setOpen(false);
+  const handleModal = (product) => {
+    setSelectedProduct(product)  
+    setOpen(true);
+  };
+  const style = {
+    position: 'absolute',
+    top: '50%',
+    left: '50%',
+    transform: 'translate(-50%, -50%)',
+    width: 'auto',
+    bgcolor: 'background.paper',
+    border: '2px solid #000',
+    boxShadow: 24,
+    p: 4,
+    textAlign: 'center'
+  };
 
   const handleRequestSort = (event, property) => {
     const isAsc = orderBy === property && order === 'asc';
@@ -114,6 +133,7 @@ export default function AdminInventoryTable(props) {
                       tabIndex={-1}
                       key={product.name}
                       selected={isItemSelected}
+                      sx={{verticalAlign:'center'}}
                     >
                       <TableCell padding="checkbox">
                         <Checkbox
@@ -130,8 +150,9 @@ export default function AdminInventoryTable(props) {
                         id={labelId}
                         scope="row"
                         padding="none"
+                        sx={{display:'flex', alignItems:'center'}}
                       >
-                        <img src={product.imageUrl} style={{height:'100px', width:'auto'}} /> {product.name}
+                        <img src={product.imageUrl} style={{height:'100px', width:'auto', minWidth:'95px'}} /><Button onClick={()=>handleModal(product)} sx={{marginLeft:'1rem'}}>{product.name}</Button>
                       </TableCell>
                       <TableCell align="right">{product.brand}</TableCell>
                       <TableCell align="right">{product.productColors.length}</TableCell>
@@ -150,6 +171,24 @@ export default function AdminInventoryTable(props) {
                 </TableRow>
               )}
             </TableBody>
+            <Modal
+              open={open}
+              onClose={handleClose}
+              >
+              <Card sx={style}>
+              <Typography variant="h6" component="h2">
+                {selectedProduct.name}
+              </Typography>
+              <Box sx={{display:'flex', flexDirection:'column', margin:'1rem'}}>
+                <Typography variant='h6' component='h3'>
+                  {`Product Brand: ${selectedProduct.brand}
+                  Line Items:${selectedProduct.id ? selectedProduct.productColors.map(color => color.color) : ''}
+                  Created At: ${selectedProduct.createdAt}
+                  Updated At: ${selectedProduct.updatedAt}`}
+                </Typography>
+              </Box>
+            </Card>
+          </Modal>
           </Table>
         </TableContainer>
         <TablePagination

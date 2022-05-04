@@ -31,8 +31,16 @@ router.get('/users', isAdmin, async(req, res, next) => {
 router.delete('/users/:id', isAdmin, async(req, res, next) => {
   try{
     const user = await User.findByPk(req.params.id);
-    await user.destroy();
-    res.sendStatus(204)
+    if(!user.isAdmin) {
+      await user.destroy();
+      res.sendStatus(204)
+    }
+    else {
+      const error = Error('Unable to delete administrators')
+      error.status = 401;
+      throw error
+    }
+
   }
   catch(err){
     next(err)

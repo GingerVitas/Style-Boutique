@@ -1,5 +1,5 @@
 import * as React from 'react';
-import {Box,  Table, TableBody, TableCell, TableContainer, TablePagination, TableRow, Paper, Checkbox, FormControlLabel, Switch} from '@mui/material';
+import {Box, Container, Button, Modal, Card, CardContent, Typography, Table, TableBody, TableCell, TableContainer, TablePagination, TableRow, Paper, Checkbox, FormControlLabel, Switch} from '@mui/material';
 import AdminTableToolbar from './AdminTableToolbar';
 import AdminUserTableHeader from './AdminUserTableHeader';
 
@@ -27,6 +27,14 @@ export default function AdminUserTable(props) {
   const [page, setPage] = React.useState(0);
   const [dense, setDense] = React.useState(false);
   const [rowsPerPage, setRowsPerPage] = React.useState(10);
+  const [open, setOpen] = React.useState(false);
+  const [user, setUser] = React.useState({});
+  const handleClose = () => setOpen(false);
+  const handleModal = (user) => {
+    setUser(user)  
+    setOpen(true);
+  };
+
 
   const handleRequestSort = (event, property) => {
     const isAsc = orderBy === property && order === 'asc';
@@ -81,6 +89,19 @@ export default function AdminUserTable(props) {
   const emptyRows =
     page > 0 ? Math.max(0, (1 + page) * rowsPerPage - users.length) : 0;
 
+  const style = {
+    position: 'absolute',
+    top: '50%',
+    left: '50%',
+    transform: 'translate(-50%, -50%)',
+    width: 'auto',
+    bgcolor: 'background.paper',
+    border: '2px solid #000',
+    boxShadow: 24,
+    p: 4,
+    textAlign: 'center'
+  };
+
   return (
     <Box sx={{ width: '100%' }}>
       <Paper sx={{ width: '100%', mb: 2 }}>
@@ -107,37 +128,37 @@ export default function AdminUserTable(props) {
                   const labelId = `enhanced-table-checkbox-${index}`;
 
                   return (
-                    <TableRow
-                      hover
-                      role="checkbox"
-                      aria-checked={isItemSelected}
-                      tabIndex={-1}
-                      key={user.fullName}
-                      selected={isItemSelected}
-                    >
-                      <TableCell padding="checkbox">
-                        <Checkbox
-                          color="primary"
-                          onClick={(event) => handleClick(event, user)}
-                          checked={isItemSelected}
-                          inputProps={{
-                            'aria-labelledby': labelId,
-                          }}
-                        />
-                      </TableCell>
-                      <TableCell
-                        component="th"
-                        id={labelId}
-                        scope="row"
-                        padding="none"
+                      <TableRow
+                        hover
+                        role="checkbox"
+                        aria-checked={isItemSelected}
+                        tabIndex={-1}
+                        key={user.fullName}
+                        selected={isItemSelected}
                       >
-                        {user.fullName}
-                      </TableCell>
-                      <TableCell align="right">{user.email}</TableCell>
-                      <TableCell align="right">{user.orders.length}</TableCell>
-                      <TableCell align="right">{user.createdAt}</TableCell>
-                      <TableCell align="right">{user.updatedAt}</TableCell>
-                    </TableRow>
+                        <TableCell padding="checkbox">
+                          <Checkbox
+                            color="primary"
+                            onClick={(event) => handleClick(event, user)}
+                            checked={isItemSelected}
+                            inputProps={{
+                              'aria-labelledby': labelId,
+                            }}
+                          />
+                        </TableCell>
+                        <TableCell
+                          component="th"
+                          id={labelId}
+                          scope="row"
+                          padding="none"
+                        >
+                          <Button onClick={()=>handleModal(user)} >{user.fullName}</Button>
+                        </TableCell>
+                        <TableCell align="right">{user.email}</TableCell>
+                        <TableCell align="right">{user.orders.length}</TableCell>
+                        <TableCell align="right">{user.createdAt}</TableCell>
+                        <TableCell align="right">{user.updatedAt}</TableCell>
+                      </TableRow>
                   );
                 })}
               {emptyRows > 0 && (
@@ -150,6 +171,24 @@ export default function AdminUserTable(props) {
                 </TableRow>
               )}
             </TableBody>
+            <Modal
+              open={open}
+              onClose={handleClose}
+              >
+              <Card sx={style}>
+              <Typography variant="h6" component="h2">
+                {user.fullName}
+              </Typography>
+              <Box sx={{display:'flex', flexDirection:'column', margin:'1rem'}}>
+                <Typography variant='h6' component='h3'>
+                  {`First Name: ${user.firstName}
+                  Last Name:${user.lastName}
+                  Email: ${user.email}
+                  Past Orders: ${user.orders}`}
+                </Typography>
+              </Box>
+            </Card>
+          </Modal>
           </Table>
         </TableContainer>
         <TablePagination
