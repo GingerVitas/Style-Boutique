@@ -1,5 +1,5 @@
 import * as React from 'react';
-import {Box,  Table, TableBody, TableCell, TableContainer, TablePagination, TableRow, Paper, Checkbox, FormControlLabel, Switch} from '@mui/material';
+import {Box, Button, Modal, Card, CardContent, Typography, Table, TableBody, TableCell, TableContainer, TablePagination, TableRow, Paper, Checkbox, FormControlLabel, Switch} from '@mui/material';
 import AdminTableToolbar from './AdminTableToolbar';
 import AdminOrdersTableHeader from './AdminOrdersTableHeader';
 
@@ -27,6 +27,25 @@ export default function AdminOrdersTable(props) {
   const [page, setPage] = React.useState(0);
   const [dense, setDense] = React.useState(false);
   const [rowsPerPage, setRowsPerPage] = React.useState(10);
+  const [open, setOpen] = React.useState(false);
+  const [selectedOrder, setSelectedOrder] = React.useState({});
+  const handleClose = () => setOpen(false);
+  const handleModal = (_order) => {
+    setSelectedOrder(_order)  
+    setOpen(true);
+  };
+  const style = {
+    position: 'absolute',
+    top: '50%',
+    left: '50%',
+    transform: 'translate(-50%, -50%)',
+    width: 'auto',
+    bgcolor: 'background.paper',
+    border: '2px solid #000',
+    boxShadow: 24,
+    p: 4,
+    textAlign: 'center'
+  };
 
   const handleRequestSort = (event, property) => {
     const isAsc = orderBy === property && order === 'asc';
@@ -47,6 +66,8 @@ export default function AdminOrdersTable(props) {
     style: 'currency',
     currency: 'USD'
   })
+  
+
 
   const handleClick = (event, orderObj) => {
     const selectedIndex = selected.indexOf(orderObj);
@@ -89,7 +110,7 @@ export default function AdminOrdersTable(props) {
   return (
     <Box sx={{ width: '100%' }}>
       <Paper sx={{ width: '100%', mb: 2 }}>
-        <AdminTableToolbar selected={selected} display={display}/>
+        <AdminTableToolbar selected={selected} display={display} />
         <TableContainer>
           <Table
             sx={{ minWidth: 750 }}
@@ -140,7 +161,7 @@ export default function AdminOrdersTable(props) {
                         scope="row"
                         padding="none"
                       >
-                        {_order.id}
+                        <Button onClick={()=>handleModal(_order)} >{_order.id}</Button>
                       </TableCell>
                       <TableCell align="right">{_order.user.fullName}</TableCell>
                       <TableCell align="right">{_order.line_items.reduce((acc, lineItem)=> {
@@ -163,6 +184,26 @@ export default function AdminOrdersTable(props) {
                 </TableRow>
               )}
             </TableBody>
+            <Modal
+              open={open}
+              onClose={handleClose}
+              >
+              <Card sx={style}>
+              <Typography variant="h6" component="h2">
+                {selectedOrder.id}
+              </Typography>
+              <Box sx={{display:'flex', flexDirection:'column', margin:'1rem'}}>
+                <Typography variant='h6' component='h3'>
+                  {`Order ID: ${selectedOrder.id}
+                  Line Items:${selectedOrder.line_items ? selectedOrder.line_items.map(item => item.productName) : ''}
+                  Created At: ${selectedOrder.createdAt}
+                  Order Total: ${selectedOrder.total}
+                  Order Finalized: ${selectedOrder.final ? 'Yes' : 'No'}`}
+                  {console.log(selectedOrder.line_items)}
+                </Typography>
+              </Box>
+            </Card>
+          </Modal>
           </Table>
         </TableContainer>
         <TablePagination
