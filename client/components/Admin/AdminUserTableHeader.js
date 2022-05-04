@@ -19,12 +19,12 @@ const headCells = [
     label: 'Number of Orders',
   },
   {
-    id: 'created',
+    id: 'createdAt',
     disablePadding: false,
     label: 'Date Account Created',
   },
   {
-    id: 'updated',
+    id: 'updatedAt',
     disablePadding: false,
     label: 'Date Account Updated',
   },

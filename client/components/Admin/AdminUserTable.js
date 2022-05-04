@@ -22,7 +22,7 @@ function getComparator(order, orderBy) {
 export default function AdminUserTable(props) {
   const {users, display} = props
   const [order, setOrder] = React.useState('asc');
-  const [orderBy, setOrderBy] = React.useState('calories');
+  const [orderBy, setOrderBy] = React.useState('fullName');
   const [selected, setSelected] = React.useState([]);
   const [page, setPage] = React.useState(0);
   const [dense, setDense] = React.useState(false);
@@ -36,19 +36,19 @@ export default function AdminUserTable(props) {
 
   const handleSelectAllClick = (event) => {
     if (event.target.checked) {
-      const newSelecteds = users.map((n) => n.fullName);
+      const newSelecteds = users.map((n) => n);
       setSelected(newSelecteds);
       return;
     }
     setSelected([]);
   };
 
-  const handleClick = (event, fullName) => {
-    const selectedIndex = selected.indexOf(fullName);
+  const handleClick = (event, userObj) => {
+    const selectedIndex = selected.indexOf(userObj);
     let newSelected = [];
 
     if (selectedIndex === -1) {
-      newSelected = newSelected.concat(selected, fullName);
+      newSelected = newSelected.concat(selected, userObj);
     } else if (selectedIndex === 0) {
       newSelected = newSelected.concat(selected.slice(1));
     } else if (selectedIndex === selected.length - 1) {
@@ -76,7 +76,7 @@ export default function AdminUserTable(props) {
     setDense(event.target.checked);
   };
 
-  const isSelected = (fullName) => selected.indexOf(fullName) !== -1;
+  const isSelected = (userObj) => selected.indexOf(userObj) !== -1;
 
   const emptyRows =
     page > 0 ? Math.max(0, (1 + page) * rowsPerPage - users.length) : 0;
@@ -103,7 +103,7 @@ export default function AdminUserTable(props) {
               {users.slice().sort(getComparator(order, orderBy))
                 .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
                 .map((user, index) => {
-                  const isItemSelected = isSelected(user.fullName);
+                  const isItemSelected = isSelected(user);
                   const labelId = `enhanced-table-checkbox-${index}`;
 
                   return (
@@ -118,7 +118,7 @@ export default function AdminUserTable(props) {
                       <TableCell padding="checkbox">
                         <Checkbox
                           color="primary"
-                          onClick={(event) => handleClick(event, user.fullName)}
+                          onClick={(event) => handleClick(event, user)}
                           checked={isItemSelected}
                           inputProps={{
                             'aria-labelledby': labelId,

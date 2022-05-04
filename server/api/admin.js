@@ -28,6 +28,17 @@ router.get('/users', isAdmin, async(req, res, next) => {
   }
 });
 
+router.delete('/users/:id', isAdmin, async(req, res, next) => {
+  try{
+    const user = await User.findByPk(req.params.id);
+    await user.destroy();
+    res.sendStatus(204)
+  }
+  catch(err){
+    next(err)
+  }
+})
+
 //Managing Products
 router.get('/products', isAdmin, async(req, res, next)=> {
   try{
@@ -40,6 +51,39 @@ router.get('/products', isAdmin, async(req, res, next)=> {
     next(err)
   }
 });
+
+router.delete('/productSKU/:id', async(req, res, next)=> {
+  try{
+    const sku = await ProductSKU.findByPk(req.params.id);
+    await sku.destroy();
+    res.sendStatus(204);
+  }
+  catch(err){
+    next(err)
+  }
+})
+
+router.delete(`/productColor/:id`, async(req, res, next)=>{
+  try{
+    const color = await ProductColor.findByPk(req.params.id);
+    await color.destroy();
+    res.sendStatus(204);
+  }
+  catch(err){
+    next(err)
+  }
+})
+
+router.delete('/products/:id', async(req, res, next) => {
+  try{
+      const product = await Product.findByPk(req.params.id)
+      await product.destroy();
+      res.sendStatus(204)
+  }
+  catch(err){
+      next(err)
+  }
+})
 
 //Managing Orders
 router.get('/orders', isAdmin, async(req, res, next) => {

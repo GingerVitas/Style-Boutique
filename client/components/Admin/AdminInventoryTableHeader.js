@@ -14,17 +14,17 @@ const headCells = [
     label: `Brand`,
   },
   {
-    id: 'colors',
+    id: 'productColors',
     disablePadding: false,
     label: 'Number of Color Variants',
   },
   {
-    id: 'created',
+    id: 'createdAt',
     disablePadding: false,
     label: 'Added to Inventory',
   },
   {
-    id: 'updated',
+    id: 'updatedAt',
     disablePadding: false,
     label: 'Last Updated',
   },

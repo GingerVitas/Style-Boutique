@@ -4,13 +4,17 @@ import { alpha } from '@mui/material/styles';
 import {Toolbar, Typography, IconButton, Tooltip} from '@mui/material';
 import DeleteIcon from '@mui/icons-material/Delete';
 import FilterListIcon from '@mui/icons-material/FilterList';
+import {deleteUser, deleteProduct, deleteOrder} from '../../store/admin';
 
 const AdminTableToolbar = (props) => {
   const { selected, display } = props;
   const dispatch = useDispatch();
   
-  const handleDelete = async (array) => {
-    await Promise.all(array.forEach(async(user => dispatch(deleteUser(user)))))
+  const handleDelete = (selectedArray) => {
+    console.log('****in Handle Delete*****', selectedArray)
+    if (display === 'users') {selectedArray.forEach((user) => dispatch(deleteUser(user)))}
+    else if (display === 'inventory') {selectedArray.forEach((product) => dispatch(deleteProduct(product)))}
+    else selectedArray.forEach((order) => dispatch(deleteOrder(order)));
   }
 
   return (
@@ -46,7 +50,7 @@ const AdminTableToolbar = (props) => {
 
       {selected.length > 0 ? (
         <Tooltip title="Delete">
-          <IconButton onClick={(selected)=>handleDelete(selected)}>
+          <IconButton onClick={()=>handleDelete(selected)}>
             <DeleteIcon />
           </IconButton>
         </Tooltip>

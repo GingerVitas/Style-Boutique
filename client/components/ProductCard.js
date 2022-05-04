@@ -2,7 +2,7 @@ import React, {useState} from 'react';
 import {useSelector, useDispatch} from 'react-redux'
 import {Link, useParams} from 'react-router-dom';
 import {Card, CardActionArea, Button, Modal, Box, FormControl, InputLabel, Select, MenuItem, CardContent, CardMedia, Typography,} from '@mui/material';
-import {deleteProduct} from '../store/products'
+import {deleteProduct, deleteProductColors, deleteProductSKUs} from '../store/admin'
 
 
 const ProductCard = (props) => {
@@ -14,7 +14,6 @@ const ProductCard = (props) => {
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
   const handleDelete = (_product) => {
-    console.log('********HANDLE DELETE**********', _product)
     dispatch(deleteProduct(_product));
   }
   const style = {
