@@ -22,7 +22,7 @@ function getComparator(order, orderBy) {
 export default function AdminInventoryTable(props) {
   const {inventory, display} = props
   const [order, setOrder] = React.useState('asc');
-  const [orderBy, setOrderBy] = React.useState('calories');
+  const [orderBy, setOrderBy] = React.useState('name');
   const [selected, setSelected] = React.useState([]);
   const [page, setPage] = React.useState(0);
   const [dense, setDense] = React.useState(false);
@@ -36,19 +36,19 @@ export default function AdminInventoryTable(props) {
 
   const handleSelectAllClick = (event) => {
     if (event.target.checked) {
-      const newSelecteds = inventory.map((n) => n.name);
+      const newSelecteds = inventory.map((product) => product);
       setSelected(newSelecteds);
       return;
     }
     setSelected([]);
   };
 
-  const handleClick = (event, name) => {
-    const selectedIndex = selected.indexOf(name);
+  const handleClick = (event, product) => {
+    const selectedIndex = selected.indexOf(product);
     let newSelected = [];
 
     if (selectedIndex === -1) {
-      newSelected = newSelected.concat(selected, name);
+      newSelected = newSelected.concat(selected, product);
     } else if (selectedIndex === 0) {
       newSelected = newSelected.concat(selected.slice(1));
     } else if (selectedIndex === selected.length - 1) {
@@ -76,7 +76,7 @@ export default function AdminInventoryTable(props) {
     setDense(event.target.checked);
   };
 
-  const isSelected = (name) => selected.indexOf(name) !== -1;
+  const isSelected = (product) => selected.indexOf(product) !== -1;
 
   const emptyRows =
     page > 0 ? Math.max(0, (1 + page) * rowsPerPage - inventory.length) : 0;
@@ -103,7 +103,7 @@ export default function AdminInventoryTable(props) {
               {inventory.slice().sort(getComparator(order, orderBy))
                 .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
                 .map((product, index) => {
-                  const isItemSelected = isSelected(product.name);
+                  const isItemSelected = isSelected(product);
                   const labelId = `enhanced-table-checkbox-${index}`;
 
                   return (
@@ -118,7 +118,7 @@ export default function AdminInventoryTable(props) {
                       <TableCell padding="checkbox">
                         <Checkbox
                           color="primary"
-                          onClick={(event) => handleClick(event, product.name)}
+                          onClick={(event) => handleClick(event, product)}
                           checked={isItemSelected}
                           inputProps={{
                             'aria-labelledby': labelId,

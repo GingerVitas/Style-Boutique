@@ -36,7 +36,7 @@ export default function AdminOrdersTable(props) {
 
   const handleSelectAllClick = (event) => {
     if (event.target.checked) {
-      const newSelecteds = inventory.map((n) => n.id);
+      const newSelecteds = orders.map((n) => n);
       setSelected(newSelecteds);
       return;
     }
@@ -48,12 +48,12 @@ export default function AdminOrdersTable(props) {
     currency: 'USD'
   })
 
-  const handleClick = (event, id) => {
-    const selectedIndex = selected.indexOf(id);
+  const handleClick = (event, orderObj) => {
+    const selectedIndex = selected.indexOf(orderObj);
     let newSelected = [];
 
     if (selectedIndex === -1) {
-      newSelected = newSelected.concat(selected, id);
+      newSelected = newSelected.concat(selected, orderObj);
     } else if (selectedIndex === 0) {
       newSelected = newSelected.concat(selected.slice(1));
     } else if (selectedIndex === selected.length - 1) {
@@ -81,7 +81,7 @@ export default function AdminOrdersTable(props) {
     setDense(event.target.checked);
   };
 
-  const isSelected = (id) => selected.indexOf(id) !== -1;
+  const isSelected = (orderObj) => selected.indexOf(orderObj) !== -1;
 
   const emptyRows =
     page > 0 ? Math.max(0, (1 + page) * rowsPerPage - orders.length) : 0;
@@ -108,8 +108,12 @@ export default function AdminOrdersTable(props) {
               {orders.slice().sort(getComparator(order, orderBy))
                 .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
                 .map((_order, index) => {
-                  const isItemSelected = isSelected(_order.id);
+                  const isItemSelected = isSelected(_order);
                   const labelId = `enhanced-table-checkbox-${index}`;
+                  _order.total = _order.line_items.reduce((acc,lineItem) => {
+                    acc += lineItem.total
+                    return acc
+                  }, 0)
 
                   return (
                     <TableRow
@@ -123,7 +127,7 @@ export default function AdminOrdersTable(props) {
                       <TableCell padding="checkbox">
                         <Checkbox
                           color="primary"
-                          onClick={(event) => handleClick(event, _order.id)}
+                          onClick={(event) => handleClick(event, _order)}
                           checked={isItemSelected}
                           inputProps={{
                             'aria-labelledby': labelId,
@@ -144,10 +148,7 @@ export default function AdminOrdersTable(props) {
                         return acc
                       }, 0)}</TableCell>
                       <TableCell align="right">{_order.createdAt}</TableCell>
-                      <TableCell align="right">{formatter.format(_order.line_items.reduce((acc,lineItem) => {
-                        acc += lineItem.total
-                        return acc
-                      }, 0))}</TableCell>
+                      <TableCell align="right">{formatter.format(_order.total)}</TableCell>
                       <TableCell align="right">{_order.final ? 'Yes' : 'No'}</TableCell>
                     </TableRow>
                   );

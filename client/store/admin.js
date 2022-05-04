@@ -5,15 +5,19 @@ const LOAD_USERS = 'LOAD_USERS';
 const DELETE_USER = 'DELETE_USER';
 const UPDATE_USER = 'UPDATE_USER';
 const LOAD_PRODUCTS = 'LOAD_PRODUCTS';
+const DELETE_PRODUCT = 'DELETE_PRODUCT'
 const LOAD_ORDERS = 'LOAD_ORDERS';
+const DELETE_ORDER = 'DELETE_ORDER'
 
 // Action Creators
 const _loadUsers = users => ({type: LOAD_USERS, users});
 const _deleteUser = user => ({type: DELETE_USER, user})
 const _loadProducts = products => ({type: LOAD_PRODUCTS, products});
+const _deleteProduct = product => ({type: DELETE_PRODUCT, product})
 const _loadOrders = orders => ({type: LOAD_ORDERS, orders});
+const _deleteOrder = order => ({type: DELETE_ORDER, order})
 
-// Thunks
+// User Thunks
 export const loadAdminUsers = () => {
   return async(dispatch) => {
     const users = (await axios.get(`/api/admin/users/`, {
@@ -27,11 +31,17 @@ export const loadAdminUsers = () => {
 
 export const deleteUser = (user) => {
   return async(dispatch) => {
-    await axios.delete(`/api/users/${user.id}`);
+    console.log('*******IN Delete Thunk******', user)
+    await axios.delete(`/api/admin/users/${user.id}`, {
+      headers: {
+        authorization: window.localStorage.getItem('token')
+      }
+    });
     dispatch(_deleteUser(user))
   }
-}
+};
 
+//Product Thunks
 export const loadAdminProducts = () => {
   return async(dispatch) => {
     const products = (await axios.get(`/api/admin/products/`, {
@@ -41,7 +51,43 @@ export const loadAdminProducts = () => {
     })).data;
     dispatch(_loadProducts(products))
   }
-}
+};
+
+export const deleteProduct = (product) => async dispatch => {
+  try{
+    const colors = (await axios.get(`/api/colors/delete/${product.id}`)).data
+    const skus = (await Promise.all(colors.map(async(color)=>{
+      const colorSkus = (await axios.get(`/api/skus//delete/${color.id}`)).data
+      return colorSkus
+    }))).flat()
+    
+    skus.forEach(async(sku) => {
+      await axios.delete(`/api/admin/productSKU/${sku.id}`, {
+        headers: {
+          authorization: window.localStorage.getItem('token')
+        }
+      })
+    });
+
+    colors.forEach(async(color)=> {
+      await axios.delete(`/api/admin/productColor/${color.id}`, {
+        headers: {
+          authorization: window.localStorage.getItem('token')
+        }
+      });
+    });
+
+    await axios.delete(`/api/admin/products/${product.id}`, {
+      headers: {
+        authorization: window.localStorage.getItem('token')
+      }
+    });
+    dispatch(_deleteProduct(product));
+  }
+  catch(err) {
+      console.log(err)
+  }
+};
 
 export const loadAdminOrders = () => {
   return async(dispatch) => {
@@ -51,6 +97,17 @@ export const loadAdminOrders = () => {
       }
     })).data;
     dispatch(_loadOrders(orders))
+  }
+};
+
+export const deleteOrder = order => {
+  return async(dispatch) => {
+    await axios.delete(`/api/admin/orders/${order.id}`, {
+      headers: {
+        authorization: window.localStorage.getItem('token')
+      }
+    });
+    dispatch(_deleteOrder(order));
   }
 }
 
@@ -65,22 +122,26 @@ export const adminUsers = (state = [], action) => {
     default:
       return state
   }
-}
+};
 
 export const adminProducts = (state = [], action) => {
   switch (action.type) {
     case LOAD_PRODUCTS:
       return action.products;
+    case DELETE_PRODUCT:
+      return [...state.filter(product => product.id !== action.product.id)]
     default:
       return state
   }
-}
+};
 
 export const adminOrders = (state = [], action) => {
   switch (action.type) {
     case LOAD_ORDERS:
       return action.orders;
+    case DELETE_ORDER:
+      return [...state.filter(order => order.id !== action.order.id)]  
     default:
       return state
   }
-}
+};

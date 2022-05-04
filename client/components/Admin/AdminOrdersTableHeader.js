@@ -14,12 +14,12 @@ const headCells = [
     label: `Customer Name`,
   },
   {
-    id: 'lineItems',
+    id: 'line_items',
     disablePadding: false,
     label: 'Number of items in order',
   },
   {
-    id: 'created',
+    id: 'createdAt',
     disablePadding: false,
     label: 'Date Order Created',
   },
