@@ -4,8 +4,10 @@ import history from '../history';
 // ACTION TYPES
 const LOAD_PRODUCTS = 'LOAD_PRODUCTS';
 
+
 // ACTION CREATORS
 const _loadProducts = products => ({ type: LOAD_PRODUCTS, products });
+
 
 // THUNK CREATORS
 export const loadProducts = () => async dispatch => {
@@ -15,7 +17,9 @@ export const loadProducts = () => async dispatch => {
     } catch (err) {
         console.log(err)
     }
-}
+};
+
+
 
 export default (state = [], action) => {
     switch(action.type) {
@@ -24,4 +28,4 @@ export default (state = [], action) => {
         default:
             return state
     }
-}
+};

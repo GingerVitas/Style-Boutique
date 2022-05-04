@@ -12,4 +12,14 @@ router.get('/:name', async(req, res, next)=> {
   catch(err){
     next(err)
   }
+});
+
+router.get('/delete/:id', async(req, res, next)=> {
+  try{ 
+    const productColors = await ProductColor.findAll({where: {productId: req.params.id}})
+    res.json(productColors)
+  }
+  catch(err){
+    next(err)
+  }
 })
