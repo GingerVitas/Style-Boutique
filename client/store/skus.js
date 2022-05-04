@@ -14,8 +14,6 @@ export const loadSKUs = productName => {
   }
 }
 
-
-
 // Store
 
 export default (state = [], action) => {

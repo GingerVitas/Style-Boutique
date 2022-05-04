@@ -49,12 +49,6 @@ const LineItem = db.define("line_item", {
     type: Sequelize.INTEGER,
     defaultValue: 1,
   },
-  // tota: {
-  //   type: Sequelize.DECIMAL(10, 2),
-  //   validate: {
-  //     min: 0.00,
-  //   },
-  // },
   total: {
     type: Sequelize.VIRTUAL,
     get() {
@@ -62,5 +56,12 @@ const LineItem = db.define("line_item", {
     }
   }
 });
+
+//instance method
+LineItem.prototype.incrementQuantity = function() {
+  this.quantity += 1
+  this.save();
+  return this;
+}
 
 module.exports = LineItem;

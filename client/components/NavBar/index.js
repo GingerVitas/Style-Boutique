@@ -5,6 +5,7 @@ import { Link } from "react-router-dom";
 import { connect } from "react-redux";
 import { logout } from "../../store/auth";
 import { emptyCart } from "../../store/cart";
+import { clearOrder } from "../../store/order";
 
 // MUI
 import { AppBar, Toolbar, MenuItem, IconButton, Typography } from "@mui/material";
@@ -13,7 +14,7 @@ import { StyledBadge } from "../../../public/styles";
 // import { styled, alpha } from "@mui/material/styles";
 // import Search, { SearchIconWrapper, StyledInputBase } from "./NavBarElems";
 
-const Navbar = ({ handleClick, empty_cart, isLoggedIn, lineItems }) => {
+const Navbar = ({ handleClick, empty_cart, clearOrder, isLoggedIn, lineItems }) => {
   return(
   <div>
     <nav>
@@ -24,7 +25,7 @@ const Navbar = ({ handleClick, empty_cart, isLoggedIn, lineItems }) => {
               <MenuItem component={Link} to={"/home"} sx={{ "&:hover": {bgcolor: "transparent"}}}>
                 <Typography variant='logo'>STYLE BOUTIQUE</Typography>
               </MenuItem>
-                <MenuItem component={Link} to={"/home"} onClick={()=> {handleClick(); empty_cart()}} sx={{ "&:hover": { bgcolor: "transparent" }, marginLeft: "auto"}}>
+                <MenuItem component={Link} to={"/home"} onClick={()=> {handleClick(); empty_cart(); clearOrder()}} sx={{ "&:hover": { bgcolor: "transparent" }, marginLeft: "auto"}}>
                 <Typography variant='menuitem'>Logout</Typography>
               </MenuItem>
               <MenuItem component={Link} to={"/account"} sx={{ "&:hover": { bgcolor: "transparent" } }}>
@@ -107,6 +108,9 @@ const mapDispatch = (dispatch) => {
     },
     empty_cart() {
       dispatch(emptyCart());
+    },
+    clearOrder() {
+      dispatch(clearOrder());
     }
   };
 };

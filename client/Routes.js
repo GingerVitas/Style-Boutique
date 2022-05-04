@@ -5,7 +5,7 @@ import { connect } from "react-redux";
 import { me } from "./store";
 import { loadProducts } from "./store/products";
 import { loadCategories } from './store/categories';
-import { loadOrCreate, clearOrder } from "./store/order";
+import { loadOrCreate } from "./store/order";
 import { loadCart, transformGuestCartToUserCart } from "./store/cart";
 
 //router
@@ -20,9 +20,6 @@ import Checkout from "./components/Checkout";
 import SingleProduct from './components/pages/SingleProduct';
 import SignOut from "./components/pages/SignOut";
 
-/**
- * COMPONENT
- */
 class Routes extends Component {
   componentDidMount() {
     this.props.loadInitialData();
@@ -32,11 +29,8 @@ class Routes extends Component {
 
   componentDidUpdate(prevProps) {
     if (prevProps.auth !== this.props.auth) {
-      console.log('COMPONENT DID UPDATE ENTERED');
       if (this.props.auth.id) {
         this.props.fetchOrder(this.props.auth);
-      } else {
-        this.props.clearOrder();
       }
     } else if (prevProps.order !== this.props.order) {
       if (this.props.order.id) {
@@ -107,9 +101,6 @@ const mapDispatch = (dispatch) => {
     },
     fetchOrder(auth){
       dispatch(loadOrCreate(auth));
-    },
-    clearOrder(){
-      dispatch(clearOrder());
     },
     fetchCart(order){
       dispatch(loadCart(order));
