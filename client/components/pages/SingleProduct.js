@@ -3,8 +3,8 @@ import {useParams} from 'react-router-dom';
 
 //REDUX
 import { useSelector, useDispatch } from 'react-redux';
-import { addToCart } from '../../store/cart';
-import {loadColors} from '../../store/productColors';
+import { createNewLineitemInCart, addQuantityToLineitem } from '../../store/cart';
+import { loadColors } from '../../store/productColors';
 import { loadSKUs } from '../../store/skus';
 
 //MUI
@@ -16,7 +16,8 @@ const singleProduct = () => {
   const product = useSelector(state => (state.products.find(product => product.name === productName)));
   const colors = useSelector(state=>state.productColors);
   const sku = useSelector(state => state.skus);
-  const order = useSelector( state => state.order );
+  const order = useSelector(state => state.order);
+  const cart = useSelector(state => state.cart);
   const [size, setSize] = useState('');
   const [color, setColor] = useState('');
   const [lineItem, setLineItem] = useState({
@@ -48,6 +49,16 @@ const singleProduct = () => {
     setLineItem({ ...lineItem, productName: product.name, productColor: selectedColor.color, imageUrl: selectedColor.imageUrl});
   };
 
+  const handleClick = () => {
+    const existing_lineitem = cart.filter(line_item => line_item.productSKUId === lineItem.productSKUId);
+    console.log(existing_lineitem);
+    if (existing_lineitem.length > 0) {
+      dispatch(addQuantityToLineitem(lineItem, order));
+    } else {
+      dispatch(createNewLineitemInCart(lineItem, order))
+    }
+  }
+
   if (!product || !colors.length) return (
     <div>Loading...</div>
   )
@@ -72,8 +83,8 @@ const singleProduct = () => {
             >
               {!color ? <MenuItem value={''}>Please Select a Color</MenuItem> :
                 color.productSKUs.map(sku => sku.availableStock === 0 ?
-                  <MenuItem key={sku.id} value={sku} disabled={true} >{sku.size}  Out of Stock, check back soon!</MenuItem>
-                  : <MenuItem key={sku.id} value={sku}>{sku.size}  {sku.availableStock <= 3 ? `Only ${sku.availableStock} left!` : `${sku.availableStock}`}</MenuItem>)
+                  <MenuItem key={sku.id} value={sku} disabled={true} >{sku.size}  - Out of Stock </MenuItem>
+                  : <MenuItem key={sku.id} value={sku}> {sku.size} </MenuItem>)
               }
             </Select>
           </FormControl>
@@ -94,7 +105,7 @@ const singleProduct = () => {
             </Select>
           </FormControl>
           <br />
-          <Button color='black' variant="contained" onClick={() => { dispatch(addToCart(lineItem, order)) }}>Add to Cart</Button>
+          <Button color='black' variant="contained" onClick={() => { handleClick() }}>Add to Cart</Button>
         </Grid>
         <Grid item xs={12} sx={{padding: '0 3em'}}>
         <h3>Product Details</h3>
@@ -109,3 +120,5 @@ const singleProduct = () => {
 }
 
 export default singleProduct
+
+  // < MenuItem key = { sku.id } value = { sku } > { sku.size }  { sku.availableStock <= 3 ? `Only ${sku.availableStock} left!` : `${sku.availableStock}` }</MenuItem >)

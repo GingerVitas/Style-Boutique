@@ -22,8 +22,14 @@ const _emptyCart = () => ({ type: EMPTY_CART});
 // THUNK CREATORS
 export const loadCart = (order) =>  async dispatch => {
     try {
-        const line_items = (await axios.get(`/api/lineitems/${order.id}`)).data
-        dispatch(_loadCart(line_items));
+        const token = window.localStorage.getItem('token');
+        if (token) {
+            const userCart = (await axios.get(`/api/lineitems/${order.id}`)).data
+            dispatch(_loadCart(userCart));
+        } else {
+            const guestCart = JSON.parse(window.localStorage.getItem('cart'));
+            dispatch(_loadCart(guestCart));
+        }
     } catch (err){
         console.log(err)
     }
@@ -37,7 +43,6 @@ export const transformGuestCartToUserCart = (order) => async dispatch => {
             await Promise.all(
                 guestCart.map(async (lineitem) => {
                     const line_item = (await axios.put(`/api/lineitems/${lineitem.id}`, { lineitem, orderId: order.id })).data;
-                    console.log('RETURNED UPDATED line_item', line_item);
                     dispatch(_updateCart(line_item));
                 })
             );
@@ -49,17 +54,37 @@ export const transformGuestCartToUserCart = (order) => async dispatch => {
     }
 }
 
-export const addToCart = ( lineitem, order ) => async dispatch => {
+export const addQuantityToLineitem = ( lineitem, order ) => async dispatch => {
     try {
         const token = window.localStorage.getItem('token');
         if (token) {
-            const line_item = (await axios.post('/api/lineitems', { lineitem, orderId: order.id})).data;
+            const updatedLineItem = (await axios.put(`/api/lineitems/${lineitem.productSKUId}/${order.id}`)).data;
+            dispatch(_updateCart(updatedLineItem))
+        } else {
+            const guestCart = JSON.parse(window.localStorage.getItem('cart'));
+            const updated_guest_cart = guestCart.map(line_item => {
+                if (line_item.productSKUId === lineitem.productSKUId) {
+                    line_item.quantity += 1;
+                    return line_item;
+                }
+            })
+            window.localStorage.setItem("cart", JSON.stringify(updated_guest_cart));
+            dispatch(_updateCart(updated_guest_cart.find(line_item => line_item.productSKUId ===  lineitem.productSKUId )))
+        }
+        
+
+    } catch(err) {
+        console.log(err)
+    }
+}
+
+export const createNewLineitemInCart = (lineitem, order) => async dispatch => {
+    try {
+        const token = window.localStorage.getItem('token');
+        if (token) {
+            const line_item = (await axios.post('/api/lineitems', { lineitem, orderId: order.id })).data;
             console.log('CREATED LINEITEM', line_item)
             dispatch(_addToCart(line_item));
-
-            //decrement SKU available quantity, so product detail pg's drop down updates automatically.
-            const sku = (await axios.put(`/api/skus/${lineitem.productSKUId}`, { lineitem })).data;
-            console.log('RETURNED UPDATED SKU', sku);
         } else {
             const line_item = (await axios.post(`/api/lineitems/`, { lineitem })).data;
             cart.push(line_item);
@@ -67,7 +92,7 @@ export const addToCart = ( lineitem, order ) => async dispatch => {
             console.log('CREATED LINEITEM', JSON.parse(window.localStorage.getItem('cart')))
             dispatch(_addToCart(line_item));
         }
-    } catch(err) {
+    } catch (err) {
         console.log(err)
     }
 }
@@ -112,7 +137,6 @@ export default (state = [], action) => {
         case ADD_TO_CART:
             return state = [action.lineItem, ...state];
         case UPDATE_CART:
-            console.log('Before Mapping thru', action.lineItem);
             return state.map( item => item.id ===  action.lineItem.id ? action.lineItem : item )
         case REMOVE_LIST_ITEM:
             return state.filter( item => item.id !== action.lineItem.id );
@@ -126,3 +150,8 @@ export default (state = [], action) => {
             return state
     }
 }
+
+
+            //decrement SKU available quantity, so product detail pg's drop down updates automatically.
+            // const sku = (await axios.put(`/api/skus/${lineitem.productSKUId}`, { lineitem })).data;
+            // console.log('RETURNED UPDATED SKU', sku);
