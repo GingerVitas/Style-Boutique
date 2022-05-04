@@ -97,3 +97,14 @@ router.get('/orders', isAdmin, async(req, res, next) => {
     next(err)
   }
 });
+
+router.delete('/orders/:id', isAdmin, async(req, res, next) => {
+  try{
+    const order = await Order.findByPk(req.params.id);
+    await order.destroy();
+    res.sendStatus(204)
+  }
+  catch(err){
+    next(err)
+  }
+})

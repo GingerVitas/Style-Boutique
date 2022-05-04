@@ -11,7 +11,6 @@ const AdminTableToolbar = (props) => {
   const dispatch = useDispatch();
   
   const handleDelete = (selectedArray) => {
-    console.log('****in Handle Delete*****', selectedArray)
     if (display === 'users') {selectedArray.forEach((user) => dispatch(deleteUser(user)))}
     else if (display === 'inventory') {selectedArray.forEach((product) => dispatch(deleteProduct(product)))}
     else selectedArray.forEach((order) => dispatch(deleteOrder(order)));
