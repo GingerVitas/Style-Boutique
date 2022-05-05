@@ -8,7 +8,7 @@ import { loadColors } from '../../store/productColors';
 import { loadSKUs } from '../../store/skus';
 
 //MUI
-import { Button, InputLabel, MenuItem, FormControl, Select, Grid } from '@mui/material';
+import { Button, InputLabel, MenuItem, FormControl, Select, Grid, Box } from '@mui/material';
 
 const singleProduct = () => {
   const dispatch = useDispatch();
@@ -63,7 +63,7 @@ const singleProduct = () => {
     <div>Loading...</div>
   )
   return (
-    <div>
+    <Box sx={{padding: '4rem', marginTop: '1rem', maxHeight:'75vh'}}>
       <Grid container spacing={0} justifyContent="center" alignItems="center">
         <Grid item xs={7} sx={{}}>
           <img src={product.imageUrl} style={{ width: '40%', marginLeft: 'auto', marginRight: 'auto', display: 'block'}} /><br />
@@ -115,7 +115,7 @@ const singleProduct = () => {
         </div>
         </Grid>
       </Grid>
-    </div>
+    </Box>
   )
 }
 

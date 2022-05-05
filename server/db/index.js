@@ -1,5 +1,6 @@
 //this is the access point for all things database related!
 const db = require("./db");
+const Sequelize = require('sequelize');
 const Address = require("./models/Address");
 const LineItem = require("./models/LineItem");
 const Order = require("./models/Order");
@@ -45,8 +46,6 @@ ProductColor.belongsTo(Product);
 
 ProductColor.hasMany(ProductSKU);
 ProductSKU.belongsTo(ProductColor);
-
-
 
 module.exports = {
   db,

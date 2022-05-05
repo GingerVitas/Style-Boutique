@@ -14,7 +14,8 @@ import { StyledBadge } from "../../../public/styles";
 // import { styled, alpha } from "@mui/material/styles";
 // import Search, { SearchIconWrapper, StyledInputBase } from "./NavBarElems";
 
-const Navbar = ({ handleClick, empty_cart, clearOrder, isLoggedIn, lineItems }) => {
+const Navbar = ({ handleClick, empty_cart, clearOrder, isLoggedIn, lineItems, auth }) => {
+
   return(
   <div>
     <nav>
@@ -25,7 +26,12 @@ const Navbar = ({ handleClick, empty_cart, clearOrder, isLoggedIn, lineItems }) 
               <MenuItem component={Link} to={"/home"} sx={{ "&:hover": {bgcolor: "transparent"}}}>
                 <Typography variant='logo'>STYLE BOUTIQUE</Typography>
               </MenuItem>
-                <MenuItem component={Link} to={"/home"} onClick={()=> {handleClick(); empty_cart(); clearOrder()}} sx={{ "&:hover": { bgcolor: "transparent" }, marginLeft: "auto"}}>
+
+              {auth.isAdmin ? <MenuItem component={Link} to={"/adminDashboard"} sx={{ "&:hover": { bgcolor: "transparent" }, marginLeft: "auto"}}>
+                <Typography variant='menuitem'>Admin Dashboard</Typography>
+              </MenuItem> : '' }
+              <MenuItem component={Link} to={"/home"} onClick={()=> {handleClick(); empty_cart(); clearOrder() }} sx={{ "&:hover": { bgcolor: "transparent" },  marginLeft: !auth.isAdmin ? "auto" : ''}}>
+
                 <Typography variant='menuitem'>Logout</Typography>
               </MenuItem>
               <MenuItem component={Link} to={"/account"} sx={{ "&:hover": { bgcolor: "transparent" } }}>
@@ -98,6 +104,7 @@ const mapState = (state) => {
   return {
     lineItems: state.cart,
     isLoggedIn: !!state.auth.id,
+    auth: state.auth
   };
 };
 

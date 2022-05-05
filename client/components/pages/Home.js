@@ -1,14 +1,16 @@
-import React from "react";
+import React, {useState} from "react";
 import { connect } from "react-redux";
+import {Button} from '@mui/material'
 import Products from "../Products";
 
 /**
  * COMPONENT
  */
 const Home = (props) => {
-  const { username } = props;
+  const { firstName, isAdmin } = props;
+  const [adminView, setAdminView] = useState(false)
 
-  return (
+  if(!isAdmin) return (
     <div
     // style={{
     //   display: "flex",
@@ -17,10 +19,17 @@ const Home = (props) => {
     //   height: "100vh",
     // }}
     >
-      <h3 style={{marginLeft: '40px'}}>Welcome, {username ? username : "Guest"}</h3>
-      <Products />
+      <h3 style={{marginLeft: '40px'}}>Welcome, {firstName ? firstName : "Guest"}</h3>
+      <Products adminView={adminView}/>
     </div>
   );
+  else return (
+    <div>
+      <h3 style={{marginLeft: '40px'}}>Welcome, {firstName}</h3>
+      <Button variant={adminView ? 'contained' : 'outlined'} onClick={()=>adminView ? setAdminView(false) : setAdminView(true)} className={adminView ? 'selected' : ''} sx={{padding:'.5rem', margin:'1rem'}}>Toggle Admin View</Button>
+      <Products adminView={adminView}/>
+    </div>
+  )
 };
 
 /**
@@ -28,7 +37,8 @@ const Home = (props) => {
  */
 const mapState = (state) => {
   return {
-    username: state.auth.username,
+    firstName: state.auth.firstName,
+    isAdmin: state.auth.isAdmin
   };
 };
 
