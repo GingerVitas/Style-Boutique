@@ -39,11 +39,13 @@ let cart = [];
 export const transformGuestCartToUserCart = (order) => async dispatch => {
     try {
         let guestCart = JSON.parse(window.localStorage.getItem('cart'));
-        if(guestCart) {
+        console.log(guestCart);
+        if(guestCart.length > 0) {
             await Promise.all(
                 guestCart.map(async (lineitem) => {
                     const line_item = (await axios.put(`/api/lineitems/${lineitem.id}`, { lineitem, orderId: order.id })).data;
-                    dispatch(_updateCart(line_item));
+                    dispatch(_updateCart(line_item[0]));
+                    dispatch(_removeListItem(line_item[1]))
                 })
             );
             window.localStorage.removeItem('cart');
@@ -58,13 +60,16 @@ export const addQuantityToLineitem = ( lineitem, order ) => async dispatch => {
     try {
         const token = window.localStorage.getItem('token');
         if (token) {
-            const updatedLineItem = (await axios.put(`/api/lineitems/${lineitem.productSKUId}/${order.id}`)).data;
+            const updatedLineItem = (await axios.put(`/api/lineitems/add/${lineitem.productSKUId}`, { orderId: order.id, lineitem: { ...lineitem } })).data;
             dispatch(_updateCart(updatedLineItem))
         } else {
+            console.log('ENTERED 65')
+            const updatedLineItem = (await axios.put(`/api/lineitems/add/${lineitem.productSKUId}`, { lineitem: {...lineitem} })).data;
+
             const guestCart = JSON.parse(window.localStorage.getItem('cart'));
             const updated_guest_cart = guestCart.map(line_item => {
                 if (line_item.productSKUId === lineitem.productSKUId) {
-                    line_item.quantity += 1;
+                    line_item.quantity = updatedLineItem.quantity;
                     return line_item;
                 }
             })

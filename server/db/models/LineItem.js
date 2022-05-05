@@ -58,8 +58,8 @@ const LineItem = db.define("line_item", {
 });
 
 //instance method
-LineItem.prototype.incrementQuantity = function() {
-  this.quantity += 1
+LineItem.prototype.incrementQuantity = function(quantity = 1) {
+  this.quantity += quantity
   this.save();
   return this;
 }
