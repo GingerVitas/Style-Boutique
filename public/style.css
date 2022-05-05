@@ -79,11 +79,15 @@ p {
 }
 
 /* ACCOUNT  _____________________________________________________*/
-button.center {
+button.submit {
   margin: 0;
   position: absolute;
   left: 30%;
   transform: translate(30%, 30%);
+}
+
+button.submit {
+  margin: 0;
 }
 
 .account-intro {
@@ -119,6 +123,7 @@ input {
 }
 
 button {
+  border-radius: 2px 2px 2px 2px;
   color: #3e3b3b;
   background-color: #eae6e6;
   border: 1px solid #3e3b3b;
