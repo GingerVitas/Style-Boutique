@@ -2,7 +2,7 @@ import React, {useState} from 'react';
 import {useSelector, useDispatch} from 'react-redux'
 import {Link, useParams} from 'react-router-dom';
 import {Card, CardActionArea, Button, Modal, Box, FormControl, InputLabel, Select, MenuItem, CardContent, CardMedia, Typography,} from '@mui/material';
-import {deleteProduct, deleteProductColors, deleteProductSKUs} from '../store/admin'
+import {deleteProduct} from '../store/admin'
 
 
 const ProductCard = (props) => {
