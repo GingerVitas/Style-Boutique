@@ -65,11 +65,12 @@ export const addQuantityToLineitem = ( lineitem, order ) => async dispatch => {
         } else {
             console.log('ENTERED 65')
             const updatedLineItem = (await axios.put(`/api/lineitems/add/${lineitem.productSKUId}`, { lineitem: {...lineitem} })).data;
-
+            
             const guestCart = JSON.parse(window.localStorage.getItem('cart'));
             const updated_guest_cart = guestCart.map(line_item => {
                 if (line_item.productSKUId === lineitem.productSKUId) {
                     line_item.quantity = updatedLineItem.quantity;
+                    line_item.total = updatedLineItem.total;
                     return line_item;
                 }
             })

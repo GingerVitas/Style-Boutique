@@ -37,10 +37,6 @@ router.put('/:lineitemId', async ({ body: { lineitem, orderId } }, res, next) =>
     try {
         console.log('***********************POST /api/lineitems ', lineitem, orderId)
 
-        // see if user already have that SKU
-            // IF YES: FIND THAT LINE ITEM, ADD QUANTITY, DON'T NEED TO ADD ORDER ID, DELETE THIS LINEITEM.
-            // IF NO: UPDATE THE GUEST'S LINE ITEM W ORDER ID.
-
         const user_existing_line_item = await LineItem.findAll({
             where : {
                 productSKUId: lineitem.productSKUId,
