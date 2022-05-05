@@ -1,11 +1,11 @@
 body {
   font-family: sans-serif;
-  color: #2C2C2C;
+  color: #2c2c2c;
   margin: 0;
   margin-top: 120px;
 }
 
-.content{
+.content {
   width: 80%;
   margin: auto;
 }
@@ -32,7 +32,7 @@ h4 {
   font-size: 1.5rem;
   font-weight: 400;
   color: #444444;
-  margin: 20px 0
+  margin: 20px 0;
 }
 
 p {
@@ -42,7 +42,7 @@ p {
 .totalBox {
   float: right;
   width: 50%;
-  background-color: #EFEFEF;
+  background-color: #efefef;
   padding: 30px;
 }
 
@@ -60,13 +60,13 @@ p {
 .fbbttn {
   margin-bottom: 30px;
 }
-.fbbttn div{
+.fbbttn div {
   padding: 0;
   margin: 0;
   font-size: 0.75rem;
 }
 
-.ggbttn div{
+.ggbttn div {
   padding: 0;
   margin: 0;
   font-size: 0.75rem;
@@ -76,4 +76,64 @@ p {
   padding: 0;
   margin: 0;
   font-size: 0.75rem;
+}
+
+/* ACCOUNT  _____________________________________________________*/
+button.center {
+  margin: 0;
+  position: absolute;
+  left: 30%;
+  transform: translate(30%, 30%);
+}
+
+.account-intro {
+  width: 50%;
+  text-align: center;
+  padding: 10px 70px;
+  margin: auto;
+}
+
+.account-body {
+  width: 70%;
+  text-align: left;
+  padding: 10px 70px;
+  margin: auto;
+}
+
+.contact-info {
+  font-family: sans-serif;
+  color: #2c2c2c;
+  margin-bottom: 5px;
+}
+
+.accountLabel {
+  display: block;
+  color: #000000;
+}
+
+input {
+  width: 40%;
+  color: #2c2c2c;
+  padding: 4px 5px;
+  margin: 5px;
+}
+
+button {
+  color: #3e3b3b;
+  background-color: #eae6e6;
+  border: 1px solid #3e3b3b;
+  padding: 7px 9px;
+  margin-top: 10px;
+}
+
+button:hover {
+  background-color: #000000;
+  color: #ffffff;
+}
+
+.accountLinks {
+  font-family: sans-serif;
+  color: #2c2c2c;
+  margin: 20;
+  margin-top: 70px;
 }

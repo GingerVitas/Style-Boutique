@@ -32,39 +32,45 @@ class Account extends React.Component {
     const auth = this.props.auth;
     return (
       <div>
-        <h1>User Account Information</h1>
-        <div className="editIcon">edit icon here</div>
-        <form onSubmit={this.handleSubmit}>
-          <label>
-            First Name:
-            <input
-              name="firstName"
-              type="text"
-              value={this.state.firstName}
-              onChange={this.handleChange}
-            />
-          </label>
-          <label>
-            Last Name:
-            <input
-              name="lastName"
-              type="text"
-              value={this.state.lastName}
-              onChange={this.handleChange}
-            />
-          </label>
-          <label>
-            Email:
-            <input
-              name="email"
-              type="text"
-              value={this.state.email}
-              onChange={this.handleChange}
-            />
-          </label>
-          <button type="submit">Submit</button>
-        </form>
-        {/* <table className="accountInfo">
+        <h4 className="account-intro">User Account Information</h4>
+
+        <div className="account-body">
+          <p className="edit-icon">
+            Click here to edit your contact information.
+          </p>
+          <form className="contact-info" onSubmit={this.handleSubmit}>
+            <label className="accountLabel">
+              First Name:
+              <input
+                name="firstName"
+                type="text"
+                value={this.state.firstName}
+                onChange={this.handleChange}
+              />
+            </label>
+            <label className="accountLabel">
+              Last Name:
+              <input
+                name="lastName"
+                type="text"
+                value={this.state.lastName}
+                onChange={this.handleChange}
+              />
+            </label>
+            <label className="accountLabel">
+              Email:
+              <input
+                name="email"
+                type="text"
+                value={this.state.email}
+                onChange={this.handleChange}
+              />
+            </label>
+            <button className="center" type="submit">
+              Submit Changes
+            </button>
+          </form>
+          {/* <table className="accountInfo">
           <tbody>
             <tr>
               <th>First Name:</th>
@@ -78,17 +84,16 @@ class Account extends React.Component {
               <th>Email:</th>
               <td>{auth.email}</td>
             </tr>
-            <tr>
-              <th>Address:</th>
-              <td>Street Address, City, State, zip</td>
-            </tr>
+          
           </tbody>
         </table> */}
 
-        <div className="accountLinks">
-          <button>Update Password</button>
-          <div className="internalLink">
-            <Link to="/order_history">Order History</Link>
+          <div className="accountLinks">
+            <button>Update Password</button>
+            <div className="internal-link">
+              <p>Address Book</p>
+              <Link to="/order_history">Order History</Link>
+            </div>
           </div>
         </div>
       </div>
@@ -98,14 +103,14 @@ class Account extends React.Component {
 
 const mapDispatch = (dispatch) => {
   return {
-    updateUser: (user) => dispatch(updateUser(user))
+    updateUser: (user) => dispatch(updateUser(user)),
   };
 };
 
 const mapState = (state) => {
   return {
     auth: state.auth,
-    order: state.order
+    order: state.order,
   };
 };
 
