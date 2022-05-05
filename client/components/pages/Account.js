@@ -66,8 +66,8 @@ class Account extends React.Component {
                 onChange={this.handleChange}
               />
             </label>
-            <button className="center" type="submit">
-              Submit Changes
+            <button className="submit" type="submit">
+              SUBMIT
             </button>
           </form>
           {/* <table className="accountInfo">
