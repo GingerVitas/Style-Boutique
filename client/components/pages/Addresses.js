@@ -4,7 +4,7 @@ import { connect } from "react-redux";
 const Addresses = ({ address }) => {
   return (
     <div>
-      <ul>All addresses listed here</ul>
+      <ul>All addresses will be listed here.</ul>
     </div>
   );
 };

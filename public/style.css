@@ -79,15 +79,15 @@ p {
 }
 
 /* ACCOUNT  _____________________________________________________*/
+#edit {
+  font-weight: bold;
+}
+
 button.submit {
   margin: 0;
   position: absolute;
   left: 30%;
   transform: translate(30%, 30%);
-}
-
-button.submit {
-  margin: 0;
 }
 
 .account-intro {
@@ -123,17 +123,18 @@ input {
 }
 
 button {
-  border-radius: 2px 2px 2px 2px;
-  color: #3e3b3b;
-  background-color: #eae6e6;
+  border-radius: 2px;
+  background-color: #000000;
+  color: #ffffff;
   border: 1px solid #3e3b3b;
-  padding: 7px 9px;
+  padding: 10px 15px;
   margin-top: 10px;
 }
 
 button:hover {
-  background-color: #000000;
-  color: #ffffff;
+  color: #464444;
+  background-color: #e9e6e6;
+  border: 1.5px solid #464444;
 }
 
 #password {
