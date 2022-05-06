@@ -1,13 +1,10 @@
 import React from 'react'
 
-// redux
-import { connect } from 'react-redux'
-
 // child components
 import LineItem from './LineItem'
 
 const LineItems = props => {
-    const { lineItems, products, routeProps } = props
+    const { lineItems, routeProps } = props
     console.log(routeProps)
     return (
         <div>
@@ -26,11 +23,5 @@ const LineItems = props => {
     )
 }
 
-const mapState = state => {
-    return {
-        products: state.skus,
-    }
-}
-
-export default connect(mapState)(LineItems);
+export default LineItems;
 

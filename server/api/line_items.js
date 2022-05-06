@@ -67,14 +67,14 @@ router.put('/:lineitemId', async ({ body: { lineitem, orderId } }, res, next) =>
 router.put('/add/:productSKUId', async(req, res, next) => {
     try { 
         if (!req.body.orderId) {
-            console.log('ENTERED 75')
+            console.log('ENTERED 75', req.params.productSKUId, req.body)
             const line_item = await LineItem.findOne({
                 where: {
                     productSKUId: req.params.productSKUId,
                     orderId: null
                 }
             })
-            res.json(line_item.incrementQuantity());
+            res.json(line_item.incrementQuantity(req.body.lineitem.quantity));
         } else {
             const line_item = await LineItem.findOne({
                 where: {
@@ -82,7 +82,7 @@ router.put('/add/:productSKUId', async(req, res, next) => {
                     orderId: req.body.orderId
                 }
             });
-            res.json(line_item.incrementQuantity());
+            res.json(line_item.incrementQuantity(req.body.lineitem.quantity));
         }
     } catch (err) {
         next(err)
