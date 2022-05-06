@@ -136,9 +136,12 @@ button:hover {
   color: #ffffff;
 }
 
-.accountLinks {
-  font-family: sans-serif;
+#password {
+  margin-top: 75px;
+}
+
+.internalLink {
+  font-weight: bold;
   color: #2c2c2c;
-  margin: 20;
-  margin-top: 70px;
+  margin-top: 20px;
 }

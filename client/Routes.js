@@ -4,7 +4,7 @@ import React, { Component, Fragment } from "react";
 import { connect } from "react-redux";
 import { me } from "./store";
 import { loadProducts } from "./store/products";
-import { loadCategories } from './store/categories';
+import { loadCategories } from "./store/categories";
 import { loadOrCreate } from "./store/order";
 import { loadCart, transformGuestCartToUserCart } from "./store/cart";
 
@@ -15,12 +15,14 @@ import { withRouter, Route, Switch, Redirect } from "react-router-dom";
 import { Login, Signup } from "./components/pages/AuthForm";
 import Home from "./components/pages/Home";
 import Account from "./components/pages/Account";
+import Addresses from "./components/pages/Addresses";
+import OrderHistory from "./components/pages/OrderHistory";
 import Cart from "./components/pages/Cart";
 import Checkout from "./components/Checkout";
-import SingleProduct from './components/pages/SingleProduct';
+import SingleProduct from "./components/pages/SingleProduct";
 import SignOut from "./components/pages/SignOut";
-import AdminDashboard from './components/pages/AdminDashboard';
-import Unauthorized from './components/pages/Unauthorized';
+import AdminDashboard from "./components/pages/AdminDashboard";
+import Unauthorized from "./components/pages/Unauthorized";
 
 class Routes extends Component {
   componentDidMount() {
@@ -44,17 +46,33 @@ class Routes extends Component {
 
   render() {
     const { isLoggedIn, auth } = this.props;
-    console.log('this.props.auth: ', this.props.auth,'this.props.order: ', this.props.order);
+    console.log(
+      "this.props.auth: ",
+      this.props.auth,
+      "this.props.order: ",
+      this.props.order
+    );
     return (
       <div>
         {isLoggedIn ? (
           <Switch>
-            <Route path="/home" component={Home} />
+            <Route exact path="/home" component={Home} />
+            <Route path="/order_history" component={OrderHistory} />
             <Route path="/account" component={Account} />
+            <Route path="/addresses" component={Addresses} />
             <Route path="/cart" component={Cart} />
-            <Route path='/:categoryName/:productName' component={SingleProduct} />
-            <Route path="/checkout" render={(routeProps) => <Checkout routeProps={routeProps} />} />
-            <Route path='/adminDashboard' component={auth.isAdmin ? AdminDashboard : Unauthorized} />
+            <Route
+              path="/:categoryName/:productName"
+              component={SingleProduct}
+            />
+            <Route
+              path="/checkout"
+              render={(routeProps) => <Checkout routeProps={routeProps} />}
+            />
+            <Route
+              path="/adminDashboard"
+              component={auth.isAdmin ? AdminDashboard : Unauthorized}
+            />
             <Redirect
               to={
                 this.props.location.state &&
@@ -68,13 +86,28 @@ class Routes extends Component {
           <Switch>
             <Route path="/" exact component={Home} />
             <Route path="/home" component={Home} />
-            <Route path="/login" render={(routeProps) => <Login routeProps={routeProps} />}/>
-            <Route path="/signup" render={(routeProps) => <Signup routeProps={routeProps}/>}/>
-            <Route path="/cart" render={(routeProps) => <Cart routeProps={routeProps} />}/>
-            <Route path='/:categoryName/:productName' component={SingleProduct} />
-            <Route path="/checkout" render={(routeProps) => <Checkout routeProps={routeProps} />}/>
-            <Route path="/logout" component={SignOut}/>
-            <Route path='/adminDashboard' component={Unauthorized} />
+            <Route
+              path="/login"
+              render={(routeProps) => <Login routeProps={routeProps} />}
+            />
+            <Route
+              path="/signup"
+              render={(routeProps) => <Signup routeProps={routeProps} />}
+            />
+            <Route
+              path="/cart"
+              render={(routeProps) => <Cart routeProps={routeProps} />}
+            />
+            <Route
+              path="/:categoryName/:productName"
+              component={SingleProduct}
+            />
+            <Route
+              path="/checkout"
+              render={(routeProps) => <Checkout routeProps={routeProps} />}
+            />
+            <Route path="/logout" component={SignOut} />
+            <Route path="/adminDashboard" component={Unauthorized} />
           </Switch>
         )}
       </div>
@@ -88,7 +121,7 @@ const mapState = (state) => {
     // Otherwise, state.auth will be an empty object, and state.auth.id will be falsey
     isLoggedIn: !!state.auth.id,
     auth: state.auth,
-    order: state.order
+    order: state.order,
   };
 };
 
@@ -103,15 +136,15 @@ const mapDispatch = (dispatch) => {
     fetchCategories() {
       dispatch(loadCategories());
     },
-    fetchOrder(auth){
+    fetchOrder(auth) {
       dispatch(loadOrCreate(auth));
     },
-    fetchCart(order){
+    fetchCart(order) {
       dispatch(loadCart(order));
     },
-    transformGuestCartToUserCart(order){
-      dispatch(transformGuestCartToUserCart(order))
-    }
+    transformGuestCartToUserCart(order) {
+      dispatch(transformGuestCartToUserCart(order));
+    },
   };
 };
 
