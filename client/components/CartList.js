@@ -16,6 +16,7 @@ const CartList = props => {
                 <div>
                     <h4>Shopping Bag</h4>
                     <p>Enjoy free shipping on orders of $50 or more.</p>
+                    <hr />
                     <LineItems lineItems={cartlist} routeProps={routeProps} />
                     <Total lineItems={cartlist} />
                 </div>

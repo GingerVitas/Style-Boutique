@@ -35,7 +35,6 @@ export const loadCart = (order) =>  async dispatch => {
     }
 }
 
-let cart = [];
 export const transformGuestCartToUserCart = (order) => async dispatch => {
     try {
         let guestCart = JSON.parse(window.localStorage.getItem('cart'));
@@ -49,7 +48,6 @@ export const transformGuestCartToUserCart = (order) => async dispatch => {
                 })
             );
             window.localStorage.removeItem('cart');
-            cart = [];
         }     
     } catch (err) {
         console.log(err)
@@ -64,12 +62,14 @@ export const addQuantityToLineitem = ( lineitem, order ) => async dispatch => {
             dispatch(_updateCart(updatedLineItem))
         } else {
             console.log('ENTERED 65')
-            const updatedLineItem = (await axios.put(`/api/lineitems/add/${lineitem.productSKUId}`, { lineitem: {...lineitem} })).data;
-
+            console.log(lineitem, order)
+            const updatedLineItem = (await axios.put(`/api/lineitems/add/${lineitem.productSKUId}`, { lineitem })).data;
+            console.log(updatedLineItem)
             const guestCart = JSON.parse(window.localStorage.getItem('cart'));
             const updated_guest_cart = guestCart.map(line_item => {
                 if (line_item.productSKUId === lineitem.productSKUId) {
                     line_item.quantity = updatedLineItem.quantity;
+                    line_item.total = updatedLineItem.total;
                     return line_item;
                 }
             })
@@ -91,9 +91,16 @@ export const createNewLineitemInCart = (lineitem, order) => async dispatch => {
             console.log('CREATED LINEITEM', line_item)
             dispatch(_addToCart(line_item));
         } else {
+            let cart = [];
             const line_item = (await axios.post(`/api/lineitems/`, { lineitem })).data;
-            cart.push(line_item);
-            window.localStorage.setItem("cart", JSON.stringify(cart));
+            const existing_cart = window.localStorage.getItem('cart');
+            if (existing_cart === null || JSON.parse(existing_cart).length === 0) {
+                cart.push(line_item);
+                window.localStorage.setItem("cart", JSON.stringify(cart));
+            } else {
+                cart = [line_item, ...JSON.parse(existing_cart)];
+                window.localStorage.setItem("cart", JSON.stringify(cart));
+            }
             console.log('CREATED LINEITEM', JSON.parse(window.localStorage.getItem('cart')))
             dispatch(_addToCart(line_item));
         }
@@ -112,8 +119,19 @@ export const emptyCart = () => async dispatch => {
 
 export const removeListItem = (listitemId) => async dispatch => {
     try {
-        const data = (await axios.delete(`/api/lineitems/${listitemId}`)).data;
-        dispatch(_removeListItem(data));
+        const token = window.localStorage.getItem('token');
+
+        if(token) {
+            const data = (await axios.delete(`/api/lineitems/${listitemId}`)).data;
+            dispatch(_removeListItem(data));
+        } else {
+            const data = (await axios.delete(`/api/lineitems/${listitemId}`)).data;
+            const cart = JSON.parse(window.localStorage.getItem('cart')).filter(line_item => line_item.id !== listitemId );
+            window.localStorage.setItem("cart", JSON.stringify(cart));
+            dispatch(_removeListItem(data));
+        }
+        
+        
     } catch(err) {
         console.log(err)
     }

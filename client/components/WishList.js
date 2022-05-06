@@ -10,6 +10,8 @@ const WishList = props => {
     const { routeProps, wishlist } = props
     return (
         <div>
+            <h4>Wish List</h4>
+            <hr />
             <LineItems lineItems={wishlist} routeProps={routeProps} />
         </div>
     )
