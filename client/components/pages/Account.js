@@ -88,10 +88,13 @@ class Account extends React.Component {
           </tbody>
         </table> */}
 
-          <div className="accountLinks">
-            <button>Update Password</button>
-            <div className="internal-link">
-              <p>Address Book</p>
+          <div>
+            <button id="password">Update Password</button>
+
+            <div className="internalLink">
+              <Link to="/addresses">Address Book</Link>
+            </div>
+            <div className="internalLink">
               <Link to="/order_history">Order History</Link>
             </div>
           </div>
