@@ -40,7 +40,6 @@ const AdminDashboard = () => {
 
   // useEffect(()=>{
   //     dispatch(loadAdminUsers());
-  //   // dispatch(loadAdminUsers())
   // }, [adminUsers]);
 
   // useEffect(()=>{
