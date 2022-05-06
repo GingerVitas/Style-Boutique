@@ -4,7 +4,7 @@ import { connect } from "react-redux";
 const OrderHistory = () => {
   return (
     <div>
-      <ul>All orders listed here</ul>
+      <ul>All orders will be listed here.</ul>
     </div>
   );
 };

@@ -35,9 +35,9 @@ class Account extends React.Component {
         <h4 className="account-intro">User Account Information</h4>
 
         <div className="account-body">
-          <p className="edit-icon">
-            Click here to edit your contact information.
-          </p>
+          {
+            // (
+          }
           <form className="contact-info" onSubmit={this.handleSubmit}>
             <label className="accountLabel">
               First Name:
@@ -70,7 +70,11 @@ class Account extends React.Component {
               SUBMIT
             </button>
           </form>
-          {/* <table className="accountInfo">
+          {/* ) : (
+            <button id="edit" type="edit">
+              EDIT
+            </button>
+             <table className="accountInfo">
           <tbody>
             <tr>
               <th>First Name:</th>
@@ -86,7 +90,7 @@ class Account extends React.Component {
             </tr>
           
           </tbody>
-        </table> */}
+        </table> ) */}
 
           <div>
             <button id="password">Update Password</button>
