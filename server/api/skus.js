@@ -14,3 +14,13 @@ router.get('/:name', async(req, res, next)=> {
     next(err)
   }
 });
+
+router.get('/delete/:id', async(req, res, next)=> {
+  try{
+    const skus = await ProductSKU.findAll({where: {productColorId: req.params.id}})
+    res.json(skus);
+  }
+  catch(err){
+    next(err)
+  }
+})

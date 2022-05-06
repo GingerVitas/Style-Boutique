@@ -70,7 +70,7 @@ export const deleteProduct = (product) => async dispatch => {
   try{
     const colors = (await axios.get(`/api/colors/delete/${product.id}`)).data
     const skus = (await Promise.all(colors.map(async(color)=>{
-      const colorSkus = (await axios.get(`/api/skus//delete/${color.id}`)).data
+      const colorSkus = (await axios.get(`/api/skus/delete/${color.id}`)).data
       return colorSkus
     }))).flat()
     
