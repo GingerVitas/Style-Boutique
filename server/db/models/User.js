@@ -40,9 +40,9 @@ const User = db.define("user", {
     get() {
       return `${this.firstName} ${this.lastName}`;
     },
-    set(value) {
-      throw new Error("Do not try to set the `fullName` value!");
-    },
+    // set(value) {
+    //   throw new Error("Do not try to set the `fullName` value!");
+    // },
   },
   email: {
     type: Sequelize.STRING,

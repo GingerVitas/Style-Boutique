@@ -9,7 +9,13 @@ const _loadSKUs = skus => ({type: LOAD_SKUs, skus});
 // Thunks
 export const loadSKUs = productName => {
   return async(dispatch) => {
-    const skus = (await axios.get(`/api/skus/${productName}`)).data
+    let name;
+    if(productName.includes('%')){
+      name = decodeURIComponent(productName)
+    } else {
+      name = productName;
+    }
+    const skus = (await axios.get(`/api/skus/${name}`)).data
     dispatch(_loadSKUs(skus))
   }
 }

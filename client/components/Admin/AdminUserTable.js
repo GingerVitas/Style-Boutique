@@ -1,7 +1,8 @@
-import * as React from 'react';
+import React, {useState} from 'react';
 import {Box, Container, Button, Modal, Card, CardContent, Typography, Table, TableBody, TableCell, TableContainer, TablePagination, TableRow, Paper, Checkbox, FormControlLabel, Switch} from '@mui/material';
 import AdminTableToolbar from './AdminTableToolbar';
 import AdminUserTableHeader from './AdminUserTableHeader';
+import UserModal from './UserModal';
 
 function descendingComparator(a, b, orderBy) {
   if (b[orderBy] < a[orderBy]) {
@@ -21,14 +22,14 @@ function getComparator(order, orderBy) {
 
 export default function AdminUserTable(props) {
   const {users, display} = props
-  const [order, setOrder] = React.useState('asc');
-  const [orderBy, setOrderBy] = React.useState('fullName');
-  const [selected, setSelected] = React.useState([]);
-  const [page, setPage] = React.useState(0);
-  const [dense, setDense] = React.useState(false);
-  const [rowsPerPage, setRowsPerPage] = React.useState(10);
-  const [open, setOpen] = React.useState(false);
-  const [user, setUser] = React.useState({});
+  const [order, setOrder] = useState('asc');
+  const [orderBy, setOrderBy] = useState('fullName');
+  const [selected, setSelected] = useState([]);
+  const [page, setPage] = useState(0);
+  const [dense, setDense] = useState(false);
+  const [rowsPerPage, setRowsPerPage] = useState(10);
+  const [open, setOpen] = useState(false);
+  const [user, setUser] = useState({});
   const handleClose = () => setOpen(false);
   const handleModal = (user) => {
     setUser(user)  
@@ -155,7 +156,7 @@ export default function AdminUserTable(props) {
                           <Button onClick={()=>handleModal(user)} >{user.fullName}</Button>
                         </TableCell>
                         <TableCell align="right">{user.email}</TableCell>
-                        <TableCell align="right">{user.orders.length}</TableCell>
+                        <TableCell align="right">{user.orders ? user.orders.length : 0}</TableCell>
                         <TableCell align="right">{user.createdAt}</TableCell>
                         <TableCell align="right">{user.updatedAt}</TableCell>
                       </TableRow>
@@ -171,24 +172,6 @@ export default function AdminUserTable(props) {
                 </TableRow>
               )}
             </TableBody>
-            <Modal
-              open={open}
-              onClose={handleClose}
-              >
-              <Card sx={style}>
-              <Typography variant="h6" component="h2">
-                {user.fullName}
-              </Typography>
-              <Box sx={{display:'flex', flexDirection:'column', margin:'1rem'}}>
-                <Typography variant='h6' component='h3'>
-                  {`First Name: ${user.firstName}
-                  Last Name:${user.lastName}
-                  Email: ${user.email}
-                  Past Orders: ${user.orders}`}
-                </Typography>
-              </Box>
-            </Card>
-          </Modal>
           </Table>
         </TableContainer>
         <TablePagination
@@ -205,6 +188,11 @@ export default function AdminUserTable(props) {
         control={<Switch checked={dense} onChange={handleChangeDense} />}
         label="Condensed View"
       />
+      <Modal open={open} onClose={handleClose}>
+        <div>
+         <UserModal user={user}/>
+        </div>
+      </Modal>
     </Box>
   );
 }

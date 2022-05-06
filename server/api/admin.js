@@ -19,7 +19,7 @@ router.get('/users', isAdmin, async(req, res, next) => {
       attributes: {
         exclude: ['password']
       },
-      include: [{model: Order}, {model: Address}]
+      include: [{model: Order, include: {model: LineItem}}, {model: Address}]
     });
     res.send(users);
   }
@@ -41,6 +41,23 @@ router.delete('/users/:id', isAdmin, async(req, res, next) => {
       throw error
     }
 
+  }
+  catch(err){
+    next(err)
+  }
+});
+
+router.put('/users/:id', isAdmin, async(req, res, next)=> {
+  try{
+    const user = await User.findByPk(req.params.id);
+    await user.update(req.body);
+    const updatedUser = User.findByPk(user.id, {
+      attributes: {
+        exclude: ['password']
+      },
+      include: [{model: Order, include: {model: LineItem}}, {model: Address}]
+    })
+    res.send(updatedUser)
   }
   catch(err){
     next(err)
