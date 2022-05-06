@@ -51,7 +51,7 @@ router.put('/users/:id', isAdmin, async(req, res, next)=> {
   try{
     const user = await User.findByPk(req.params.id);
     await user.update(req.body);
-    const updatedUser = User.findByPk(user.id, {
+    const updatedUser = await User.findByPk(user.id, {
       attributes: {
         exclude: ['password']
       },

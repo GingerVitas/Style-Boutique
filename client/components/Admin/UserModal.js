@@ -20,6 +20,7 @@ const UserModal = props => {
   const handleSubmit = (evt)  => {
     evt.preventDefault();
     const {orders, addresses, ...updatedUser} = state;
+    console.log('********HANDLE SUBMIT********', updatedUser)
     dispatch(adminUpdateUser(updatedUser));
     setEditState(false)
   }
