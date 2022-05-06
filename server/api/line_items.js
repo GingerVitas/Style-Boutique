@@ -37,10 +37,6 @@ router.put('/:lineitemId', async ({ body: { lineitem, orderId } }, res, next) =>
     try {
         console.log('***********************POST /api/lineitems ', lineitem, orderId)
 
-        // see if user already have that SKU
-            // IF YES: FIND THAT LINE ITEM, ADD QUANTITY, DON'T NEED TO ADD ORDER ID, DELETE THIS LINEITEM.
-            // IF NO: UPDATE THE GUEST'S LINE ITEM W ORDER ID.
-
         const user_existing_line_item = await LineItem.findAll({
             where : {
                 productSKUId: lineitem.productSKUId,
@@ -71,14 +67,14 @@ router.put('/:lineitemId', async ({ body: { lineitem, orderId } }, res, next) =>
 router.put('/add/:productSKUId', async(req, res, next) => {
     try { 
         if (!req.body.orderId) {
-            console.log('ENTERED 75')
+            console.log('ENTERED 75', req.params.productSKUId, req.body)
             const line_item = await LineItem.findOne({
                 where: {
                     productSKUId: req.params.productSKUId,
                     orderId: null
                 }
             })
-            res.json(line_item.incrementQuantity());
+            res.json(line_item.incrementQuantity(req.body.lineitem.quantity));
         } else {
             const line_item = await LineItem.findOne({
                 where: {
@@ -86,7 +82,7 @@ router.put('/add/:productSKUId', async(req, res, next) => {
                     orderId: req.body.orderId
                 }
             });
-            res.json(line_item.incrementQuantity());
+            res.json(line_item.incrementQuantity(req.body.lineitem.quantity));
         }
     } catch (err) {
         next(err)
