@@ -63,9 +63,34 @@ router.put('/:lineitemId', async ({ body: { lineitem, orderId } }, res, next) =>
     }
 })
 
-// Updating quantity of a specific lineitem from a specific customer
-router.put('/add/:productSKUId', async(req, res, next) => {
+// Updating quantity of a specific lineitem from cart page.
+router.put('/update/:productSKUId', async(req, res, next) => {
     try { 
+        if (!req.body.orderId) {
+            console.log('ENTERED 75', req.params.productSKUId, req.body)
+            const line_item = await LineItem.findOne({
+                where: {
+                    productSKUId: req.params.productSKUId,
+                    orderId: null
+                }
+            })
+            res.json(line_item.updateQuantity(req.body.lineitem.quantity));
+        } else {
+            const line_item = await LineItem.findOne({
+                where: {
+                    productSKUId: req.params.productSKUId,
+                    orderId: req.body.orderId
+                }
+            });
+            res.json(line_item.updateQuantity(req.body.lineitem.quantity));
+        }
+    } catch (err) {
+        next(err)
+    }
+})
+
+router.put('/add/:productSKUId', async (req, res, next) => {
+    try {
         if (!req.body.orderId) {
             console.log('ENTERED 75', req.params.productSKUId, req.body)
             const line_item = await LineItem.findOne({
