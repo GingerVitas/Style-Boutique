@@ -132,4 +132,18 @@ router.delete('/orders/:id', isAdmin, async(req, res, next) => {
   catch(err){
     next(err)
   }
+});
+
+router.put('/orders/:id', isAdmin, async(req, res, next) => {
+  try{
+    const order = await Order.findByPk(req.params.id);
+    await order.update(req.body)
+    const updatedOrder = await Order.findByPk(order.id, {
+      include: [{model: LineItem}, {model: User}]
+    });
+    res.send(updatedOrder)
+  }
+  catch(err){
+    next(err)
+  }
 })

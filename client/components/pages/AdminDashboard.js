@@ -15,7 +15,7 @@ const AdminDashboard = () => {
   const adminOrders = useSelector(state=>state.adminOrders)
   const [display, setDisplay] = useState('')
   const buttonBoxStyle = {
-    width: '80vw', 
+    width: '90vw', 
     height: '80vh', 
     display:'flex', 
     flexWrap: 'wrap',
@@ -32,21 +32,6 @@ const AdminDashboard = () => {
     dispatch(loadAdminOrders());
   }, [])
 
-  // useEffect(()=>{
-  //   if(!adminInventory.length){
-  //     dispatch(loadAdminProducts());
-  //   }
-  // }, [adminInventory]);
-
-  // useEffect(()=>{
-  //     dispatch(loadAdminUsers());
-  // }, [adminUsers]);
-
-  // useEffect(()=>{
-  //   if(!adminOrders.length){
-  //     dispatch(loadAdminOrders());
-  //   }
-  // }, [adminOrders]);
   
 
   if(auth.isAdmin) return (
@@ -56,7 +41,7 @@ const AdminDashboard = () => {
       <Button sx={buttonStyle} name='users' variant={display === 'users' ? 'contained' : 'outlined'} onClick={()=> setDisplay('users')}>Manage Users</Button>
       <Button sx={buttonStyle} name='inventory' variant={display === 'inventory' ? 'contained' : 'outlined'} onClick={()=> setDisplay('inventory')}>Manage Inventory</Button>
       <Button sx={buttonStyle} name='orders' variant={display === 'orders' ? 'contained' : 'outlined'} onClick={()=> setDisplay('orders')}>Manage Orders</Button>
-      <Box sx={{flexBasis: '100%', width:'90%', padding:'1rem', margin:'1rem'}}>
+      <Box sx={{flexBasis: '100%', width:'100%', padding:'1rem', margin:'1rem'}}>
         {display === 'users' ? <AdminUserTable users={adminUsers} display={display}/>
         : display === 'inventory' ? <AdminInventoryTable inventory={adminInventory} display={display} /> 
         : display === 'orders' ? <AdminOrdersTable orders={adminOrders} display={display} /> : ''} 

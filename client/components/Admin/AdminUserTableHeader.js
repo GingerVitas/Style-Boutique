@@ -28,6 +28,11 @@ const headCells = [
     disablePadding: false,
     label: 'Date Account Updated',
   },
+  {
+    id: 'delete',
+    disablePadding: false,
+    label: 'Delete User'
+  }
 ];
 
 const AdminUserTableHeader = (props) => {
