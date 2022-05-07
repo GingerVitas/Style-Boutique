@@ -66,12 +66,15 @@ export const addQuantityToLineitem = ( lineitem, order ) => async dispatch => {
             const updatedLineItem = (await axios.put(`/api/lineitems/add/${lineitem.productSKUId}`, { lineitem })).data;
             console.log(updatedLineItem)
             const guestCart = JSON.parse(window.localStorage.getItem('cart'));
+            console.log(guestCart)
             const updated_guest_cart = guestCart.map(line_item => {
                 if (line_item.productSKUId === lineitem.productSKUId) {
-                    line_item.quantity = updatedLineItem.quantity;
-                    line_item.total = updatedLineItem.total;
-                    return line_item;
+                    // line_item.quantity = updatedLineItem.quantity;
+                    // line_item.total = updatedLineItem.total;
+
+                    return updatedLineItem;
                 }
+                return line_item
             })
             window.localStorage.setItem("cart", JSON.stringify(updated_guest_cart));
             dispatch(_updateCart(updated_guest_cart.find(line_item => line_item.productSKUId ===  lineitem.productSKUId )))
@@ -97,9 +100,11 @@ export const createNewLineitemInCart = (lineitem, order) => async dispatch => {
             if (existing_cart === null || JSON.parse(existing_cart).length === 0) {
                 cart.push(line_item);
                 window.localStorage.setItem("cart", JSON.stringify(cart));
+                console.log(window.localStorage.getItem('cart'))
             } else {
                 cart = [line_item, ...JSON.parse(existing_cart)];
                 window.localStorage.setItem("cart", JSON.stringify(cart));
+                console.log(window.localStorage.getItem('cart'))
             }
             console.log('CREATED LINEITEM', JSON.parse(window.localStorage.getItem('cart')))
             dispatch(_addToCart(line_item));

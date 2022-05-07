@@ -52,16 +52,17 @@ const LineItem = db.define("line_item", {
   total: {
     type: Sequelize.VIRTUAL,
     get() {
-      return (this.productPrice * this.quantity).toFixed(2);
+      return +((this.productPrice * this.quantity).toFixed(2));
     }
   }
 });
 
 //instance method
-LineItem.prototype.incrementQuantity = function(quantity = 1) {
-  quantity === 1 ? 
-  this.quantity += quantity
-  : this.quantity = quantity;
+LineItem.prototype.incrementQuantity = function(quantity) {
+  // quantity === 1 ? 
+  // this.quantity += quantity
+  // : this.quantity = quantity;
+  this.quantity = quantity;
   this.save();
   return this;
 }
