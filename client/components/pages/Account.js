@@ -3,6 +3,7 @@ import { connect } from "react-redux";
 import { Link } from "react-router-dom";
 import { updateUser } from "../../store/auth";
 
+
 class Account extends React.Component {
   constructor(props) {
     super(props);
@@ -66,6 +67,7 @@ class Account extends React.Component {
                 onChange={this.handleChange}
               />
             </label>
+
             <button className="submit" type="submit">
               SUBMIT
             </button>

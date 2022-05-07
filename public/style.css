@@ -134,7 +134,7 @@ button {
 button:hover {
   color: #464444;
   background-color: #e9e6e6;
-  border: 1.5px solid #464444;
+  /* border: 1.5px solid #464444; */
 }
 
 #password {
