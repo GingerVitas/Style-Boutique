@@ -11,13 +11,16 @@ const DELETE_ORDER = 'DELETE_ORDER'
 
 // Action Creators
 const _loadUsers = users => ({type: LOAD_USERS, users});
-const _deleteUser = user => ({type: DELETE_USER, user})
+const _deleteUser = user => ({type: DELETE_USER, user});
+const _updateUser = user => ({type: UPDATE_USER, user})
 const _loadProducts = products => ({type: LOAD_PRODUCTS, products});
 const _deleteProduct = product => ({type: DELETE_PRODUCT, product})
 const _loadOrders = orders => ({type: LOAD_ORDERS, orders});
 const _deleteOrder = order => ({type: DELETE_ORDER, order})
 
 // User Thunks
+const headers = {headers: {authorization: window.localStorage.getItem('token')}}
+
 export const loadAdminUsers = () => {
   return async(dispatch) => {
     const users = (await axios.get(`/api/admin/users/`, {
@@ -31,7 +34,6 @@ export const loadAdminUsers = () => {
 
 export const deleteUser = (user) => {
   return async(dispatch) => {
-    console.log('*******IN Delete Thunk******', user)
     await axios.delete(`/api/admin/users/${user.id}`, {
       headers: {
         authorization: window.localStorage.getItem('token')
@@ -40,6 +42,17 @@ export const deleteUser = (user) => {
     dispatch(_deleteUser(user))
   }
 };
+
+export const adminUpdateUser = user => {
+  return async(dispatch) => {
+   const updatedUser = (await axios.put(`/api/admin/users/${user.id}`,  user, {
+    headers: {
+      authorization: window.localStorage.getItem('token')
+    }
+  })).data;
+   dispatch(_updateUser(updatedUser))
+  }
+}
 
 //Product Thunks
 export const loadAdminProducts = () => {
@@ -57,7 +70,7 @@ export const deleteProduct = (product) => async dispatch => {
   try{
     const colors = (await axios.get(`/api/colors/delete/${product.id}`)).data
     const skus = (await Promise.all(colors.map(async(color)=>{
-      const colorSkus = (await axios.get(`/api/skus//delete/${color.id}`)).data
+      const colorSkus = (await axios.get(`/api/skus/delete/${color.id}`)).data
       return colorSkus
     }))).flat()
     
@@ -119,6 +132,8 @@ export const adminUsers = (state = [], action) => {
       return action.users;
     case DELETE_USER:
       return [...state.filter(user => user.id !== action.user.id)]
+    case UPDATE_USER:
+      return [...state.map(user => user.id !== action.user.id ? user : action.user)]
     default:
       return state
   }

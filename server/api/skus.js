@@ -4,7 +4,7 @@ module.exports = router
 
 router.get('/:name', async(req, res, next)=> {
   try{ 
-    const name = await decodeURIComponent(req.params.name)
+    const name = req.params.name
     const product = await Product.findOne({where: {name}})
     const productColor = await ProductColor.findOne({where: {productId: product.id}})
     const skus = await ProductSKU.findAll({where: {productColorId: productColor.id}})
@@ -14,3 +14,13 @@ router.get('/:name', async(req, res, next)=> {
     next(err)
   }
 });
+
+router.get('/delete/:id', async(req, res, next)=> {
+  try{
+    const skus = await ProductSKU.findAll({where: {productColorId: req.params.id}})
+    res.json(skus);
+  }
+  catch(err){
+    next(err)
+  }
+})

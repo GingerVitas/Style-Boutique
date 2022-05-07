@@ -66,7 +66,7 @@ const singleProduct = () => {
     <Box sx={{padding: '4rem', marginTop: '1rem', maxHeight:'75vh'}}>
       <Grid container spacing={0} justifyContent="center" alignItems="center">
         <Grid item xs={7} sx={{}}>
-          <img src={product.imageUrl} style={{ width: '40%', marginLeft: 'auto', marginRight: 'auto', display: 'block'}} /><br />
+          <img src={color.imageUrl ? color.imageUrl : product.imageUrl} style={{ width: '40%', marginLeft: 'auto', marginRight: 'auto', display: 'block'}} /><br />
         </Grid>
         <Grid item xs={5} sx={{ paddingRight: '15%'}}>
           <h3>{product.name}</h3>

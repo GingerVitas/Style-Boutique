@@ -35,9 +35,9 @@ class Account extends React.Component {
         <h4 className="account-intro">User Account Information</h4>
 
         <div className="account-body">
-          <p className="edit-icon">
-            Click here to edit your contact information.
-          </p>
+          {
+            // (
+          }
           <form className="contact-info" onSubmit={this.handleSubmit}>
             <label className="accountLabel">
               First Name:
@@ -66,11 +66,15 @@ class Account extends React.Component {
                 onChange={this.handleChange}
               />
             </label>
-            <button className="center" type="submit">
-              Submit Changes
+            <button className="submit" type="submit">
+              SUBMIT
             </button>
           </form>
-          {/* <table className="accountInfo">
+          {/* ) : (
+            <button id="edit" type="edit">
+              EDIT
+            </button>
+             <table className="accountInfo">
           <tbody>
             <tr>
               <th>First Name:</th>
@@ -86,12 +90,15 @@ class Account extends React.Component {
             </tr>
           
           </tbody>
-        </table> */}
+        </table> ) */}
 
-          <div className="accountLinks">
-            <button>Update Password</button>
-            <div className="internal-link">
-              <p>Address Book</p>
+          <div>
+            <button id="password">Update Password</button>
+
+            <div className="internalLink">
+              <Link to="/addresses">Address Book</Link>
+            </div>
+            <div className="internalLink">
               <Link to="/order_history">Order History</Link>
             </div>
           </div>

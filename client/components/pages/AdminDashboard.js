@@ -32,6 +32,23 @@ const AdminDashboard = () => {
     dispatch(loadAdminOrders());
   }, [])
 
+  // useEffect(()=>{
+  //   if(!adminInventory.length){
+  //     dispatch(loadAdminProducts());
+  //   }
+  // }, [adminInventory]);
+
+  // useEffect(()=>{
+  //     dispatch(loadAdminUsers());
+  // }, [adminUsers]);
+
+  // useEffect(()=>{
+  //   if(!adminOrders.length){
+  //     dispatch(loadAdminOrders());
+  //   }
+  // }, [adminOrders]);
+  
+
   if(auth.isAdmin) return (
     <div>
     <h1 style={{textAlign:'center'}}>Welcome Administrator {auth.lastName}</h1>
