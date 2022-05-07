@@ -6,7 +6,9 @@ router.get('/:name', async(req, res, next)=> {
   try{ 
     const name = req.params.name
     const product = await Product.findOne({where: {name}})
+    console.log('********SKUS PRODUCT*********', product)
     const productColor = await ProductColor.findOne({where: {productId: product.id}})
+    console.log('*******SKUS COLOR**********', productColor)
     const skus = await ProductSKU.findAll({where: {productColorId: productColor.id}})
     res.json(skus)
   }

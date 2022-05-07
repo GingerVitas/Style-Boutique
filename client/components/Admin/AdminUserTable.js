@@ -1,5 +1,8 @@
 import React, {useState} from 'react';
-import {Box, Container, Button, Modal, Card, CardContent, Typography, Table, TableBody, TableCell, TableContainer, TablePagination, TableRow, Paper, Checkbox, FormControlLabel, Switch} from '@mui/material';
+import {useDispatch} from 'react-redux';
+import {deleteUser} from '../../store/admin'
+import {Box, IconButton, Container, Button, Modal, Card, CardContent, Typography, Table, TableBody, TableCell, TableContainer, TablePagination, TableRow, Paper, Checkbox, FormControlLabel, Switch} from '@mui/material';
+import DeleteIcon from '@mui/icons-material/Delete';
 import AdminTableToolbar from './AdminTableToolbar';
 import AdminUserTableHeader from './AdminUserTableHeader';
 import UserModal from './UserModal';
@@ -22,6 +25,7 @@ function getComparator(order, orderBy) {
 
 export default function AdminUserTable(props) {
   const {users, display} = props
+  const dispatch = useDispatch();
   const [order, setOrder] = useState('asc');
   const [orderBy, setOrderBy] = useState('fullName');
   const [selected, setSelected] = useState([]);
@@ -36,6 +40,9 @@ export default function AdminUserTable(props) {
     setOpen(true);
   };
 
+  const handleDelete = user => {
+    dispatch(deleteUser(user))
+  }
 
   const handleRequestSort = (event, property) => {
     const isAsc = orderBy === property && order === 'asc';
@@ -159,6 +166,7 @@ export default function AdminUserTable(props) {
                         <TableCell align="right">{user.orders ? user.orders.length : 0}</TableCell>
                         <TableCell align="right">{user.createdAt}</TableCell>
                         <TableCell align="right">{user.updatedAt}</TableCell>
+                        <TableCell align='right'><IconButton onClick={()=>handleDelete(user)}><DeleteIcon /></IconButton></TableCell>
                       </TableRow>
                   );
                 })}
