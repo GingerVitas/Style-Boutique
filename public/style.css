@@ -49,6 +49,16 @@ p {
 .totalBox div {
   margin-bottom: 10px;
 }
+/* CART: LINE ITEM COMPONENT _____________________________________________________*/
+.line_item_link:visited {
+  text-decoration: none;
+  color: #444444;
+}
+
+.line_item_link:hover {
+  text-decoration: none;
+  color: #5c5c5c;
+}
 
 /* SIGN IN  _____________________________________________________*/
 .signin-intro {
@@ -134,7 +144,7 @@ button {
 button:hover {
   color: #464444;
   background-color: #e9e6e6;
-  border: 1.5px solid #464444;
+  /* border: 1.5px solid #464444; */
 }
 
 #password {
