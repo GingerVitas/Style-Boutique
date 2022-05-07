@@ -7,25 +7,35 @@ class Account extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      firstName: this.props.auth ? this.props.auth.firstName : "",
-      lastName: this.props.auth ? this.props.auth.lastName : "",
-      email: this.props.auth ? this.props.auth.email : "",
+      user: {
+        firstName: this.props.auth ? this.props.auth.firstName : "",
+        lastName: this.props.auth ? this.props.auth.lastName : "",
+        email: this.props.auth ? this.props.auth.email : "",
+      },
+      edit: false,
     };
     this.handleChange = this.handleChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
+    this.handleEdit = this.handleEdit.bind(this);
   }
 
   handleChange(ev) {
-    this.setState({ [ev.target.name]: ev.target.value });
+    this.setState({ user: { [ev.target.name]: ev.target.value } });
   }
 
-  async handleSubmit(ev) {
+  handleSubmit(ev) {
     ev.preventDefault();
     try {
-      await this.props.updateUser({ ...this.state });
+      this.props.updateUser({ ...this.state.user });
+      this.setState({ edit: false });
     } catch (ex) {
       console.log(ex);
     }
+  }
+
+  handleEdit(ev) {
+    ev.preventDefault();
+    this.setState({ edit: true });
   }
 
   render() {
@@ -33,18 +43,16 @@ class Account extends React.Component {
     return (
       <div>
         <h4 className="account-intro">User Account Information</h4>
-
         <div className="account-body">
-          {
-            // (
-          }
-          <form className="contact-info" onSubmit={this.handleSubmit}>
+          <form className="contact-info">
             <label className="accountLabel">
               First Name:
               <input
                 name="firstName"
                 type="text"
-                value={this.state.firstName}
+                allowNull={false}
+                disabled={this.state.edit ? false : true}
+                value={this.state.user.firstName}
                 onChange={this.handleChange}
               />
             </label>
@@ -53,7 +61,8 @@ class Account extends React.Component {
               <input
                 name="lastName"
                 type="text"
-                value={this.state.lastName}
+                disabled={this.state.edit ? false : true}
+                value={this.state.user.lastName}
                 onChange={this.handleChange}
               />
             </label>
@@ -62,36 +71,26 @@ class Account extends React.Component {
               <input
                 name="email"
                 type="text"
-                value={this.state.email}
+                disabled={this.state.edit ? false : true}
+                value={this.state.user.email}
                 onChange={this.handleChange}
               />
             </label>
-            <button className="submit" type="submit">
-              SUBMIT
+            <button
+              className="submit"
+              onClick={
+                this.state.edit
+                  ? (ev) => {
+                      this.handleSubmit(ev);
+                    }
+                  : (ev) => {
+                      this.handleEdit(ev);
+                    }
+              }
+            >
+              {this.state.edit ? "SUBMIT" : "EDIT"}
             </button>
           </form>
-          {/* ) : (
-            <button id="edit" type="edit">
-              EDIT
-            </button>
-             <table className="accountInfo">
-          <tbody>
-            <tr>
-              <th>First Name:</th>
-              <td>{auth.firstName}</td>
-            </tr>
-            <tr>
-              <th>Last Name:</th>
-              <td>{auth.lastName}</td>
-            </tr>
-            <tr>
-              <th>Email:</th>
-              <td>{auth.email}</td>
-            </tr>
-          
-          </tbody>
-        </table> ) */}
-
           <div>
             <button id="password">Update Password</button>
 
