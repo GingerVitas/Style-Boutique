@@ -39,7 +39,7 @@ const Navbar = ({ handleClick, empty_cart, clearOrder, isLoggedIn, lineItems, au
               </MenuItem>
               <MenuItem component={Link} to={"/cart"} sx={{ "&:hover": { bgcolor: "transparent" } }}>
                 <IconButton aria-label="cart" >
-                  <StyledBadge badgeContent={lineItems.length} color="secondary">
+                  <StyledBadge badgeContent={lineItems && lineItems.length} color="secondary">
                     <ShoppingCart />
                   </StyledBadge>
                 </IconButton>
@@ -74,7 +74,7 @@ const Navbar = ({ handleClick, empty_cart, clearOrder, isLoggedIn, lineItems, au
                 </MenuItem>
                   <MenuItem component={Link} to={"/cart"} sx={{ "&:hover": { bgcolor: "transparent" }}}>
                   <IconButton aria-label="cart">
-                    <StyledBadge badgeContent={lineItems.length} color="secondary">
+                    <StyledBadge badgeContent={lineItems&& lineItems.length} color="secondary">
                       <ShoppingCart />
                     </StyledBadge>
                   </IconButton>

@@ -25,10 +25,16 @@ export const loadCart = (order) =>  async dispatch => {
         const token = window.localStorage.getItem('token');
         if (token) {
             const userCart = (await axios.get(`/api/lineitems/${order.id}`)).data
-            dispatch(_loadCart(userCart));
+            if(userCart.length > 0) {
+                dispatch(_loadCart(userCart));
+            }
         } else {
             const guestCart = JSON.parse(window.localStorage.getItem('cart'));
-            dispatch(_loadCart(guestCart));
+            if(!guestCart) {
+                dispatch(_loadCart([]));
+            } else {
+                dispatch(_loadCart(guestCart));
+            }
         }
     } catch (err){
         console.log(err)
@@ -43,12 +49,46 @@ export const transformGuestCartToUserCart = (order) => async dispatch => {
             await Promise.all(
                 guestCart.map(async (lineitem) => {
                     const line_item = (await axios.put(`/api/lineitems/${lineitem.id}`, { lineitem, orderId: order.id })).data;
-                    dispatch(_updateCart(line_item[0]));
-                    dispatch(_removeListItem(line_item[1]))
+                    if(Array.isArray(line_item)){
+                        dispatch(_updateCart(line_item[0]));
+                        // dispatch(_removeListItem(line_item[1]))
+                    } else {
+                        dispatch(_updateCart(line_item));
+                    }
                 })
             );
             window.localStorage.removeItem('cart');
         }     
+    } catch (err) {
+        console.log(err)
+    }
+}
+
+export const updateQuantityToLineitem = (lineitem, order) => async dispatch => {
+    try {
+        const token = window.localStorage.getItem('token');
+        if (token) {
+            const updatedLineItem = (await axios.put(`/api/lineitems/update/${lineitem.productSKUId}`, { orderId: order.id, lineitem: { ...lineitem } })).data;
+            dispatch(_updateCart(updatedLineItem))
+        } else {
+            console.log('ENTERED 65')
+            console.log(lineitem, order)
+            const updatedLineItem = (await axios.put(`/api/lineitems/update/${lineitem.productSKUId}`, { lineitem })).data;
+            console.log(updatedLineItem)
+            const guestCart = JSON.parse(window.localStorage.getItem('cart'));
+            console.log(guestCart)
+            const updated_guest_cart = guestCart.map(line_item => {
+                if (line_item.productSKUId === lineitem.productSKUId) {
+                    return updatedLineItem;
+                }
+                return line_item
+            })
+            window.localStorage.setItem("cart", JSON.stringify(updated_guest_cart));
+            // dispatch(_updateCart(updated_guest_cart.find(line_item => line_item.productSKUId ===  lineitem.productSKUId )))
+            dispatch(_updateCart(updatedLineItem));
+        }
+
+
     } catch (err) {
         console.log(err)
     }
@@ -69,15 +109,13 @@ export const addQuantityToLineitem = ( lineitem, order ) => async dispatch => {
             console.log(guestCart)
             const updated_guest_cart = guestCart.map(line_item => {
                 if (line_item.productSKUId === lineitem.productSKUId) {
-                    // line_item.quantity = updatedLineItem.quantity;
-                    // line_item.total = updatedLineItem.total;
-
                     return updatedLineItem;
                 }
                 return line_item
             })
             window.localStorage.setItem("cart", JSON.stringify(updated_guest_cart));
-            dispatch(_updateCart(updated_guest_cart.find(line_item => line_item.productSKUId ===  lineitem.productSKUId )))
+            // dispatch(_updateCart(updated_guest_cart.find(line_item => line_item.productSKUId ===  lineitem.productSKUId )))
+            dispatch(_updateCart(updatedLineItem));
         }
         
 
@@ -161,7 +199,8 @@ export const addBackToCart = (listItem) => dispatch => {
 export default (state = [], action) => {
     switch (action.type) {
         case LOAD_CART:
-            return state = [...state, ...action.lineItems];
+            // return state = [...state, ...action.lineItems];
+            return state = action.lineItems;
         case ADD_TO_CART:
             return state = [action.lineItem, ...state];
         case UPDATE_CART:

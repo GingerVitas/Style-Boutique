@@ -3,7 +3,7 @@ import axios from 'axios'
 
 // redux
 import { connect } from 'react-redux'
-import { removeListItem, hideListItem, addBackToCart, addQuantityToLineitem } from '../store/cart'
+import { removeListItem, hideListItem, addBackToCart, updateQuantityToLineitem } from '../store/cart'
 import { addWishList, removeWishList} from '../store/wishList'
 
 // mui
@@ -28,12 +28,13 @@ class LineItem extends React.Component {
     handleQuantity(event) {
         const selectedQuantity = event.target.value;
         this.setState({quantity: selectedQuantity});
-        this.props.addquantity({ ...this.props.item, quantity: selectedQuantity, }, this.props.order)
+        this.props.updateQuantity({ ...this.props.item, quantity: selectedQuantity, }, this.props.order)
     }
 
     render() {
         const { item, routeProps, remove, save, hide, removeWish, addBackToCart, product } = this.props;
-
+        console.log(this.props.item.quantity && this.props.item.quantity)
+        console.log(this.props)
         return (
             <div >
                 <Grid container direction="row" spacing={0} justifyContent="space-evenly" alignItems="center" sx={{ margin: '2rem 0' }}>
@@ -115,8 +116,8 @@ const mapDispatch = dispatch => {
         addBackToCart(item) {
             dispatch(addBackToCart(item))
         },
-        addquantity(lineitem, order) {
-            dispatch(addQuantityToLineitem(lineitem, order))
+        updateQuantity(lineitem, order) {
+            dispatch(updateQuantityToLineitem(lineitem, order))
         }
     }
 }
