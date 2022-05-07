@@ -77,7 +77,8 @@ export const addQuantityToLineitem = ( lineitem, order ) => async dispatch => {
                 return line_item
             })
             window.localStorage.setItem("cart", JSON.stringify(updated_guest_cart));
-            dispatch(_updateCart(updated_guest_cart.find(line_item => line_item.productSKUId ===  lineitem.productSKUId )))
+            // dispatch(_updateCart(updated_guest_cart.find(line_item => line_item.productSKUId ===  lineitem.productSKUId )))
+            dispatch(_updateCart(updatedLineItem));
         }
         
 
