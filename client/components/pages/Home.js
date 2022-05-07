@@ -11,14 +11,7 @@ const Home = (props) => {
   const [adminView, setAdminView] = useState(false)
 
   if(!isAdmin) return (
-    <div
-    // style={{
-    //   display: "flex",
-    //   justifyContent: "Right",
-    //   alignItems: "Right",
-    //   height: "100vh",
-    // }}
-    >
+    <div>
       <h3 style={{marginLeft: '40px'}}>Welcome, {firstName ? firstName : "Guest"}</h3>
       <Products adminView={adminView}/>
     </div>
