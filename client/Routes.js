@@ -77,7 +77,7 @@ class Routes extends Component {
               to={
                 this.props.location.state &&
                 this.props.location.state.prevPath === "/cart"
-                  ? "/checkout"
+                  ? "/cart"
                   : "/home"
               }
             />

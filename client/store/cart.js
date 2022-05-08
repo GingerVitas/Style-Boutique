@@ -53,7 +53,7 @@ export const transformGuestCartToUserCart = (order) => async dispatch => {
                         dispatch(_updateCart(line_item[0]));
                         // dispatch(_removeListItem(line_item[1]))
                     } else {
-                        dispatch(_updateCart(line_item));
+                        dispatch(_addToCart(line_item));
                     }
                 })
             );

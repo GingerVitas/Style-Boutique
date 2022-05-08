@@ -10,6 +10,12 @@ body {
   margin: auto;
 }
 
+@media only screen and (min-width: 600px) {
+  .content {
+    width: 850px;
+  }
+}
+
 a {
   text-decoration: none;
 }
@@ -40,8 +46,6 @@ p {
 }
 
 .totalBox {
-  float: right;
-  width: 50%;
   background-color: #efefef;
   padding: 30px;
 }
@@ -163,7 +167,21 @@ button:hover {
   max-width: 100%;
 }
 
-/* PRODUCTS  _____________________________________________________*/
-/* .productCard:hover {
-  
-} */
+/* CHECKOUT  _____________________________________________________*/
+
+.checkout {
+  margin: 0 3rem;
+}
+
+.checkout_box{
+  border: 1px solid #cacaca;
+  padding: 1rem 1rem;
+  border-radius: .2rem;
+}
+
+@media only screen and (min-width: 600px) {
+  .checkout {
+    width: 80%;
+    margin: 0 auto;
+  }
+}
