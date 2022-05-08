@@ -1,13 +1,13 @@
-import React, {useState} from 'react';
-import {useSelector, useDispatch} from 'react-redux'
-import {Link, useParams} from 'react-router-dom';
-import {Card, CardActionArea, Button, Modal, Box, FormControl, InputLabel, Select, MenuItem, CardContent, CardMedia, Typography,} from '@mui/material';
-import {deleteProduct} from '../store/admin'
+import React, { useState } from 'react';
+import { useSelector, useDispatch } from 'react-redux'
+import { Link, useParams } from 'react-router-dom';
+import { Card, CardActionArea, Button, Modal, Box, FormControl, InputLabel, Select, MenuItem, CardContent, CardMedia, Typography, } from '@mui/material';
+import { deleteProduct } from '../store/admin'
 
 
 const ProductCard = (props) => {
   const dispatch = useDispatch();
-  const {product, adminView} = props;
+  const { product, adminView } = props;
   const category = props.categories.filter(category => category.id === product.categoryId)[0];
   // const {productName} = useParams();
   const [open, setOpen] = useState(false)
@@ -29,8 +29,8 @@ const ProductCard = (props) => {
     textAlign: 'center'
   };
   const buttonStyle = {
-    margin:'1.5rem',
-    padding:'1.5rem'
+    margin: '1.5rem',
+    padding: '1.5rem'
   }
 
   // const handleChange = (ev) => {
@@ -39,48 +39,48 @@ const ProductCard = (props) => {
   // }
   // (product)=>handleDelete(product)
   // if (!productName) 
-    return(
-        //  <Link to={`/${category.categoryName}/${product.name}`}>
-        <Card sx={{maxWidth:'280', margin:'.5rem'}} style={{height:'100%'}}>
-          {adminView ? <Button variant='outlined' sx={{zIndex:'1', float: 'right', margin:'.75rem'}} onClick={handleOpen}>
-            Delete Product
-          </Button> : ''}
-          <Modal
-            open={open}
-            onClose={handleClose}
-            >
-            <Box sx={style}>
-            <Typography variant="h6" component="h2">
-              Are you sure you want to delete {product.name}?
-            </Typography>
-            <Box sx={{display:'flex', flexDirection:'row', margin:'1rem'}}>
-            <Button variant='contained' onClick={()=>handleDelete(product)} sx={buttonStyle}>
+  return (
+    //  <Link to={`/${category.categoryName}/${product.name}`}>
+    <Card sx={{ maxWidth: '280', margin: '.5rem' }} style={{ height: '100%' }}>
+      {adminView ? <Button variant='outlined' sx={{ zIndex: '1', float: 'right', margin: '.75rem' }} onClick={handleOpen}>
+        Delete Product
+      </Button> : ''}
+      <Modal
+        open={open}
+        onClose={handleClose}
+      >
+        <Box sx={style}>
+          <Typography variant="h6" component="h2">
+            Are you sure you want to delete {product.name}?
+          </Typography>
+          <Box sx={{ display: 'flex', flexDirection: 'row', margin: '1rem' }}>
+            <Button variant='contained' onClick={() => handleDelete(product)} sx={buttonStyle}>
               Yes, delete {product.name}
             </Button>
             <Button variant='outlined' onClick={handleClose} sx={buttonStyle}>
               No, take me back
             </Button>
-            </Box>
           </Box>
-        </Modal>
-        <CardActionArea component={Link} to={`/${category.categoryName}/${product.name}`}>
-            <CardMedia
-              component='img'
-              image={product.imageUrl}
-              height='435'
-              width='300'
-            />
-              <CardContent>
-                <Typography gutterBottom variant='subtitle1'>
-                  {product.brand}
-                </Typography>
-                <Typography variant='subtitle2'>
-                  {product.name}
-                </Typography>
-              </CardContent>
-          </CardActionArea>
-        </Card>
-        /* </Link> */
+        </Box>
+      </Modal>
+      <CardActionArea component={Link} to={`/${category.categoryName}/${product.name}`}>
+        <CardMedia
+          component='img'
+          image={product.imageUrl}
+          height='435'
+          width='300'
+        />
+        <CardContent>
+          <Typography gutterBottom variant='subtitle1'>
+            {product.brand}
+          </Typography>
+          <Typography variant='subtitle2'>
+            {product.name}
+          </Typography>
+        </CardContent>
+      </CardActionArea>
+    </Card>
+    /* </Link> */
   )
   // else return (
   //   <Card sx={{maxWidth:'280', margin:'.5rem'}} style={{height:'100%'}}>
@@ -118,3 +118,18 @@ const ProductCard = (props) => {
 }
 
 export default ProductCard
+
+
+  // < CardActionArea component = { Link } to = {`/${category.categoryName}/${product.name}`} sx = {{ height: '100%' }}>
+  //   <div className='productCard' style={{ justifyContent: 'center', textAlign: 'center', height: '100%' }}>
+  //     <div className='imgCard' style={{ paddingTop: '1rem', height: '80%' }}>
+  //       <img src={product.imageUrl} style={{ display: 'block', margin: 'auto', width: '100%', maxHeight: '100%' }} />
+  //     </div>
+  //     <div className='contentCard' style={{ paddingTop: '2em', height: '20%' }}>
+  //       <div>
+  //         <h4 style={{ fontSize: '1em' }}>{product.brand}</h4>
+  //         <h3 style={{ fontSize: '1em' }}>{product.name}</h3>
+  //       </div>
+  //     </div>
+  //   </div>
+  //         </CardActionArea >

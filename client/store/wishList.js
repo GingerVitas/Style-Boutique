@@ -20,7 +20,7 @@ export const loadWishList = () => dispatch => {
     }
 }
 
-export const removeWishList = (listitem) => dispatch => {
+export const removeWishList = (listitem) => async dispatch => {
     try {
         dispatch(_removeWishList(listitem));
     } catch (err) {
