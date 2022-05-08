@@ -18,7 +18,7 @@ import Account from "./components/pages/Account";
 import Addresses from "./components/pages/Addresses";
 import OrderHistory from "./components/pages/OrderHistory";
 import Cart from "./components/pages/Cart";
-import Checkout from "./components/Checkout";
+import Checkout from "./components/pages/Checkout";
 import SingleProduct from "./components/pages/SingleProduct";
 import SignOut from "./components/pages/SignOut";
 import AdminDashboard from "./components/pages/AdminDashboard";
