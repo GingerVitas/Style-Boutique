@@ -2,6 +2,7 @@ import * as React from 'react';
 import {Box, Button, Modal, Card, CardContent, Typography, Table, TableBody, TableCell, TableContainer, TablePagination, TableRow, Paper, Checkbox, FormControlLabel, Switch} from '@mui/material';
 import AdminTableToolbar from './AdminTableToolbar';
 import AdminOrdersTableHeader from './AdminOrdersTableHeader';
+import OrderModal from './OrderModal';
 
 function descendingComparator(a, b, orderBy) {
   if (b[orderBy] < a[orderBy]) {
@@ -132,7 +133,7 @@ export default function AdminOrdersTable(props) {
                   const isItemSelected = isSelected(_order);
                   const labelId = `enhanced-table-checkbox-${index}`;
                   _order.total = _order.line_items.reduce((acc,lineItem) => {
-                    acc += lineItem.total
+                    acc += lineItem.total*1
                     return acc
                   }, 0)
 
@@ -184,26 +185,6 @@ export default function AdminOrdersTable(props) {
                 </TableRow>
               )}
             </TableBody>
-            <Modal
-              open={open}
-              onClose={handleClose}
-              >
-              <Card sx={style}>
-              <Typography variant="h6" component="h2">
-                {selectedOrder.id}
-              </Typography>
-              <Box sx={{display:'flex', flexDirection:'column', margin:'1rem'}}>
-                <Typography variant='h6' component='h3'>
-                  {`Order ID: ${selectedOrder.id}
-                  Line Items:${selectedOrder.line_items ? selectedOrder.line_items.map(item => item.productName) : ''}
-                  Created At: ${selectedOrder.createdAt}
-                  Order Total: ${selectedOrder.total}
-                  Order Finalized: ${selectedOrder.final ? 'Yes' : 'No'}`}
-                  {console.log(selectedOrder.line_items)}
-                </Typography>
-              </Box>
-            </Card>
-          </Modal>
           </Table>
         </TableContainer>
         <TablePagination
@@ -220,6 +201,14 @@ export default function AdminOrdersTable(props) {
         control={<Switch checked={dense} onChange={handleChangeDense} />}
         label="Condensed View"
       />
+      <Modal
+        open={open}
+        onClose={handleClose}
+        >
+          <div>
+            <OrderModal order={selectedOrder} />
+          </div>
+      </Modal>
     </Box>
   );
 }
