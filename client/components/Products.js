@@ -8,13 +8,22 @@ const Products = (props) => {
   console.log('************Categories*********', categories)
   if(!categories.length) return <h1>Loading...</h1>
   return (
-    <Container style={{width:'85%', float:'center', textAlign:'center'}}>
-      <Grid container spacing={2} columnSpacing={1} style={{gridTemplateColumns: "repeat(4, 1fr)"}}>
+    // <Container style={{width:'90%', textAlign:'center', border:'red 1px solid', margin:'0 0'}}>
+    //style={{gridTemplateColumns: "repeat(4, 1fr)"}}
+      <Grid 
+        container
+        direction="row"
+        justifyContent="center"
+        alignItems="flex-start"
+        spacing={2}
+        columnSpacing={2}
+        sx={{width: '80%', margin: '0 auto', textAlign: 'center'}}
+        >
         {products.map((product) => {
           return <Grid item xs={3} key={product.id}><ProductCard product={product} categories={categories} adminView={adminView}/></Grid>;
         })}
       </Grid>
-    </Container>
+    // </Container>
 
   );
 };
