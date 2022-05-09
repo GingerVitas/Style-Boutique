@@ -1,21 +1,41 @@
-import React, { useState } from 'react';
-import { useSelector, useDispatch } from 'react-redux'
+import React, { useState, useEffect } from 'react';
 import { Link, useParams } from 'react-router-dom';
-import { Card, CardActionArea, Button, Modal, Box, FormControl, InputLabel, Select, MenuItem, CardContent, CardMedia, Typography, } from '@mui/material';
+import axios from 'axios'
+
+//redux
+import { useDispatch } from 'react-redux'
 import { deleteProduct } from '../store/admin'
 
+//mui
+import { Grid, Card, CardActionArea, Button, Modal, Box, FormControl, InputLabel, Select, MenuItem, CardContent, CardMedia, Typography, Rating } from '@mui/material';
 
 const ProductCard = (props) => {
-  const dispatch = useDispatch();
   const { product, adminView } = props;
+
+  //hooks
+  const dispatch = useDispatch();
   const category = props.categories.filter(category => category.id === product.categoryId)[0];
   // const {productName} = useParams();
-  const [open, setOpen] = useState(false)
+
+  // For admin delete modal
+  const [open, setOpen] = useState(false);
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
   const handleDelete = (_product) => {
     dispatch(deleteProduct(_product));
   }
+
+  // For price, since product db doesn't have price info.
+  const [price, setPrice] = useState(0);
+  const getPrice = async () => {
+    const skus = (await axios.get(`/api/skus/${product.name}`)).data
+    const price = ((+skus[0].price).toFixed(2))
+    setPrice(price)
+  }
+  useEffect(() => {
+    getPrice();
+  }, [])
+
   const style = {
     position: 'absolute',
     top: '50%',
@@ -28,6 +48,7 @@ const ProductCard = (props) => {
     p: 4,
     textAlign: 'center'
   };
+
   const buttonStyle = {
     margin: '1.5rem',
     padding: '1.5rem'
@@ -41,7 +62,8 @@ const ProductCard = (props) => {
   // if (!productName) 
   return (
     //  <Link to={`/${category.categoryName}/${product.name}`}>
-    <Card sx={{ maxWidth: '280', margin: '.5rem' }} style={{ height: '100%' }}>
+    // sx={{ maxWidth: '310px', margin: '.5rem' }}
+    <Card style={{ height: '525px', width: '100%' }}>
       {adminView ? <Button variant='outlined' sx={{ zIndex: '1', float: 'right', margin: '.75rem' }} onClick={handleOpen}>
         Delete Product
       </Button> : ''}
@@ -63,21 +85,47 @@ const ProductCard = (props) => {
           </Box>
         </Box>
       </Modal>
-      <CardActionArea component={Link} to={`/${category.categoryName}/${product.name}`}>
-        <CardMedia
+      <CardActionArea component={Link} to={`/${category.categoryName}/${product.name}`} sx={{height: '100%'}}>
+        {/* <CardMedia
           component='img'
           image={product.imageUrl}
           height='435'
           width='300'
-        />
-        <CardContent>
-          <Typography gutterBottom variant='subtitle1'>
-            {product.brand}
-          </Typography>
-          <Typography variant='subtitle2'>
-            {product.name}
-          </Typography>
-        </CardContent>
+        /> */}
+        <Grid
+          container
+          direction="column"
+          justifyContent="center"
+          alignItems="center"
+        >
+          <Grid item sx={8}>
+            <div style={{ width: '100%', height: '330px' }}>
+              <img src={product.imageUrl} style={{ height: '100%' }} />
+            </div>
+          </Grid>
+          <Grid item sx={4}>
+            <CardContent>
+              <Typography gutterBottom variant='subtitle1'>
+                {product.brand}
+              </Typography>
+              <Typography variant='subtitle2'>
+                {product.name}
+              </Typography>
+              <Typography gutterBottom variant='subtitle1' sx={{ fontSize: '1.5rem' }}>
+                ${price}
+              </Typography>
+                  <Rating
+                    name="read-only"
+                    readOnly
+                    value={Math.floor(Math.random() * 2 + 3)}
+                  />
+                  <br />
+                  ({Math.floor(Math.random() * 350 + 150)})
+            </CardContent> 
+          </Grid>
+        </Grid>
+            
+
       </CardActionArea>
     </Card>
     /* </Link> */
@@ -120,16 +168,18 @@ const ProductCard = (props) => {
 export default ProductCard
 
 
-  // < CardActionArea component = { Link } to = {`/${category.categoryName}/${product.name}`} sx = {{ height: '100%' }}>
-  //   <div className='productCard' style={{ justifyContent: 'center', textAlign: 'center', height: '100%' }}>
-  //     <div className='imgCard' style={{ paddingTop: '1rem', height: '80%' }}>
-  //       <img src={product.imageUrl} style={{ display: 'block', margin: 'auto', width: '100%', maxHeight: '100%' }} />
-  //     </div>
-  //     <div className='contentCard' style={{ paddingTop: '2em', height: '20%' }}>
-  //       <div>
-  //         <h4 style={{ fontSize: '1em' }}>{product.brand}</h4>
-  //         <h3 style={{ fontSize: '1em' }}>{product.name}</h3>
-  //       </div>
-  //     </div>
-  //   </div>
-  //         </CardActionArea >
+//   < Grid container
+// direction = "row"
+// justifyContent = "center"
+// alignItems = "center" >
+//                 <Grid item xs={9} style={{ textAlign: 'right' }}>
+//                   <Rating
+//                     name="read-only"
+//                     readOnly
+//                     value={Math.floor(Math.random() * 2 + 3)}
+//                   />
+//                 </Grid>
+//                 <Grid item xs={3} style={{ textAlign: 'left' }}>
+//                   ({Math.floor(Math.random() * 350 + 150)})
+//                 </Grid>
+//               </Grid >
