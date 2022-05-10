@@ -8,6 +8,12 @@ const Total = props => {
     
     // for checkout page
     const routeProps = props.routeProps? props.routeProps : null;
+    const submitForms = () => {
+        console.log('successfully submitted');
+        document.forms[0].submit((e) => window.localStorage.setItem('address', [e.target.addressLine1.value]));
+        document.forms[1].submit(e => window.localStorage.setItem('paypal', [e.target.cardNumber.value]));
+    }
+
 
     // variables
     const subtotal = lineItems.length > 0 ? (lineItems.map(line_item => +line_item.total).reduce((a, b) => a + b)).toFixed(2) : 0;
@@ -50,7 +56,7 @@ const Total = props => {
                 <div style={{ fontSize: '1.3rem' }}>Estimated total <span style={{ float: 'right' }}>${total}</span></div>
                 {
                     routeProps && routeProps.location.pathname === '/checkout' ?
-                        <Button color='black' style={{ width: '100%', padding: '10px', fontSize: '1rem' }} variant="contained">
+                        <Button color='black' style={{ width: '100%', padding: '10px', fontSize: '1rem' }} variant="contained" onClick={(e) => submitForms()}>
                             Review Order
                         </Button>
                         : <Component />
