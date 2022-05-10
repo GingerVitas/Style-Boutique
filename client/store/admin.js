@@ -18,7 +18,7 @@ const _loadProducts = products => ({type: LOAD_PRODUCTS, products});
 const _deleteProduct = product => ({type: DELETE_PRODUCT, product})
 const _loadOrders = orders => ({type: LOAD_ORDERS, orders});
 const _deleteOrder = order => ({type: DELETE_ORDER, order});
-const _updateOrder = order => ({type: UPDATE_ORDER, order})
+const _updateOrder = order => ({type: UPDATE_ORDER, order});
 
 // User Thunks
 const headers = {headers: {authorization: window.localStorage.getItem('token')}}
@@ -138,6 +138,38 @@ export const updateAdminOrder = (order) => {
     dispatch(_updateOrder(updatedOrder));
   }
 };
+
+export const deleteLineItem = (lineItem, order) => {
+  return async(dispatch) => {
+    await axios.delete(`/api/admin/orders/lineItems/delete/${lineItem.id}`, {
+      headers: {
+        authorization: window.localStorage.getItem('token')
+      }
+    });
+    const updatedOrder = (await axios.get(`/api/admin/orders/${order.id}`, {
+      headers: {
+        authorization: window.localStorage.getItem('token')
+      }
+    })).data;
+    dispatch(_updateOrder(updatedOrder))
+  }
+};
+
+export const adminUpdateLineItem = (lineItem, order) => {
+  return async(dispatch) => {
+    await axios.put(`/api/admin/orders/lineItems/update/${lineItem.id}`, lineItem, {
+      headers: {
+        authorization: window.localStorage.getItem('token')
+      }
+    });
+    const updatedOrder = (await axios.get(`/api/admin/orders/${order.id}`, {
+      headers: {
+        authorization: window.localStorage.getItem('token')
+      }
+    })).data;
+    dispatch(_updateOrder(updatedOrder))
+  }
+}
 
 // Store
 

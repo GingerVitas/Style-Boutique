@@ -1,8 +1,9 @@
 import React, {useState, useEffect} from 'react';
 import {useDispatch, useSelector} from 'react-redux';
-import {Card, CardHeader, Box, Button, Modal, CardContent, Typography, TextField, Accordion, AccordionSummary, AccordionDetails, TableContainer, Table, TableHead, TableRow, TableCell, TableBody, FormControl, InputLabel, Select, MenuItem, FormControlLabel, Switch} from '@mui/material';
+import {Card, CardHeader, Box, Button, CardContent, Typography, Accordion, AccordionSummary, AccordionDetails, TableContainer, Table, TableHead, TableRow, TableCell, TableBody, FormControl, InputLabel, Select, MenuItem, FormControlLabel, Switch} from '@mui/material';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
-import { updateAdminOrder } from '../../store/admin';
+import { updateAdminOrder, deleteLineItem } from '../../store/admin';
+import LineItemTableRow from './LineItemTableRow';
 
 const OrderModal = props => {
   const {order} = props;
@@ -11,7 +12,16 @@ const OrderModal = props => {
   const [state, setState] = useState(order ? order : {});
   const [editState, setEditState] = useState(false);
   const [finalState, setFinalState] = useState(order.final);
-  const {createdAt, total, final, line_items, user} = state;
+  const {createdAt, line_items, user} = state;
+  const [lineItemState, setLineItemState] = useState(line_items)
+  const [subTotal, setSubTotal] = useState(order.total)
+
+  useEffect(()=> {
+    setState(order)
+    setSubTotal(lineItemState.reduce((acc, item)=> {
+      return acc + (item.productPrice * item.quantity)
+    }, 0))
+  }, [lineItemState])
 
   const handleChange = (evt) => {
     setState({
@@ -19,27 +29,35 @@ const OrderModal = props => {
     })
   };
 
-  const handleSubmit = (evt)  => {
+   const handleSubmit = (evt)  => {
     evt.preventDefault();
     const {user, ...updatedOrder} = state;
-    console.log('*****IN HANDLE SUBMIT*******', finalState)
-    dispatch(updateAdminOrder({...updatedOrder, final:finalState}));
+    dispatch(updateAdminOrder({...updatedOrder, final:finalState, total:subTotal}));
     setEditState(false)
   };
 
   const handleUserChange = evt => {
     evt.preventDefault();
-    console.log('******ORDER IN USER CHANGE*******', order, 'EVENT TARGET', evt.target, 'STATE', state)
     setState({
         ...state,
         userId: evt.target.value.id,
         user: evt.target.value
     })
-    console.log('******ORDER IN USER CHANGE AFTER SETSTATE*******', order, 'EVENT TARGET', evt.target, 'STATE', state)  };
+  };
 
   const handleFinalChange = evt => {
     setFinalState(evt.target.checked);
   };
+
+  const handleDelete = (lineItem, _order) => {
+    dispatch(deleteLineItem(lineItem, _order));
+    setLineItemState(line_items.filter(item => item.id !== lineItem.id))
+  }
+
+  const formatter = new Intl.NumberFormat('en-US', {
+    style: 'currency',
+    currency: 'USD'
+  });
 
   const style = {
     position: 'absolute',
@@ -52,7 +70,9 @@ const OrderModal = props => {
     p: 4,
     textAlign: 'center',
     height: 'auto',
-    width: 'auto'
+    maxHeight:'80vh',
+    width: 'auto',
+    overflow:'scroll'
   };
 
   return (
@@ -78,62 +98,58 @@ const OrderModal = props => {
                 :''
               ))}
             </Select>
-              {/* <TextField disabled={editState ? false : true} id='outlined-items' name='line_items' label='Items in Order' value={line_items} onChange={handleChange} /> */}
-              <TextField disabled={editState ? false : true} id='outlined-total' name='total' label='Total Cost' value={total} onChange={handleChange} />
+              {/* <TextField disabled={editState ? false : true} id='outlined-total' name='orderTotal' label='Total Cost' value={orderTotal} onChange={handleTotalChange} /> */}
+              <Accordion sx={{maxHeight:'50vh', width:'100%', overflow:'scroll'}}>
+                <AccordionSummary
+                  expandIcon={<ExpandMoreIcon />}
+                  aria-controls='panel-1'
+                  id='panel-1-header'
+                  sx={{display:'flex', alignItems:'center'}}
+                >
+                  <Typography sx={{flexBasis:'80%', textAlign:'left'}}>Line Items</Typography>
+                  <Button sx={{flexBasis:'20%'}}>Add Item to Order</Button>
+                </AccordionSummary>
+                <AccordionDetails>
+                  <TableContainer>
+                    <Table>
+                      <TableHead>
+                        <TableRow>
+                          <TableCell ></TableCell>
+                          <TableCell >Item</TableCell>
+                          <TableCell align='right'>Size</TableCell>
+                          <TableCell align='right'>Color</TableCell>
+                          <TableCell align='right'>Quantity</TableCell>
+                          <TableCell align='right'>Price</TableCell>
+                          <TableCell align='right'></TableCell>
+                        </TableRow>
+                      </TableHead>
+                      <TableBody>
+                        {lineItemState.map((item) => {
+                          return (
+                            <LineItemTableRow key={item.id} item={item} order={order} lineItemState={lineItemState} setLineItemState={setLineItemState}/>
+                          )
+                        })}
+                      <TableRow>
+                        <TableCell rowSpan={1} />
+                        <TableCell colSpan={3}>Subtotal</TableCell>
+                        <TableCell align='right'>{formatter.format(subTotal)}</TableCell>
+                      </TableRow>
+                      </TableBody>
+                    </Table>
+                  </TableContainer>
+                </AccordionDetails>
+              </Accordion>
               <FormControlLabel
-                control={<Switch checked={finalState} onChange={handleFinalChange} />}
+                control={<Switch checked={finalState} onChange={handleFinalChange} disabled={editState ? false : true}/>}
                 label="Order Finalized"
               />
-              {/* <TextField disabled={editState ? false : true} id='outlined-final' name='final' label='Order Finalized' value={final ? 'True' : 'False'} onChange={handleChange} /> */}
             <div>
               <Button onClick={editState ? (ev)=>{handleSubmit(ev)} : () => setEditState(true)}>{editState ? 'Save All Changes' : 'Edit All'}</Button>
             </div>
           </FormControl>
-
-          {/* <Accordion>
-            <AccordionSummary
-              expandIcon={<ExpandMoreIcon />}
-              aria-controls='panel1bh-content'
-              id='panel1bh-header'
-            >
-              <Typography>User Orders</Typography>
-            </AccordionSummary>
-            <AccordionDetails>
-              <TableContainer>
-                <Table>
-                  <TableHead>
-                    <TableRow>
-                      <TableCell>Order ID</TableCell>
-                      <TableCell align='right'>Items in Order</TableCell>
-                      <TableCell align='right'>Total Cost</TableCell>
-                      <TableCell align='right'>Created At</TableCell>
-                      <TableCell align='right'>Order Finalized?</TableCell>
-                    </TableRow>
-                  </TableHead>
-                  <TableBody>
-                    {user.orders.length ? user.orders.map(order => (
-                      <TableRow key={order.id}>
-                        <TableCell>{order.id}</TableCell>
-                        <TableCell align='right'>{order.line_items.reduce((acc,item)=>{
-                          acc+=item.quantity
-                          return acc
-                          },0)}</TableCell>
-                          <TableCell align='right'>${order.total}</TableCell>
-                          <TableCell align='right'>{order.createdAt}</TableCell>
-                          <TableCell align='right'>{order.final ? 'Yes' : 'No'}</TableCell>
-                      </TableRow>
-                    )): <TableRow>
-                      <TableCell>No Orders On Account</TableCell>
-                    </TableRow>}
-                  </TableBody>
-                </Table>
-              </TableContainer>
-            </AccordionDetails>  
-          </Accordion> */}
         </CardContent> 
       </Card>
     </Box>
-
   );
 };
 
