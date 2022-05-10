@@ -123,6 +123,18 @@ router.get('/orders', isAdmin, async(req, res, next) => {
   }
 });
 
+router.get('/orders/:id', isAdmin, async(req, res, next) => {
+  try{
+    const order = await Order.findByPk(req.params.id, {
+      include: [{model: LineItem}, {model: User}]
+    });
+    res.send(order);
+  }
+  catch(err){
+    next(err)
+  }
+})
+
 router.delete('/orders/:id', isAdmin, async(req, res, next) => {
   try{
     const order = await Order.findByPk(req.params.id);
@@ -133,6 +145,17 @@ router.delete('/orders/:id', isAdmin, async(req, res, next) => {
     next(err)
   }
 });
+
+router.delete('/orders/lineItems/delete/:id', isAdmin, async(req, res, next) => {
+  try{
+    const lineItem = await LineItem.findByPk(req.params.id);
+    await lineItem.destroy();
+    res.sendStatus(204);
+  }
+  catch(err){
+    next(err)
+  }
+})
 
 router.put('/orders/:id', isAdmin, async(req, res, next) => {
   try{
@@ -146,4 +169,15 @@ router.put('/orders/:id', isAdmin, async(req, res, next) => {
   catch(err){
     next(err)
   }
-})
+});
+
+router.put('/orders/lineItems/update/:id', isAdmin, async(req, res, next) => {
+  try{
+    const lineItem = await LineItem.findByPk(req.params.id)
+    await lineItem.update(req.body);
+    res.sendStatus(204);
+  }
+  catch(err){
+    next(err)
+  }
+});
