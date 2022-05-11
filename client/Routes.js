@@ -19,6 +19,7 @@ import Addresses from "./components/pages/Addresses";
 import OrderHistory from "./components/pages/OrderHistory";
 import Cart from "./components/pages/Cart";
 import Checkout from "./components/pages/Checkout";
+import ReviewOrder from "./components/pages/ReviewOrder"
 import SingleProduct from "./components/pages/SingleProduct";
 import SignOut from "./components/pages/SignOut";
 import AdminDashboard from "./components/pages/AdminDashboard";
@@ -69,6 +70,7 @@ class Routes extends Component {
               path="/checkout"
               render={(routeProps) => <Checkout routeProps={routeProps} />}
             />
+            <Route path="/review_order" component={ReviewOrder} />
             <Route
               path="/adminDashboard"
               component={auth.isAdmin ? AdminDashboard : Unauthorized}
