@@ -10,6 +10,12 @@ body {
   margin: auto;
 }
 
+@media only screen and (min-width: 600px) {
+  .content {
+    width: 850px;
+  }
+}
+
 a {
   text-decoration: none;
 }
@@ -40,14 +46,22 @@ p {
 }
 
 .totalBox {
-  float: right;
-  width: 50%;
   background-color: #efefef;
   padding: 30px;
 }
 
 .totalBox div {
   margin-bottom: 10px;
+}
+/* CART: LINE ITEM COMPONENT _____________________________________________________*/
+.line_item_link:visited {
+  text-decoration: none;
+  color: #444444;
+}
+
+.line_item_link:hover {
+  text-decoration: none;
+  color: #5c5c5c;
 }
 
 /* SIGN IN  _____________________________________________________*/
@@ -136,6 +150,7 @@ button:hover {
   border: 1.5px solid #464444;
 } */
 
+
 #password {
   margin-top: 75px;
 }
@@ -154,4 +169,24 @@ button:hover {
 /* SIGN IN  _____________________________________________________*/
 .lineitem_img {
   max-width: 100%;
+}
+
+
+/* CHECKOUT  _____________________________________________________*/
+
+.checkout {
+  margin: 0 3rem;
+}
+
+.checkout_box{
+  border: 1px solid #cacaca;
+  padding: 1rem 1rem;
+  border-radius: .2rem;
+}
+
+@media only screen and (min-width: 600px) {
+  .checkout {
+    width: 80%;
+    margin: 0 auto;
+  }
 }

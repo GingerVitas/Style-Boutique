@@ -4,6 +4,7 @@ import { Link } from "react-router-dom";
 import Button from "@mui/material/Button";
 import { updateUser } from "../../store/auth";
 
+
 class Account extends React.Component {
   constructor(props) {
     super(props);

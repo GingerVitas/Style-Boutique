@@ -7,20 +7,22 @@ import FilterListIcon from '@mui/icons-material/FilterList';
 import {deleteUser, deleteProduct, deleteOrder} from '../../store/admin';
 
 const AdminTableToolbar = (props) => {
-  const { selected, display} = props;
+  const { selected, setSelected, display} = props;
   const dispatch = useDispatch();
   
   const handleDelete = (selectedArray) => {
     if (display === 'users') { 
       selectedArray.forEach((user) => dispatch(deleteUser(user)))
+      setSelected([]);
     }
     else if (display === 'inventory') { 
       selectedArray.forEach((product) => dispatch(deleteProduct(product)))
+      setSelected([]);
     }
     else {
       selectedArray.forEach((order) => dispatch(deleteOrder(order)));
+      setSelected([]);
     }
-    // setSelected([])
   };
 
   return (

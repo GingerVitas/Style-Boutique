@@ -1,9 +1,10 @@
 import React from 'react'
 import axios from 'axios'
+import { Link } from 'react-router-dom';
 
 // redux
 import { connect } from 'react-redux'
-import { removeListItem, hideListItem, addBackToCart, addQuantityToLineitem } from '../store/cart'
+import { removeListItem, hideListItem, addBackToCart, updateQuantityToLineitem } from '../store/cart'
 import { addWishList, removeWishList} from '../store/wishList'
 
 // mui
@@ -28,21 +29,23 @@ class LineItem extends React.Component {
     handleQuantity(event) {
         const selectedQuantity = event.target.value;
         this.setState({quantity: selectedQuantity});
-        this.props.addquantity({ ...this.props.item, quantity: selectedQuantity, }, this.props.order)
+        this.props.updateQuantity({ ...this.props.item, quantity: selectedQuantity, }, this.props.order)
     }
 
     render() {
-        const { item, routeProps, remove, save, hide, removeWish, addBackToCart, product } = this.props;
+        const { item, routeProps, remove, save, hide, removeWish, addBackToCart, product, categories } = this.props;
+        const { quantity } = this.state;
+        const category = categories.find(category => category.id === product.categoryId);
 
         return (
             <div >
                 <Grid container direction="row" spacing={0} justifyContent="space-evenly" alignItems="center" sx={{ margin: '2rem 0' }}>
-                    <Grid item xs={2}>
-                        <img src={item.imageUrl} className='lineitem_img' />
+                    <Grid item xs={2} sx={{ padding: '0 1rem' }}>
+                        <Link to={`/${category.categoryName}/${product.name}`}><img src={item.imageUrl} className='lineitem_img' /></Link>
                     </Grid>
                     <Grid item xs={6}>
                         {product && product.brand}<br />
-                        {item.productName}
+                        <Link to={`/${category.categoryName}/${product.name}`} className='line_item_link'>{item.productName}</Link>
                         <br />
                         <br />
                         Size: {item.productSize}<br />
@@ -65,22 +68,27 @@ class LineItem extends React.Component {
                         }
                     </Grid>
                     <Grid item xs={2}>
-                        <FormControl sx={{ width: '80%' }}>
-                            <InputLabel id="demo-simple-select-label">Quantity</InputLabel>
-                            <Select
-                                labelId="demo-simple-select-label"
-                                id="demo-simple-select"
-                                defaultValue={1}
-                                value={this.state.quantity}
-                                label="Quantity"
-                                onChange={(e) => this.handleQuantity(e)}
-                            >
-                                {
-                                    Array.from({ length: this.state.sku && this.state.sku.availableStock }, (_, index) => index + 1)
-                                        .map(quant => <MenuItem key={quant} value={quant}> {quant} </MenuItem>)
-                                }
-                            </Select>
-                        </FormControl>
+                        {
+                            routeProps.match.path === '/cart' ?
+                                <FormControl sx={{ width: '80%' }}>
+                                    <InputLabel id="demo-simple-select-label">Quantity</InputLabel>
+                                    <Select
+                                        labelId="demo-simple-select-label"
+                                        id="demo-simple-select"
+                                        defaultValue={1}
+                                        value={quantity}
+                                        label="Quantity"
+                                        onChange={(e) => this.handleQuantity(e)}
+                                    >
+                                        {
+                                            Array.from({ length: this.state.sku && this.state.sku.availableStock }, (_, index) => index + 1)
+                                                .map(quant => <MenuItem key={quant} value={quant}> {quant} </MenuItem>)
+                                        }
+                                    </Select>
+                                </FormControl>
+                                : <p>{item.quantity}</p>
+                        }
+                        
                     </Grid>
                     <Grid item xs={2}>
                         Total: ${item.total}
@@ -91,13 +99,14 @@ class LineItem extends React.Component {
     }
 }
 
-const mapState = (state, { item }) => {
+const mapState = (state, { item, product }) => {
     return {
         product: state.products.find(product => product.name === item.productName),
-        // sku: state.skus.find(sku => sku.id === item.productSKUId),
-        order: state.order
+        order: state.order,
+        categories: state.categories
     };
 };
+
 const mapDispatch = dispatch => {
     return {
         remove(itemId) {
@@ -115,11 +124,14 @@ const mapDispatch = dispatch => {
         addBackToCart(item) {
             dispatch(addBackToCart(item))
         },
-        addquantity(lineitem, order) {
-            dispatch(addQuantityToLineitem(lineitem, order))
+        updateQuantity(lineitem, order) {
+            dispatch(updateQuantityToLineitem(lineitem, order))
         }
     }
 }
 
 export default connect(mapState, mapDispatch)(LineItem)
+
+
+
 

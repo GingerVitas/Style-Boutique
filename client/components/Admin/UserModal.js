@@ -1,6 +1,6 @@
 import React, {useState, useEffect} from 'react';
 import {useDispatch} from 'react-redux';
-import {Card, CardHeader, Box, Button, Modal, CardContent, Typography, TextField, Accordion, AccordionSummary, AccordionDetails, TableContainer, Table, TableHead, TableRow, TableCell, TableBody, Paper} from '@mui/material';
+import {Card, CardHeader, Box, Button, Modal, CardContent, Typography, TextField, Accordion, AccordionSummary, AccordionDetails, TableContainer, Table, TableHead, TableRow, TableCell, TableBody, FormControlLabel, Switch} from '@mui/material';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import { adminUpdateUser } from '../../store/admin';
 
@@ -9,7 +9,8 @@ const UserModal = props => {
   const dispatch = useDispatch();
   const [state, setState] = useState(user ? user : {})
   const [editState, setEditState] = useState(false)
-  const {firstName, lastName, email} = state
+  const [adminState, setAdminState] = useState(user.isAdmin)
+  const {firstName, lastName, email, username} = state
 
   const handleChange = (evt) => {
     setState({
@@ -20,9 +21,12 @@ const UserModal = props => {
   const handleSubmit = (evt)  => {
     evt.preventDefault();
     const {orders, addresses, ...updatedUser} = state;
-    console.log('********HANDLE SUBMIT********', updatedUser)
-    dispatch(adminUpdateUser(updatedUser));
+    dispatch(adminUpdateUser({...updatedUser, isAdmin: adminState}));
     setEditState(false)
+  }
+
+  const handleAdminChange = evt => {
+    setAdminState(evt.target.checked)
   }
 
   const style = {
@@ -46,17 +50,21 @@ const UserModal = props => {
         <CardContent >
           <form style={{display: 'flex', flexDirection: 'column' }}>
             <div style={{display: 'flex', alignItems: 'center'}}>
-              <TextField disabled={editState ? false : true} id='outlined-firstName' name='firstName' value={firstName} onChange={handleChange} sx={{flexBasis:'90%'}}/>
-              {/* <Button>{editState ? 'Save Changes' : 'Edit'}</Button> */}
+              <TextField disabled={editState ? false : true} id='outlined-firstName' name='firstName' label='First Name' value={firstName} onChange={handleChange} sx={{flexBasis:'90%'}}/>
             </div>
             <div style={{display: 'flex', alignItems: 'center'}}>
-              <TextField disabled={editState ? false : true} id='outlined-lastName' name='lastName' value={lastName} onChange={handleChange} sx={{flexBasis:'90%'}}/>
-              {/* <Button>{editState ? 'Save Changes' : 'Edit'}</Button> */}
+              <TextField disabled={editState ? false : true} id='outlined-lastName' name='lastName' label='Last Name' value={lastName} onChange={handleChange} sx={{flexBasis:'90%'}}/>
             </div>
             <div style={{display: 'flex', alignItems: 'center'}}>
-              <TextField disabled={editState ? false : true} id='outlined-email' name='email' value={email} onChange={handleChange} sx={{flexBasis:'90%'}}/>
-              {/* <Button>{editState ? 'Save Changes' : 'Edit'}</Button> */}
+              <TextField disabled={editState ? false : true} id='outlined-username' name='username' label='Username' value={username} onChange={handleChange} sx={{flexBasis:'90%'}}/>
             </div>
+            <div style={{display: 'flex', alignItems: 'center'}}>
+              <TextField disabled={editState ? false : true} id='outlined-email' name='email' label='Email' value={email} onChange={handleChange} sx={{flexBasis:'90%'}}/>
+            </div>
+            <FormControlLabel
+                control={<Switch checked={adminState} onChange={handleAdminChange} disabled={editState ? false : true}/>}
+                label="Admin User"
+              />
             <div>
               <Button onClick={editState ? (ev)=>{handleSubmit(ev)} : () => setEditState(true)}>{editState ? 'Save All Changes' : 'Edit All'}</Button>
             </div>
