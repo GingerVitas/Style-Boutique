@@ -29,6 +29,7 @@ const UserModal = props => {
     setAdminState(evt.target.checked)
   }
 
+
   const style = {
     position: 'absolute',
     top: '50%',

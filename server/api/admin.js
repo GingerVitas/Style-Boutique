@@ -77,6 +77,16 @@ router.get('/products', isAdmin, async(req, res, next)=> {
   }
 });
 
+router.get('/productSKUs/all', isAdmin, async(req, res, next) => {
+  try{
+    const productSKUs = await ProductSKU.findAll();
+    res.send(productSKUs)
+  }
+  catch(err){
+    next(err)
+  }
+})
+
 router.delete('/productSKU/:id', async(req, res, next)=> {
   try{
     const sku = await ProductSKU.findByPk(req.params.id);
@@ -181,3 +191,13 @@ router.put('/orders/lineItems/update/:id', isAdmin, async(req, res, next) => {
     next(err)
   }
 });
+
+router.post('/orders/lineItem', isAdmin, async(req, res, next) => {
+  try{
+    await LineItem.create(req.body);
+    res.sendStatus(201)
+  }
+  catch(err){
+    next(err)
+  }
+})

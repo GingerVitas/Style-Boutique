@@ -125,6 +125,7 @@ export const deleteOrder = order => {
       }
     });
     dispatch(_deleteOrder(order));
+    loadAdminUsers();
   }
 };
 
@@ -136,6 +137,7 @@ export const updateAdminOrder = (order) => {
       }
     }));
     dispatch(_updateOrder(updatedOrder));
+    loadAdminUsers();
   }
 };
 
@@ -152,6 +154,7 @@ export const deleteLineItem = (lineItem, order) => {
       }
     })).data;
     dispatch(_updateOrder(updatedOrder))
+    loadAdminUsers();
   }
 };
 
@@ -168,6 +171,24 @@ export const adminUpdateLineItem = (lineItem, order) => {
       }
     })).data;
     dispatch(_updateOrder(updatedOrder))
+    loadAdminUsers();
+  }
+};
+
+export const adminAddLineItem = (lineItem, order) => {
+  return async(dispatch) => {
+    await axios.post(`/api/admin/orders/lineItem`, lineItem, {
+      headers: {
+        authorization: window.localStorage.getItem('token')
+      }
+    })
+    const updatedOrder = (await axios.get(`/api/admin/orders/${order.id}`, {
+      headers: {
+        authorization: window.localStorage.getItem('token')
+      }
+    })).data;
+    dispatch(_updateOrder(updatedOrder));
+    loadAdminUsers();
   }
 }
 
