@@ -1,6 +1,7 @@
 import React from "react";
 import { connect } from "react-redux";
 import { Link } from "react-router-dom";
+import Button from "@mui/material/Button";
 import { updateUser } from "../../store/auth";
 
 
@@ -43,43 +44,45 @@ class Account extends React.Component {
     const auth = this.props.auth;
     return (
       <div>
-        <h4 className="account-intro">User Account Information</h4>
+        <h4 className="account-intro">Personal Information</h4>
         <div className="account-body">
           <form className="contact-info">
             <label className="accountLabel">
-              First Name:
+              First Name
               <input
                 name="firstName"
                 type="text"
-                allowNull={false}
+                allownull="false"
                 disabled={this.state.edit ? false : true}
                 value={this.state.user.firstName}
                 onChange={this.handleChange}
               />
             </label>
             <label className="accountLabel">
-              Last Name:
+              Last Name
               <input
                 name="lastName"
                 type="text"
+                allownull="false"
                 disabled={this.state.edit ? false : true}
                 value={this.state.user.lastName}
                 onChange={this.handleChange}
               />
             </label>
             <label className="accountLabel">
-              Email:
+              Email
               <input
                 name="email"
-                type="text"
+                type="email"
+                allownull="false"
                 disabled={this.state.edit ? false : true}
                 value={this.state.user.email}
                 onChange={this.handleChange}
               />
             </label>
-
-            <button
-              className="submit"
+            <Button
+              color="black"
+              variant="contained"
               onClick={
                 this.state.edit
                   ? (ev) => {
@@ -91,7 +94,7 @@ class Account extends React.Component {
               }
             >
               {this.state.edit ? "SUBMIT" : "EDIT"}
-            </button>
+            </Button>
           </form>
           <div>
             <button id="password">Update Password</button>
