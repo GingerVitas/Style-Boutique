@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 
 // REDUX
 import { connect } from 'react-redux'
@@ -46,12 +46,14 @@ const Checkout = props => {
 
     const onSubmit = (e) => {
         e.preventDefault();
-        console.log(addressformValue)
         window.localStorage.setItem('shippingAddress', JSON.stringify(addressformValue));
-        console.log(addressformValue)
-        // props.routeProps.history.push('/review_order')
+        props.routeProps.history.push('/review_order');
         // handleAddressSubmit(addressformValue)
     }
+
+    // useEffect(() => {
+    //     props.routeProps.history.push('/review_order');
+    // }, [])
 
     const states = ['AL', 'AK', 'AS', 'AZ', 'AR', 'CA', 'CO', 'CT', 'DE', 'DC', 'FL', 'GA', 'GU', 'HI', 'ID', 'IL', 'IN', 'IA', 'KS', 'KY', 'LA', 'ME', 'MD', 'MA', 'MI', 'MN', 'MS', 'MO', 'MT', 'NE', 'NV', 'NH', 'NJ', 'NM', 'NY', 'NC', 'ND', 'MP', 'OH', 'OK', 'OR', 'PA', 'PR', 'RI', 'SC', 'SD', 'TN', 'TX', 'UT', 'VT', 'VA', 'VI', 'WA', 'WV', 'WI', 'WY'];
 
@@ -78,6 +80,10 @@ const Checkout = props => {
                                 id="combo-box-demo"
                                 options={states}
                                 sx={{ width: 300, margin: 0 }}
+                                value={addressformValue.state}
+                                onChange={(e, newValue)=> {
+                                    setAddressFormValue({...addressformValue, state: newValue})
+                                }}
                                 renderInput={(params) => <TextField {...params} label="State" />}
                             /><br/>
                             <TextField onChange={onAddressChange} value={addressformValue.zipCode} required id="outlined-password-input" label="Zip code" variant="outlined" name="zipCode" type="text" style={{ width: '80%' }} />
@@ -127,10 +133,10 @@ const Checkout = props => {
                         {
                             paymentOption === 'creditCard' ?
                                 <form id='creditCardForm' name='creditCard' onSubmit={handleCreditCardSubmit} >
-                                    <TextField onChange={onCreditCardChange} value={creditCardFormValue.cardNumber} required id="outlined-basic" label="Card number" variant="outlined" name="cardNumber" type="text" style={{ width: '80%' }} /><br />
-                                    <TextField onChange={onCreditCardChange} value={creditCardFormValue.expirationDate} required id="outlined-password-input" label="Expiration date" variant="outlined" name="expirationDate" type="text" style={{ width: '80%' }} /><br />
-                                    <TextField onChange={onCreditCardChange} value={creditCardFormValue.securityCode} required id="outlined-password-input" label="Security code" variant="outlined" name="securityCode" type="text" style={{ width: '80%' }} /><br />
-                                    <TextField onChange={onCreditCardChange} value={creditCardFormValue.firstName} required id="outlined-password-input" label="First name" variant="outlined" name="firstName" type="text" style={{ width: '80%' }} /><br />
+                                    <TextField onChange={onCreditCardChange} value={creditCardFormValue.cardNumber} required autocomplete="cc-number" id="outlined-basic" label="Card number" variant="outlined" name="cardNumber" type="text" style={{ width: '80%' }} /><br />
+                                    <TextField onChange={onCreditCardChange} value={creditCardFormValue.expirationDate} required autocomplete="cc-exp" id="outlined-password-input" label="Expiration date" variant="outlined" name="expirationDate" type="text" style={{ width: '80%' }} /><br />
+                                    <TextField onChange={onCreditCardChange} value={creditCardFormValue.securityCode} required autocomplete="cc-csc" id="outlined-password-input" label="Security code" variant="outlined" name="securityCode" type="text" style={{ width: '80%' }} /><br />
+                                    <TextField onChange={onCreditCardChange} value={creditCardFormValue.firstName} required autocomplete="off" id="outlined-password-input" label="First name" variant="outlined" name="firstName" type="text" style={{ width: '80%' }} /><br />
                                     <TextField onChange={onCreditCardChange} value={creditCardFormValue.lastName} required id="outlined-password-input" label="Last name" variant="outlined" name="lastName" type="text" style={{ width: '80%' }} />
                                 </form>
                                 : <form id='paypalForm' name='paypal' onSubmit={handlePaypalSubmit} >
