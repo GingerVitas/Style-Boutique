@@ -15,6 +15,7 @@ export const loadSKUs = productName => {
     } else {
       name = productName;
     }
+    console.log('*********SKU THUNK********', name)
     const skus = (await axios.get(`/api/skus/${name}`)).data
     dispatch(_loadSKUs(skus))
   }

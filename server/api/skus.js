@@ -3,7 +3,7 @@ const {models:{Product, ProductSKU, ProductColor}} = require('../db/index');
 module.exports = router
 
 router.get('/:name', async(req, res, next)=> {
-  try{ 
+  try{
     const name = req.params.name
     const product = await Product.findOne({where: {name}})
     const productColor = await ProductColor.findOne({where: {productId: product.id}})
