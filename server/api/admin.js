@@ -77,6 +77,18 @@ router.get('/products', isAdmin, async(req, res, next)=> {
   }
 });
 
+router.get('/products/:id', isAdmin, async(req, res, next) => {
+  try{
+    const product = await Product.findByPk(req.params.id, {
+      include: [{model: ProductColor, include: {model: ProductSKU}}]
+    })
+    res.send(product)
+  }
+  catch(err){
+    next(err)
+  }
+})
+
 router.get('/productSKUs/all', isAdmin, async(req, res, next) => {
   try{
     const productSKUs = await ProductSKU.findAll();
@@ -87,16 +99,47 @@ router.get('/productSKUs/all', isAdmin, async(req, res, next) => {
   }
 });
 
+router.post('/color', isAdmin, async(req, res, next) => {
+  try{
+    const newColor = await ProductColor.create(req.body);
+    res.send(newColor);
+  }
+  catch(err){
+    next(err)
+  }
+});
+
+router.post('/sku', isAdmin, async(req, res, next)=> {
+  try{
+    const newSKU = await ProductSKU.create(req.body)
+    res.sendStatus(201);
+  }
+  catch(err){
+    next(err)
+  }
+})
+
 router.put('/products/:id', isAdmin, async(req, res, next) => {
   try{
-    const product = Product.findByPk(req.params.id);
-    product.update(req.body);
+    const product = await Product.findByPk(req.params.id);
+    await product.update(req.body);
     res.send(product)
   }
   catch(err){
     next(err)
   }
 });
+
+router.put('/sku/:id', isAdmin, async(req, res, next) => {
+  try{
+    const sku = await ProductSKU.findByPk(req.params.id);
+    await sku.update(req.body);
+    res.sendStatus(200)
+  }
+  catch(err){
+    next(err)
+  }
+})
 
 router.delete('/productSKU/:id', async(req, res, next)=> {
   try{
@@ -154,7 +197,7 @@ router.get('/orders/:id', isAdmin, async(req, res, next) => {
   catch(err){
     next(err)
   }
-})
+});
 
 router.delete('/orders/:id', isAdmin, async(req, res, next) => {
   try{
@@ -196,7 +239,7 @@ router.put('/orders/lineItems/update/:id', isAdmin, async(req, res, next) => {
   try{
     const lineItem = await LineItem.findByPk(req.params.id)
     await lineItem.update(req.body);
-    res.sendStatus(204);
+    res.sendStatus(200);
   }
   catch(err){
     next(err)
@@ -205,8 +248,8 @@ router.put('/orders/lineItems/update/:id', isAdmin, async(req, res, next) => {
 
 router.post('/orders/lineItem', isAdmin, async(req, res, next) => {
   try{
-    await LineItem.create(req.body);
-    res.sendStatus(201)
+    const lineItem = await LineItem.create(req.body);
+    res.send(lineItem)
   }
   catch(err){
     next(err)

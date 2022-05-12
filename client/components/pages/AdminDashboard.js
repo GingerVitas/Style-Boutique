@@ -14,6 +14,7 @@ const AdminDashboard = () => {
   const adminInventory = useSelector(state=>state.adminProducts)
   const adminOrders = useSelector(state=>state.adminOrders)
   const [display, setDisplay] = useState('')
+  const [render, setRender] = useState(false)
   const buttonBoxStyle = {
     width: '90vw', 
     height: '80vh', 
@@ -37,6 +38,14 @@ const AdminDashboard = () => {
     dispatch(loadAdminUsers())
   }, [adminOrders])
 
+  useEffect(()=>{
+    if(render){
+      console.log('Admin Dashboard Render');
+      dispatch(loadAdminProducts());
+      setRender(false)
+    }
+  }, [render])
+
   if(auth.isAdmin) return (
     <div>
     <h1 style={{textAlign:'center'}}>Welcome Administrator {auth.lastName}</h1>
@@ -46,7 +55,7 @@ const AdminDashboard = () => {
       <Button sx={buttonStyle} name='orders' variant={display === 'orders' ? 'contained' : 'outlined'} onClick={()=> setDisplay('orders')}>Manage Orders</Button>
       <Box sx={{flexBasis: '100%', width:'100%', padding:'1rem', margin:'1rem'}}>
         {display === 'users' ? <AdminUserTable users={adminUsers} display={display}/>
-        : display === 'inventory' ? <AdminInventoryTable inventory={adminInventory} display={display} /> 
+        : display === 'inventory' ? <AdminInventoryTable inventory={adminInventory} display={display} setRender={setRender}/> 
         : display === 'orders' ? <AdminOrdersTable orders={adminOrders} display={display} /> : ''} 
       </Box>
       
