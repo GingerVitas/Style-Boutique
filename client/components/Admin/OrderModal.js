@@ -128,7 +128,7 @@ const OrderModal = props => {
                       <TableBody>
                         {lineItemState.map((item) => {
                           return (
-                            <LineItemTableRow key={item.id} item={item} order={order} lineItemState={lineItemState} setLineItemState={setLineItemState}/>
+                            <LineItemTableRow key={item.id} item={item} order={order} lineItemState={lineItemState} setLineItemState={setLineItemState} setParent={setEditState}/>
                           )
                         })}
                       <TableRow>

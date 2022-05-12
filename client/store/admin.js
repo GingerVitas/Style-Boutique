@@ -5,7 +5,8 @@ const LOAD_USERS = 'LOAD_USERS';
 const DELETE_USER = 'DELETE_USER';
 const UPDATE_USER = 'UPDATE_USER';
 const LOAD_PRODUCTS = 'LOAD_PRODUCTS';
-const DELETE_PRODUCT = 'DELETE_PRODUCT'
+const DELETE_PRODUCT = 'DELETE_PRODUCT';
+const UPDATE_PRODUCT = 'UPDATE_PRODUCT';
 const LOAD_ORDERS = 'LOAD_ORDERS';
 const DELETE_ORDER = 'DELETE_ORDER';
 const UPDATE_ORDER = 'UPDATE_ORDER';
@@ -15,13 +16,13 @@ const _loadUsers = users => ({type: LOAD_USERS, users});
 const _deleteUser = user => ({type: DELETE_USER, user});
 const _updateUser = user => ({type: UPDATE_USER, user})
 const _loadProducts = products => ({type: LOAD_PRODUCTS, products});
-const _deleteProduct = product => ({type: DELETE_PRODUCT, product})
+const _deleteProduct = product => ({type: DELETE_PRODUCT, product});
+const _updateProduct = product => ({type: UPDATE_PRODUCT, product});
 const _loadOrders = orders => ({type: LOAD_ORDERS, orders});
 const _deleteOrder = order => ({type: DELETE_ORDER, order});
 const _updateOrder = order => ({type: UPDATE_ORDER, order});
 
 // User Thunks
-const headers = {headers: {authorization: window.localStorage.getItem('token')}}
 
 export const loadAdminUsers = () => {
   return async(dispatch) => {
@@ -104,6 +105,29 @@ export const deleteProduct = (product) => async dispatch => {
   }
 };
 
+export const adminUpdateProduct = (product) => {
+  return async(dispatch) => {
+    const updatedProduct = (await axios.put(`/api/admin/products/${product.id}`, product, {
+      headers: {
+        authorization: window.localStorage.getItem('token')
+      }
+    })).data;
+    dispatch(_updateProduct(updatedProduct))
+  }
+};
+
+export const adminUpdateSKU = (sku, product) => {
+  return async(dispatch) => {
+    await axios.put(`/api/admin/sku/${sku.id}`, sku, {
+      headers: {
+        authorization: window.localStorage.getItem('token')
+      }
+    });
+    const updatedProduct = (await axios.get(`/api/products/${product.id}`)).data
+    dispatch(_updateProduct(updatedProduct))
+  }
+}
+
 
 //Order Thunks
 export const loadAdminOrders = () => {
@@ -125,7 +149,7 @@ export const deleteOrder = order => {
       }
     });
     dispatch(_deleteOrder(order));
-    loadAdminUsers();
+    // loadAdminUsers();
   }
 };
 
@@ -137,7 +161,7 @@ export const updateAdminOrder = (order) => {
       }
     }));
     dispatch(_updateOrder(updatedOrder));
-    loadAdminUsers();
+    // loadAdminUsers();
   }
 };
 
@@ -154,7 +178,7 @@ export const deleteLineItem = (lineItem, order) => {
       }
     })).data;
     dispatch(_updateOrder(updatedOrder))
-    loadAdminUsers();
+    // loadAdminUsers();
   }
 };
 
@@ -171,7 +195,7 @@ export const adminUpdateLineItem = (lineItem, order) => {
       }
     })).data;
     dispatch(_updateOrder(updatedOrder))
-    loadAdminUsers();
+    // loadAdminUsers();
   }
 };
 
@@ -188,7 +212,7 @@ export const adminAddLineItem = (lineItem, order) => {
       }
     })).data;
     dispatch(_updateOrder(updatedOrder));
-    loadAdminUsers();
+    // loadAdminUsers();
   }
 }
 
@@ -213,6 +237,8 @@ export const adminProducts = (state = [], action) => {
       return action.products;
     case DELETE_PRODUCT:
       return [...state.filter(product => product.id !== action.product.id)]
+    case UPDATE_PRODUCT:
+        return [...state.map(product => product.id !== action.product.id ? product : action.product)]
     default:
       return state
   }
