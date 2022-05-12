@@ -6,7 +6,7 @@ import DeleteIcon from '@mui/icons-material/Delete';
 import {deleteLineItem, adminUpdateLineItem} from '../../store/admin';
 
 const LineItemTableRow = (props) => {
-  const {item, order, lineItemState, setLineItemState} = props
+  const {item, order, lineItemState, setLineItemState, setParent} = props
   const dispatch = useDispatch();
   const [state, setState] = useState({
     ...item,
@@ -82,9 +82,15 @@ const LineItemTableRow = (props) => {
     setLineItemState([...lineItemState.filter(item => item.id !== lineItem.id)])
   }
 
+  const handleButtonChange = evt => {
+    evt.preventDefault();
+    setEditState(true);
+    setParent(true)
+  }
+
   return (
     <TableRow sx={{height:'auto', maxHeight:'120px'}}>
-      <TableCell><Button onClick={editState ? (evt) => handleSubmit(evt) : ()=>setEditState(true)}>{editState ? 'Save Changes' : 'Edit Item'}</Button></TableCell>
+      <TableCell><Button onClick={editState ? (evt) => handleSubmit(evt) : (evt)=>handleButtonChange(evt)}>{editState ? 'Save Changes' : 'Edit Item'}</Button></TableCell>
       <TableCell scope='row' padding='none' sx={{display:'flex', alignItems:'center'}}>
         <img src={item.imageUrl} style={{maxHeight:'200px', width:'auto', minWidth:'90px', marginRight:'1rem', padding:'.5rem'}} />{item.productName}
       </TableCell>
