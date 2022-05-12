@@ -69,6 +69,33 @@ export const loadAdminProducts = () => {
   }
 };
 
+export const adminAddColor = (color, skuArray) => {
+  return async(dispatch) => {
+    const productColor = (await axios.post(`/api/admin/color`, color, {
+      headers: {
+        authorization: window.localStorage.getItem('token')
+      }
+    })).data;
+    const newSKUArray = skuArray.map(sku => {
+      return {
+        ...sku,
+        productColorId: productColor.id
+      }
+    })
+    newSKUArray.forEach(async(sku) => await axios.post('/api/admin/sku', sku, {
+      headers: {
+        authorization: window.localStorage.getItem('token')
+      }
+    }));
+    const products = (await axios.get(`/api/admin/products/`, {
+      headers: {
+        authorization: window.localStorage.getItem('token')
+      }
+    })).data;
+    dispatch(_loadProducts(products))
+  }
+}
+
 export const deleteProduct = (product) => async dispatch => {
   try{
     const colors = (await axios.get(`/api/colors/delete/${product.id}`)).data
@@ -123,7 +150,11 @@ export const adminUpdateSKU = (sku, product) => {
         authorization: window.localStorage.getItem('token')
       }
     });
-    const updatedProduct = (await axios.get(`/api/products/${product.id}`)).data
+    const updatedProduct = (await axios.get(`/api/admin/products/${product.id}`, {
+      headers: {
+        authorization: window.localStorage.getItem('token')
+      }
+    })).data
     dispatch(_updateProduct(updatedProduct))
   }
 }

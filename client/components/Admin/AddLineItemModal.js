@@ -1,7 +1,8 @@
 import React, {useState} from 'react';
+import axios from 'axios';
 import {useDispatch, useSelector} from 'react-redux';
 import {Box, Button, Card, Typography, CardContent, FormControl, Select, MenuItem, InputLabel} from '@mui/material';
-import {adminAddLineItem} from '../../store/admin';
+import {updateAdminOrder} from '../../store/admin';
 
 const AddLineItemModal = props => {
   const {order, lineItemState, setLineItemState, setOpen} = props;
@@ -46,8 +47,13 @@ const AddLineItemModal = props => {
 
   const handleSubmit = async(evt) => {
     evt.preventDefault();
-    dispatch(adminAddLineItem(lineItem, order));
-    setLineItemState([...lineItemState, lineItem])
+    const newLineItem = (await axios.post(`/api/admin/orders/lineitem`, lineItem, {
+      headers: {
+        authorization: window.localStorage.getItem('token')
+      }
+    })).data;
+    dispatch(updateAdminOrder(order));
+    setLineItemState([...lineItemState, newLineItem])
     setOpen(false)
   }
 
