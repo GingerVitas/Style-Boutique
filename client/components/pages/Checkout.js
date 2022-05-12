@@ -168,9 +168,9 @@ const Checkout = props => {
                         {
                             paymentOption === 'creditCard' ?
                                 <form id='creditCardForm' name='creditCard' >
-                                    <TextField onChange={onCardNumberChange} value={creditCardFormValue.cardNumber} required id="outlined-basic" label="Card number" inputProps={{ maxLength: 5 }} variant="outlined" name="cardNumber" type="text" style={{ width: '80%' }} /><br />
+                                    <TextField onChange={onCardNumberChange} value={creditCardFormValue.cardNumber} required id="outlined-basic" label="Card number" inputProps={{ maxLength: 19 }} variant="outlined" name="cardNumber" type="text" style={{ width: '80%' }} /><br />
                                     <TextField onChange={onExpDateChange} value={creditCardFormValue.expirationDate} required placeholder="MM/YY" inputProps={{ maxLength: 5 }} id="outlined-basic" label="Expiration date" variant="outlined" name="expirationDate" type="text" style={{ width: '30%' }} /><br />
-                                    <TextField onChange={onCreditCardChange} value={creditCardFormValue.securityCode} required id="outlined-basic" label="Security code" variant="outlined" name="securityCode" type="text" style={{ width: '80%' }} /><br />
+                                    <TextField onChange={onCreditCardChange} value={creditCardFormValue.securityCode} required id="outlined-basic" label="Security code" inputProps={{ maxLength: 3 }} variant="outlined" name="securityCode" type="text" style={{ width: '20%' }} /><br />
                                     <TextField onChange={onCreditCardChange} value={creditCardFormValue.firstName} required id="outlined-basic" label="First name" variant="outlined" name="firstName" type="text" style={{ width: '80%' }} /><br />
                                     <TextField onChange={onCreditCardChange} value={creditCardFormValue.lastName} required id="outlined-basic" label="Last name" variant="outlined" name="lastName" type="text" style={{ width: '80%' }} />
                                 </form>
