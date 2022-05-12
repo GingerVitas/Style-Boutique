@@ -1,8 +1,79 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
+import { useSelector, useDispatch } from "react-redux";
 import { connect } from "react-redux";
 import { Link } from "react-router-dom";
+import {
+  Card,
+  CardHeader,
+  Box,
+  Button,
+  CardContent,
+  Typography,
+  Accordion,
+  AccordionSummary,
+  AccordionDetails,
+  TableContainer,
+  Table,
+  TableHead,
+  TableRow,
+  TableCell,
+  TableBody,
+  FormControl,
+  InputLabel,
+  Select,
+  MenuItem,
+  FormControlLabel,
+  Switch,
+} from "@mui/material";
+import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
+//import thunks: import addAddress from
 
-const Addresses = ({ address }) => {
+const Addresses = (props) => {
+  const dispatch = useDispatch();
+  const auth = useSelector((state) => state.auth); // global state to auth
+
+  const style = {
+    position: "absolute",
+    top: "50%",
+    left: "50%",
+    transform: "translate(-50%, -50%)",
+    bgcolor: "background.paper",
+    border: "2px solid #000",
+    boxShadow: 24,
+    p: 4,
+    textAlign: "center",
+    height: "auto",
+    maxHeight: "80vh",
+    width: "auto",
+    overflow: "scroll",
+  };
+
+  // call thunks in handleSubmit()
+
+  const handleSubmit = (evt) => {
+    evt.preventDefault();
+    dispatch(addAddress);
+  };
+
+  const [address, setAddress] = useState({
+    userId: auth.id,
+    addressLine1: "",
+    addressLine2: "",
+    city: "",
+    state: "",
+    zip: 12345,
+    country: "USA",
+  });
+
+  //value = {address.addressLine1}
+
+  //pass in address to thunk, no this or binding
+
+  // useEffect to load all addresses
+  // useEffect(() => {
+  //   dispatch(());
+  // }, []);
+
   return (
     <div>
       <h4>Shipping Addresses</h4>
@@ -45,6 +116,10 @@ const Addresses = ({ address }) => {
             <label className="addressLabel">
               State/Province
               <input name="state" type="text" />
+            </label>
+            <label className="addressLabel">
+              Country
+              <input name="country" type="text" />
             </label>
             <button className="checkbox" onClick={() => {}}>
               Make this my default shipping address.
