@@ -176,6 +176,7 @@ const OrderModal = (props) => {
                             order={order}
                             lineItemState={lineItemState}
                             setLineItemState={setLineItemState}
+                            setParent={setEditState}
                           />
                         );
                       })}

@@ -85,7 +85,18 @@ router.get('/productSKUs/all', isAdmin, async(req, res, next) => {
   catch(err){
     next(err)
   }
-})
+});
+
+router.put('/products/:id', isAdmin, async(req, res, next) => {
+  try{
+    const product = Product.findByPk(req.params.id);
+    product.update(req.body);
+    res.send(product)
+  }
+  catch(err){
+    next(err)
+  }
+});
 
 router.delete('/productSKU/:id', async(req, res, next)=> {
   try{

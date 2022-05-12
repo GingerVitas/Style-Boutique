@@ -106,6 +106,22 @@ const singleProduct = () => {
             <h4>{product.brand}</h4>
             <h2>${skus[0] ? skus[0].price : '3em'}</h2>
             <FormControl sx={{ width: '100%' }}>
+              <InputLabel id="demo-simple-select-label">Color</InputLabel>
+              <Select
+                labelId="demo-simple-select-label"
+                id="demo-simple-select"
+                value={color}
+                label="Color"
+                onChange={handleColor}
+                defaultValue={0}
+              >
+                {
+                  colors.map(color => <MenuItem key={color.id} value={color}>{color.color}</MenuItem>)
+                }
+              </Select>
+            </FormControl>
+            <br />
+            <FormControl sx={{ width: '100%' }}>
               <InputLabel id="demo-simple-select-label">Size</InputLabel>
               <Select
                 labelId="demo-simple-select-label"
@@ -122,22 +138,6 @@ const singleProduct = () => {
                       ? < MenuItem key={sku.id} value={sku} disabled={true} > {sku.size} - Out of Stock </MenuItem>
 
                       : <MenuItem key={sku.id} value={sku}> {sku.size} </MenuItem>)
-                }
-              </Select>
-            </FormControl>
-            <br />
-            <FormControl sx={{ width: '100%' }}>
-              <InputLabel id="demo-simple-select-label">Color</InputLabel>
-              <Select
-                labelId="demo-simple-select-label"
-                id="demo-simple-select"
-                value={color}
-                label="Color"
-                onChange={handleColor}
-                defaultValue={0}
-              >
-                {
-                  colors.map(color => <MenuItem key={color.id} value={color}>{color.color}</MenuItem>)
                 }
               </Select>
             </FormControl>

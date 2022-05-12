@@ -25,7 +25,7 @@ const {
 } = require("./seed-data");
 const {
   db,
-  models: { User, Product, ProductSKU, Category, ProductColor },
+  models: { User, Product, ProductSKU, Category, ProductColor, Address },
 } = require("../server/db");
 const { faker } = require("@faker-js/faker");
 
@@ -88,32 +88,47 @@ async function seed() {
       })
   );
 
-  const users = await Promise.all([
-    User.create({
+  const cody = await User.create({
       username: "cody",
       password: "123",
       firstName: "Cody",
       lastName: "Harris",
       email: "cody_harris@gmail.com",
-    }),
-    User.create({
+    })
+  const murphy = await User.create({
       username: "murphy",
       password: "123",
       firstName: "Murphy",
       lastName: "Kim",
       email: "dummy_email@gmail.com",
-    }),
-    User.create({
-      username: "Scott",
-      password: "123",
-      firstName: "Scott",
-      lastName: "Johnson",
-      email: "dummyEmail@comcast.net",
-      isAdmin: true
     })
-  ]);
 
-  console.log(`seeded ${users.length} users`);
+  const scott = await User.create({
+    username: "Scott",
+    password: "123",
+    firstName: "Scott",
+    lastName: "Johnson",
+    email: "dummyEmail@comcast.net",
+    isAdmin: true
+  })
+
+  await Address.create({
+    addressLine1:'123 FullStack Way',
+    city: 'New York',
+    state: 'NY',
+    zipCode: 10001,
+    userId: scott.id
+  });
+
+  await Address.create({
+    addressLine1:'12345 FullStack Way',
+    city: 'New York',
+    state: 'NY',
+    zipCode: 10001,
+    userId: murphy.id
+  });
+
+  // console.log(`seeded ${users.length} users`);
 
   // Creating Products ****************************************************************
 
@@ -328,12 +343,6 @@ async function seed() {
   await ProductSKU.bulkCreate(accessoriesSKUs).then(console.log(`**** ${accessoriesSKUs.length} Accessory SKUs Seeded****`));
 
   console.log(`seeded successfully`);
-  return {
-    users: {
-      cody: users[0],
-      murphy: users[1],
-    },
-  };
 }
 
 /*
