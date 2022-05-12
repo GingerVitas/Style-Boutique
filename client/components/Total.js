@@ -58,7 +58,7 @@ const Total = props => {
                 <div style={{ fontSize: '1.3rem' }}>Estimated total <span style={{ float: 'right' }}>${total}</span></div>
                 {
                     onSubmit ?
-                        <Button color='black' style={{ width: '100%', padding: '10px', fontSize: '1rem' }} variant="contained" onClick={onSubmit} component={Link} to={'/review_order'}>
+                        <Button color='black' style={{ width: '100%', padding: '10px', fontSize: '1rem' }} variant="contained" onClick={onSubmit}>
                             Review Order
                         </Button>
                         : <Component />
