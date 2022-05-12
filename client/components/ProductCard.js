@@ -17,14 +17,6 @@ const ProductCard = (props) => {
   const category = props.categories.filter(category => category.id === product.categoryId)[0];
   // const {productName} = useParams();
 
-  // For admin delete modal
-  const [open, setOpen] = useState(false);
-  const handleOpen = () => setOpen(true);
-  const handleClose = () => setOpen(false);
-  const handleDelete = (_product) => {
-    dispatch(deleteProduct(_product));
-  }
-
   // For price, since product db doesn't have price info.
   const [price, setPrice] = useState(0);
   const getPrice = async () => {
@@ -35,6 +27,14 @@ const ProductCard = (props) => {
   useEffect(() => {
     getPrice();
   }, [])
+
+  // For admin delete modal
+  const [open, setOpen] = useState(false);
+  const handleOpen = () => setOpen(true);
+  const handleClose = () => setOpen(false);
+  const handleDelete = (_product) => {
+    dispatch(deleteProduct(_product));
+  }
 
   const style = {
     position: 'absolute',
@@ -60,9 +60,8 @@ const ProductCard = (props) => {
   // }
   // (product)=>handleDelete(product)
   // if (!productName) 
+
   return (
-    //  <Link to={`/${category.categoryName}/${product.name}`}>
-    // sx={{ maxWidth: '310px', margin: '.5rem' }}
     <Card style={{ height: '525px', width: '100%' }}>
       {adminView ? <Button variant='outlined' sx={{ zIndex: '1', float: 'right', margin: '.75rem' }} onClick={handleOpen}>
         Delete Product
@@ -86,12 +85,6 @@ const ProductCard = (props) => {
         </Box>
       </Modal>
       <CardActionArea component={Link} to={`/${category.categoryName}/${product.name}`} sx={{height: '100%'}}>
-        {/* <CardMedia
-          component='img'
-          image={product.imageUrl}
-          height='435'
-          width='300'
-        /> */}
         <Grid
           container
           direction="column"
@@ -124,11 +117,8 @@ const ProductCard = (props) => {
             </CardContent> 
           </Grid>
         </Grid>
-            
-
       </CardActionArea>
     </Card>
-    /* </Link> */
   )
   // else return (
   //   <Card sx={{maxWidth:'280', margin:'.5rem'}} style={{height:'100%'}}>
@@ -166,20 +156,3 @@ const ProductCard = (props) => {
 }
 
 export default ProductCard
-
-
-//   < Grid container
-// direction = "row"
-// justifyContent = "center"
-// alignItems = "center" >
-//                 <Grid item xs={9} style={{ textAlign: 'right' }}>
-//                   <Rating
-//                     name="read-only"
-//                     readOnly
-//                     value={Math.floor(Math.random() * 2 + 3)}
-//                   />
-//                 </Grid>
-//                 <Grid item xs={3} style={{ textAlign: 'left' }}>
-//                   ({Math.floor(Math.random() * 350 + 150)})
-//                 </Grid>
-//               </Grid >

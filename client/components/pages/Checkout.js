@@ -135,7 +135,7 @@ const Checkout = props => {
                         <Typography variant='h4' sx={{ fontSize: '1.5rem' }}>Payment</Typography>
                         <Typography variant='h4' sx={{ fontSize: '1rem', margin: '1rem 0' }}><span style={{ color: 'red', verticalAlign: 'text-top' }}>* </span>Required</Typography>
 
-                        <FormControl>
+                        <FormControl sx={{width:'100%'}}>
                             <RadioGroup
                                 aria-labelledby="demo-radio-buttons-group-label"
                                 defaultValue="creditCard"
@@ -159,13 +159,40 @@ const Checkout = props => {
                                         </Grid> 
                                     </>      
                                 } />
+                                <div>
+                                    {
+                                        paymentOption === 'creditCard' ?
+                                            <div>
+                                                <form id='creditCardForm' name='creditCard' >
+                                                    <TextField onChange={onCardNumberChange} value={creditCardFormValue.cardNumber} required id="outlined-basic" label="Card number" inputProps={{ maxLength: 19 }} variant="outlined" name="cardNumber" type="text" style={{ width: '80%' }} /><br />
+                                                    <TextField onChange={onExpDateChange} value={creditCardFormValue.expirationDate} required placeholder="MM/YY" inputProps={{ maxLength: 5 }} id="outlined-basic" label="Expiration date" variant="outlined" name="expirationDate" type="text" style={{ width: '30%' }} /><br />
+                                                    <TextField onChange={onCreditCardChange} value={creditCardFormValue.securityCode} required id="outlined-basic" label="Security code" inputProps={{ maxLength: 3 }} variant="outlined" name="securityCode" type="text" style={{ width: '20%' }} /><br />
+                                                    <TextField onChange={onCreditCardChange} value={creditCardFormValue.firstName} required id="outlined-basic" label="First name" variant="outlined" name="firstName" type="text" style={{ width: '80%' }} /><br />
+                                                    <TextField onChange={onCreditCardChange} value={creditCardFormValue.lastName} required id="outlined-basic" label="Last name" variant="outlined" name="lastName" type="text" style={{ width: '80%' }} />
+                                                </form>
+                                            </div>
+                                            : <></>
+                                    }
+                                </div>
+                                
                                 <FormControlLabel value="paypal" control={<Radio />} label={
                                     <img src={'/imgs/paypal.png'} width="70px" />
                                 } />
+                                <div>
+                                    {
+                                        paymentOption === "paypal" ?
+                                            <div>
+                                                <Button color='black' style={{ width: '50%', padding: '10px', fontSize: '1rem' }} variant="contained" href='https://www.paypal.com/us/home'>
+                                                    PayPal Checkout
+                                                </Button>
+                                            </div>
+                                            : <></>
+                                    }  
+                                </div>
                             </RadioGroup>
                         </FormControl>
 
-                        {
+                        {/* {
                             paymentOption === 'creditCard' ?
                                 <form id='creditCardForm' name='creditCard' >
                                     <TextField onChange={onCardNumberChange} value={creditCardFormValue.cardNumber} required id="outlined-basic" label="Card number" inputProps={{ maxLength: 19 }} variant="outlined" name="cardNumber" type="text" style={{ width: '80%' }} /><br />
@@ -179,7 +206,7 @@ const Checkout = props => {
                                         PayPal Checkout
                                     </Button>
                                 </form>
-                        }
+                        } */}
                     </div>
                 </Grid>
             </Grid>
