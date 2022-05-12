@@ -21,7 +21,7 @@ const ReviewOrder = props => {
                 <li>{shippingAddress.zipCode}</li>
 
            </ol>
-            <Button color='black' style={{ width: '100%', padding: '10px', fontSize: '1rem' }} variant="contained" onClick={setShippingAddress({})}>
+            <Button color='black' style={{ width: '100%', padding: '10px', fontSize: '1rem' }} variant="contained" >
                 Place Order
             </Button>
         </div>

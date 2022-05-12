@@ -1,19 +1,22 @@
-import React, {useState, useEffect} from 'react';
+import React, {useState} from 'react';
 import {useDispatch} from 'react-redux';
 import {Box, Button, Paper, IconButton, Typography, FormControl, FormGroup, MenuItem, Select, TextField, Modal} from '@mui/material';  
 import CloseOutlinedIcon from '@mui/icons-material/CloseOutlined';
-import {adminUpdateProduct, adminUpdateSKU} from '../../store/admin'
+import {adminUpdateProduct, adminUpdateSKU, deleteProduct} from '../../store/admin'
+import AddColorModal from './AddColorModal';
 
 const InventoryModal = props => {
-  const {product, setParent} = props
+  const {product, setParent, setRender} = props
   const dispatch = useDispatch();
-  const [selectedProduct, setSelectedProduct] = useState(product);
-  const [productName, setProductName] = useState(product.name);
-  const [selectedColor, setSelectedColor] = useState(product.productColors[0]);
-  const [selectedSKU, setSelectedSKU] = useState(selectedColor.productSKUs[0]);
-  const [availableStock, setAvailableStock] = useState(selectedSKU.availableStock);
-  const [price, setPrice] = useState(selectedSKU.price);
-
+  const [state, setState] = useState({
+    selectedProduct: product,
+    productName: product.name,
+    selectedColor: product.productColors[0],
+    selectedSKU: product.productColors[0].productSKUs[0],
+    price: product.productColors[0].productSKUs[0].price,
+    availableStock: product.productColors[0].productSKUs[0].availableStock
+  });
+  const [open, setOpen] = useState(false);
 
   const boxStyle = {
     position: 'absolute',
@@ -52,35 +55,69 @@ const InventoryModal = props => {
   }
 
   const handleProductNameChange = evt => {
-    setProductName({
-      name:evt.target.value
-    })
+    setProductName(evt.target.value)
   }
 
   const handleColorChange = evt => {
-    setSelectedColor(evt.target.value)
-    setSelectedSKU(evt.target.value.productSKUs[0])
-
+    setState({
+      ...state,
+      selectedColor:evt.target.value,
+      selectedSKU:evt.target.value.productSKUs[0],
+      price: evt.target.value.productSKUs[0].price,
+      availableStock:evt.target.value.productSKUs[0].availableStock
+    })
   }
 
   const handleSizeChange = evt => {
-    setSelectedSKU(evt.target.value)
+    setState({
+      ...state,
+      selectedSKU:evt.target.value,
+      price:evt.target.value.price,
+      availableStock:evt.target.value.availableStock
+    })
   }
 
   const handleSKUChange = evt => {
     if(evt.target.name === 'price'){
-      setPrice(evt.target.value)
+      setState({
+        ...state,
+        price:evt.target.value
+      })
     } else {
-      setAvailableStock(evt.target.value)
+      setState({...state, availableStock:evt.target.value})
     }
   }
 
   const handleUpdate = evt => {
     evt.preventDefault();
-    const updatedProduct = {...selectedProduct};
-    const updatedSKU = {...selectedSKU, price, availableStock};
+    const updatedProduct = {...state.selectedProduct, name: state.productName};
+    const updatedSKU = {...state.selectedSKU, price:parseFloat(state.price).toFixed(2), availableStock:state.availableStock};
+    const newColor = updatedProduct.productColors.find(color => color.id === updatedSKU.productColorId)
     dispatch(adminUpdateProduct(updatedProduct));
-    dispatch(adminUpdateSKU(updatedSKU, updatedProduct))
+    dispatch(adminUpdateSKU(updatedSKU, updatedProduct));
+    setState({
+      ...state,
+      selectedProduct: updatedProduct,
+      productName: updatedProduct.name,
+      selectedColor: newColor,
+      selectedSKU: updatedSKU,
+      price: updatedSKU.price,
+      availableStock: updatedSKU.availableStock
+    });
+    setParent(false);
+      alert('Item Updated')
+
+
+  };
+
+  const handleDelete = evt => {
+    evt.preventDefault();
+    dispatch(deleteProduct(product))
+    setParent(false)
+  }
+
+  const handleClose = () => {
+    setOpen(false)
   }
 
   return (
@@ -90,22 +127,22 @@ const InventoryModal = props => {
             <CloseOutlinedIcon />
           </IconButton>
         <Paper elevation={1} sx={{gridArea:'im', display:'flex', alignItems:'center', justifyContent:'center'}}>
-          <img src={selectedColor.id ? selectedColor.imageUrl : product.imageUrl} style={{padding:'.5rem', height:'95%', width:'auto'}}/>
+          <img src={state.selectedColor.id ? state.selectedColor.imageUrl : state.selectedProduct.imageUrl} style={{padding:'.5rem', height:'95%', width:'auto'}}/>
         </Paper>
         <Paper elevation={1} sx={{gridArea:'pi', display:'flex', flexDirection:'column', justifyContent:'space-around', height:'100%', width:'auto'}}>
           <Typography variant='h3' gutterBottom>
-            <FormControl>
-              <TextField label='name' name='name' value={productName} onChange={handleProductNameChange}>{product.name}</TextField>
+            <FormControl sx={{width:'100%'}}>
+              <TextField inputProps={{style: {textAlign:'center'}}} label='name' name='name' value={state.productName} onChange={handleProductNameChange}>{product.name}</TextField>
             </FormControl>  
           </Typography>
           <div style={{display:'flex', justifyContent:'space-evenly'}}>
-          <Typography variant='subtitle1' gutterBottom>Added to Inventory on {selectedColor.id ? selectedColor.createdAt : product.createdAt}</Typography>
-          <Typography variant='subtitle1' gutterBottom>Last Updated {selectedColor.id ? selectedColor.updatedAt : product.updatedAt}</Typography>
+          <Typography variant='subtitle1' gutterBottom>Added to Inventory on {state.selectedColor.id ? state.selectedColor.createdAt : state.selectedProduct.createdAt}</Typography>
+          <Typography variant='subtitle1' gutterBottom>Last Updated {state.selectedColor.id ? state.selectedColor.updatedAt : state.selectedProduct.updatedAt}</Typography>
           </div>
           <Typography variant='h6'>Color: 
             <FormGroup>
-              <Select id='color' name='color' value={selectedColor} onChange={handleColorChange}>
-                {product.productColors.map(color => (
+              <Select id='color' name='color' value={state.selectedColor} onChange={handleColorChange}>
+                {state.selectedProduct.productColors.map(color => (
                   <MenuItem key={color.id} name='color' value={color}>{color.color}</MenuItem>
                 ))}
               </Select>
@@ -113,31 +150,39 @@ const InventoryModal = props => {
           </Typography>
           <Typography variant='h6'>Size: 
             <FormGroup>
-              <Select id='color' name='color' value={selectedSKU} onChange={handleSizeChange}>
-                {selectedColor.productSKUs.map(sku => (
+              <Select id='color' name='size' value={state.selectedSKU} onChange={handleSizeChange}>
+                {state.selectedColor.productSKUs.map(sku => (
                   <MenuItem key={sku.id} name='sku' value={sku}>{sku.size}</MenuItem>
-                ))}
+                )).sort()}
               </Select>
             </FormGroup>
           </Typography>
           <div style={{display:'flex', justifyContent:'space-around'}}>
             <Typography variant='h6'>Price:
               <FormControl>
-                  <TextField inputProps={{style: {textAlign:'right'}}} label='Price' name='price' value={price} onChange={handleSKUChange}>{selectedSKU.price}</TextField>
+                  <TextField inputProps={{style: {textAlign:'right'}}} label='Price' name='price' value={state.price} onChange={handleSKUChange}>{state.selectedSKU.price}</TextField>
               </FormControl>
             </Typography>
             <Typography variant='h6'>Available Stock: 
               <FormControl>
-                  <TextField inputProps={{style:{textAlign:'right'}}} label='Stock' name='availableStock' value={availableStock} onChange={handleSKUChange}>{selectedSKU.availableStock}</TextField>
+                  <TextField type='number' inputProps={{style:{textAlign:'right'}}} label='Stock' name='availableStock' value={state.availableStock} onChange={handleSKUChange}>{state.selectedSKU.availableStock}</TextField>
               </FormControl></Typography>
           </div>
           <div style={{display:'flex', justifyContent:'space-around'}}>
-            <Button variant='outlined' onClick={()=>console.log('Add New Color Button Clicked')}>Add New Color</Button>
+            <Button variant='outlined' onClick={()=>setOpen(true)}>Add New Color</Button>
             <Button variant='outlined' onClick={handleUpdate}>Save Changes</Button>
           </div>  
         </Paper >
-        <Button sx={{gridArea:'xx'}}>Delete Product</Button>
+        <Button sx={{gridArea:'xx'}} onClick={handleDelete}>Delete Product</Button>
       </Box>
+      <Modal
+        open={open}
+        onClose={handleClose}
+      >
+        <div>
+          <AddColorModal product={product} setOpen={setOpen} />
+        </div>
+      </Modal>
     </Box>
   )
 };

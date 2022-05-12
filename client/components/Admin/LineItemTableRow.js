@@ -12,7 +12,7 @@ const LineItemTableRow = (props) => {
     ...item,
     productSize: item.productSize,
     quantity: item.quantity,
-    productPrice: parseFloat(item.productPrice),
+    productPrice: parseFloat(item.productPrice*1.00).toFixed(2),
     productColor: item.productColor
   });
   const [editState, setEditState] = useState(false);

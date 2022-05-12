@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useState, useEffect} from 'react';
 import {Box, Button, Modal, Card, Typography, Table, TableBody, TableCell, TableContainer, TablePagination, TableRow, Paper, Checkbox, FormControlLabel, Switch} from '@mui/material';
 import AdminTableToolbar from './AdminTableToolbar';
 import AdminInventoryTableHeader from './AdminInventoryTableHeader';
@@ -21,7 +21,7 @@ function getComparator(order, orderBy) {
 }
 
 export default function AdminInventoryTable(props) {
-  const {inventory, display} = props
+  const {inventory, display, setRender} = props
   const [order, setOrder] = useState('asc');
   const [orderBy, setOrderBy] = useState('name');
   const [selected, setSelected] = useState([]);
@@ -35,6 +35,12 @@ export default function AdminInventoryTable(props) {
     setSelectedProduct(product)  
     setOpen(true);
   };
+
+  useEffect(()=>{
+    console.log('re-render', inventory)
+  }, [inventory])
+
+
   const style = {
     position: 'absolute',
     top: '50%',
@@ -156,7 +162,7 @@ export default function AdminInventoryTable(props) {
                         <img src={product.imageUrl} style={{height:'100px', width:'auto', minWidth:'95px'}} /><Button onClick={()=>handleModal(product)} sx={{marginLeft:'1rem'}}>{product.name}</Button>
                       </TableCell>
                       <TableCell align="right">{product.brand}</TableCell>
-                      <TableCell align="right">{product.productColors.length}</TableCell>
+                      <TableCell align="right">{product.productColors ? product.productColors.length : 0}</TableCell>
                       <TableCell align="right">{product.createdAt}</TableCell>
                       <TableCell align="right">{product.updatedAt}</TableCell>
                     </TableRow>
@@ -193,7 +199,7 @@ export default function AdminInventoryTable(props) {
         onClose={handleClose}
         >
           <div>
-           <InventoryModal product={selectedProduct} setParent={setOpen} />
+           <InventoryModal product={selectedProduct} setParent={setOpen} setRender={setRender}/>
           </div>
       </Modal>
     </Box>

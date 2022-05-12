@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 
 // REDUX
 import { connect } from 'react-redux'
@@ -10,7 +10,7 @@ import { Typography, TextField,Button, Autocomplete, Grid, Radio, RadioGroup, Fo
 import Total from '../Total'
 
 const Checkout = props => {
-    const { cartlist, handleAddressSubmit, handleCreditCardSubmit, handlePaypalSubmit } = props;
+    const { cartlist } = props;
     console.log('props', props)
 
     const [addressformValue, setAddressFormValue ] = useState({
@@ -21,20 +21,61 @@ const Checkout = props => {
         zipCode:''
     });
 
-    const [creditCardFormValue, setcreaditCardFormValue] = useState({
-        cardNumber: '',
-        expirationDate:'',
-        securityCode:'',
-        firstName:'',
-        lastName:''
-    });
-
     const onAddressChange = (e) => {
         setAddressFormValue({...addressformValue, [e.target.name]: e.target.value})
     }
 
+    const [creditCardFormValue, setcreaditCardFormValue] = useState({
+        cardNumber: '',
+        expirationDate: '',
+        securityCode: '',
+        firstName: '',
+        lastName: ''
+    });
+
     const onCreditCardChange = (e) => {
         setcreaditCardFormValue({...creditCardFormValue, [e.target.name]: e.target.value})
+    }
+
+    const NUMERIC_REGEX = /^\d+$/;
+    const SLASH_REGEX = /\//i;
+
+    const onExpDateChange = (e) => {
+        if(!NUMERIC_REGEX.test(e.target.value) && !SLASH_REGEX.test(e.target.value)){
+            return;
+        } else if(e.target.value.length === 3){
+            const monthAndSlash = e.target.value.slice(0,2) + "/" + e.target.value.slice(2);
+            setcreaditCardFormValue({...creditCardFormValue, [e.target.name]: monthAndSlash});
+            return;
+        } else if(e.target.value.length >= 4){
+            const monthAndSlash = e.target.value.slice(0, 2) + "/" + e.target.value.slice(3);
+            setcreaditCardFormValue({ ...creditCardFormValue, [e.target.name]: monthAndSlash });
+            return;
+        } else {
+            setcreaditCardFormValue({ ...creditCardFormValue, [e.target.name]: e.target.value });
+            return;
+        }
+    }
+
+    const SPACE_REGEX = / /i;
+
+    const onCardNumberChange = (e) => {
+        const value = e.target.value
+        if(!NUMERIC_REGEX.test(value) && !SPACE_REGEX.test(value)) {
+            console.log("not allowed value")
+            return;
+        } else if (value.length > 5 && value.includes(" ") && value.split(" ").join("").length % 4 === 0){
+            const spaceAdded = value + " ";
+            setcreaditCardFormValue({ ...creditCardFormValue, [e.target.name]: spaceAdded });
+            return;
+        } else if(value.length === 4 ) {
+            const spaceAdded = value + " ";
+            setcreaditCardFormValue({ ...creditCardFormValue, [e.target.name]: spaceAdded });
+            return;
+        } else {
+            setcreaditCardFormValue({ ...creditCardFormValue, [e.target.name]: value });
+            return;
+        }
     }
 
     // For payment option radio button.
@@ -46,15 +87,11 @@ const Checkout = props => {
 
     const onSubmit = (e) => {
         e.preventDefault();
-        console.log(addressformValue)
         window.localStorage.setItem('shippingAddress', JSON.stringify(addressformValue));
-        console.log(addressformValue)
-        // props.routeProps.history.push('/review_order')
-        // handleAddressSubmit(addressformValue)
+        props.routeProps.history.push('/review_order');
     }
 
     const states = ['AL', 'AK', 'AS', 'AZ', 'AR', 'CA', 'CO', 'CT', 'DE', 'DC', 'FL', 'GA', 'GU', 'HI', 'ID', 'IL', 'IN', 'IA', 'KS', 'KY', 'LA', 'ME', 'MD', 'MA', 'MI', 'MN', 'MS', 'MO', 'MT', 'NE', 'NV', 'NH', 'NJ', 'NM', 'NY', 'NC', 'ND', 'MP', 'OH', 'OK', 'OR', 'PA', 'PR', 'RI', 'SC', 'SD', 'TN', 'TX', 'UT', 'VT', 'VA', 'VI', 'WA', 'WV', 'WI', 'WY'];
-
 
     return (
         <div className='checkout'>
@@ -69,7 +106,7 @@ const Checkout = props => {
                     <div className='checkout_box'>
                         <Typography variant='h4' sx={{ fontSize: '1.5rem' }}>Shipping address</Typography>
                         <Typography variant='h4' sx={{ fontSize: '1rem', margin: '1rem 0' }}><span style={{ color: 'red', verticalAlign: 'text-top' }}>* </span>Required</Typography>
-                        <form id='shippingAddressForm' name='shippingAddress' onSubmit={handleAddressSubmit}>
+                        <form id='shippingAddressForm' name='shippingAddress'>
                             <TextField onChange={onAddressChange} value={addressformValue.addressLine1} required id="outlined-basic" label="Address" variant="outlined" name="addressLine1" type="text" style={{ width: '80%' }} /><br />
                             <TextField onChange={onAddressChange} value={addressformValue.addressLine2} required id="outlined-password-input" label="Apt, suite, company, c/o (optional)" variant="outlined" name="addressLine2" type="text" style={{ width: '80%' }} /><br />
                             <TextField onChange={onAddressChange} value={addressformValue.city} required id="outlined-password-input" label="City" variant="outlined" name="city" type="text" style={{ width: '80%' }} /><br />
@@ -78,6 +115,10 @@ const Checkout = props => {
                                 id="combo-box-demo"
                                 options={states}
                                 sx={{ width: 300, margin: 0 }}
+                                value={addressformValue.state}
+                                onChange={(e, newValue)=> {
+                                    setAddressFormValue({...addressformValue, state: newValue})
+                                }}
                                 renderInput={(params) => <TextField {...params} label="State" />}
                             /><br/>
                             <TextField onChange={onAddressChange} value={addressformValue.zipCode} required id="outlined-password-input" label="Zip code" variant="outlined" name="zipCode" type="text" style={{ width: '80%' }} />
@@ -126,15 +167,15 @@ const Checkout = props => {
 
                         {
                             paymentOption === 'creditCard' ?
-                                <form id='creditCardForm' name='creditCard' onSubmit={handleCreditCardSubmit} >
-                                    <TextField onChange={onCreditCardChange} value={creditCardFormValue.cardNumber} required id="outlined-basic" label="Card number" variant="outlined" name="cardNumber" type="text" style={{ width: '80%' }} /><br />
-                                    <TextField onChange={onCreditCardChange} value={creditCardFormValue.expirationDate} required id="outlined-password-input" label="Expiration date" variant="outlined" name="expirationDate" type="text" style={{ width: '80%' }} /><br />
-                                    <TextField onChange={onCreditCardChange} value={creditCardFormValue.securityCode} required id="outlined-password-input" label="Security code" variant="outlined" name="securityCode" type="text" style={{ width: '80%' }} /><br />
-                                    <TextField onChange={onCreditCardChange} value={creditCardFormValue.firstName} required id="outlined-password-input" label="First name" variant="outlined" name="firstName" type="text" style={{ width: '80%' }} /><br />
-                                    <TextField onChange={onCreditCardChange} value={creditCardFormValue.lastName} required id="outlined-password-input" label="Last name" variant="outlined" name="lastName" type="text" style={{ width: '80%' }} />
+                                <form id='creditCardForm' name='creditCard' >
+                                    <TextField onChange={onCardNumberChange} value={creditCardFormValue.cardNumber} required id="outlined-basic" label="Card number" inputProps={{ maxLength: 19 }} variant="outlined" name="cardNumber" type="text" style={{ width: '80%' }} /><br />
+                                    <TextField onChange={onExpDateChange} value={creditCardFormValue.expirationDate} required placeholder="MM/YY" inputProps={{ maxLength: 5 }} id="outlined-basic" label="Expiration date" variant="outlined" name="expirationDate" type="text" style={{ width: '30%' }} /><br />
+                                    <TextField onChange={onCreditCardChange} value={creditCardFormValue.securityCode} required id="outlined-basic" label="Security code" inputProps={{ maxLength: 3 }} variant="outlined" name="securityCode" type="text" style={{ width: '20%' }} /><br />
+                                    <TextField onChange={onCreditCardChange} value={creditCardFormValue.firstName} required id="outlined-basic" label="First name" variant="outlined" name="firstName" type="text" style={{ width: '80%' }} /><br />
+                                    <TextField onChange={onCreditCardChange} value={creditCardFormValue.lastName} required id="outlined-basic" label="Last name" variant="outlined" name="lastName" type="text" style={{ width: '80%' }} />
                                 </form>
-                                : <form id='paypalForm' name='paypal' onSubmit={handlePaypalSubmit} >
-                                    <Button color='black' style={{ width: '100%', padding: '10px', fontSize: '1rem' }} variant="contained">
+                                : <form id='paypalForm' name='paypal'>
+                                    <Button color='black' style={{ width: '50%', padding: '10px', fontSize: '1rem' }} variant="contained" href='https://www.paypal.com/us/home'>
                                         PayPal Checkout
                                     </Button>
                                 </form>
