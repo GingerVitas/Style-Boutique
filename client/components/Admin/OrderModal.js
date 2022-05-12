@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import {
   Card,
+  Modal,
   CardHeader,
   Box,
   Button,
@@ -24,8 +25,9 @@ import {
   Switch,
 } from "@mui/material";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
-import { updateAdminOrder, deleteLineItem } from "../../store/admin";
+import { updateAdminOrder } from "../../store/admin";
 import LineItemTableRow from "./LineItemTableRow";
+import AddLineItemModal from "./AddLineItemModal";
 
 const OrderModal = (props) => {
   const { order } = props;
@@ -36,49 +38,47 @@ const OrderModal = (props) => {
   const [finalState, setFinalState] = useState(order.final);
   const { createdAt, line_items, user } = state;
   const [lineItemState, setLineItemState] = useState(line_items);
-  const [subTotal, setSubTotal] = useState(order.total);
+  const [subTotal, setSubTotal] = useState(order.total * 1);
+  const [open, setOpen] = useState(false);
 
   useEffect(() => {
     setState(order);
     setSubTotal(
       lineItemState.reduce((acc, item) => {
-        return acc + item.productPrice * item.quantity;
+        return acc + parseFloat(item.productPrice) * (item.quantity * 1);
       }, 0)
     );
   }, [lineItemState]);
 
-  const handleChange = (evt) => {
-    setState({
-      ...state,
-      [evt.target.name]: evt.target.value,
-    });
-  };
-
-  const handleSubmit = (evt) => {
-    evt.preventDefault();
+  const handleSubmit = (ev) => {
+    ev.preventDefault();
     const { user, ...updatedOrder } = state;
-    dispatch(
-      updateAdminOrder({ ...updatedOrder, final: finalState, total: subTotal })
-    );
+    const newOrder = { ...updatedOrder, final: finalState, total: subTotal };
+    dispatch(updateAdminOrder(newOrder));
     setEditState(false);
   };
 
-  const handleUserChange = (evt) => {
-    evt.preventDefault();
+  const handleUserChange = (ev) => {
+    ev.preventDefault();
     setState({
       ...state,
-      userId: evt.target.value.id,
-      user: evt.target.value,
+      userId: ev.target.value.id,
+      user: ev.target.value,
     });
   };
 
-  const handleFinalChange = (evt) => {
-    setFinalState(evt.target.checked);
+  const handleFinalChange = (ev) => {
+    setFinalState(ev.target.checked);
   };
 
-  const handleDelete = (lineItem, _order) => {
-    dispatch(deleteLineItem(lineItem, _order));
-    setLineItemState(line_items.filter((item) => item.id !== lineItem.id));
+  const handleClose = () => {
+    setOpen(false);
+  };
+
+  const handleOpen = (ev) => {
+    ev.preventDefault();
+    setEditState(true);
+    setOpen(true);
   };
 
   const formatter = new Intl.NumberFormat("en-US", {
@@ -144,10 +144,7 @@ const OrderModal = (props) => {
                 id="panel-1-header"
                 sx={{ display: "flex", alignItems: "center" }}
               >
-                <Typography sx={{ flexBasis: "80%", textAlign: "left" }}>
-                  Line Items
-                </Typography>
-                <Button sx={{ flexBasis: "20%" }}>Add Item to Order</Button>
+                <Typography>Line Items</Typography>
               </AccordionSummary>
               <AccordionDetails>
                 <TableContainer>
@@ -160,7 +157,14 @@ const OrderModal = (props) => {
                         <TableCell align="right">Color</TableCell>
                         <TableCell align="right">Quantity</TableCell>
                         <TableCell align="right">Price</TableCell>
-                        <TableCell align="right"></TableCell>
+                        <TableCell align="right" sx={{ width: "auto" }}>
+                          <Button
+                            onClick={(ev) => handleOpen(ev)}
+                            sx={{ minWidth: "10rem" }}
+                          >
+                            Add Item to Order
+                          </Button>
+                        </TableCell>
                       </TableRow>
                     </TableHead>
                     <TableBody>
@@ -213,6 +217,16 @@ const OrderModal = (props) => {
           </FormControl>
         </CardContent>
       </Card>
+      <Modal hideBackdrop open={open} onClose={handleClose}>
+        <div>
+          <AddLineItemModal
+            order={order}
+            lineItemState={lineItemState}
+            setLineItemState={setLineItemState}
+            setOpen={setOpen}
+          />
+        </div>
+      </Modal>
     </Box>
   );
 };

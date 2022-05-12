@@ -1,14 +1,20 @@
 import React, {useState, useEffect} from 'react';
 import {useDispatch} from 'react-redux';
 import axios from 'axios';
-import {TableRow, TableCell, TextField, Button, IconButton, Select, MenuItem} from '@mui/material';
+import {TableRow, TableCell, TextField, Button, IconButton, Select, MenuItem, FormGroup} from '@mui/material';
 import DeleteIcon from '@mui/icons-material/Delete';
 import {deleteLineItem, adminUpdateLineItem} from '../../store/admin';
 
 const LineItemTableRow = (props) => {
   const {item, order, lineItemState, setLineItemState} = props
   const dispatch = useDispatch();
-  const [state, setState] = useState(item);
+  const [state, setState] = useState({
+    ...item,
+    productSize: item.productSize,
+    quantity: item.quantity,
+    productPrice: parseFloat(item.productPrice),
+    productColor: item.productColor
+  });
   const [editState, setEditState] = useState(false);
   const [skuData, setSKUData] = useState({
     sku: {},
@@ -17,16 +23,18 @@ const LineItemTableRow = (props) => {
   })
   const {sku, color, colorSKUs} = skuData
   const [selectedSKU, setSelectedSKU] = useState(sku)
+ 
   const {quantity, productPrice, productColor, productSize} = state;
 
+  async function getSKUData() {
+    const sku = (await axios.get(`/api/skus/findOne/${item.productSKUId}`)).data;
+    const color = (await axios.get(`/api/colors/singleColor/${sku.productColorId}`)).data;
+    const colorSKUs = (await axios.get(`/api/skus/findAll/${color.id}`)).data;
+    setSKUData({sku, color, colorSKUs})
+    setSelectedSKU(sku)
+  };
+
   useEffect(()=> {
-    async function getSKUData() {
-      const sku = (await axios.get(`/api/skus/findOne/${item.productSKUId}`)).data;
-      const color = (await axios.get(`/api/colors/singleColor/${sku.productColorId}`)).data;
-      const colorSKUs = (await axios.get(`/api/skus/findAll/${color.id}`)).data;
-      setSKUData({sku, color, colorSKUs})
-      setSelectedSKU(sku)
-    };
     getSKUData()
   }, [state])
 
@@ -40,24 +48,38 @@ const LineItemTableRow = (props) => {
         ...state, productSize:newSKU.size, productSKUId: newSKU.id
       });
   
+    } else if(evt.target.name === 'quantity'){
+      setState({
+        ...state, [evt.target.name]:evt.target.value*1
+      })
+    } else {
+      setState({
+        ...state, [evt.target.name]: evt.target.value*1
+      })
     }
-    setState({
-      ...state, [evt.target.name]: evt.target.value
-    })
+ 
   }
 
   const handleSubmit = evt => {
     evt.preventDefault();
-    const newItem = {...state}
-    dispatch(adminUpdateLineItem({...state}, order))
-    setState(newItem)
-    setEditState(false)
-    setLineItemState([...lineItemState.filter(item => item.id !== newItem.id), newItem])
-  }
+    console.log('*********', state)
+    if(state.quantity === 0){
+      const lineItem = {...state}
+      dispatch(deleteLineItem(lineItem, order));
+      setLineItemState([...lineItemState.filter(item => item.id !== lineItem.id)])
+    }
+    else {
+      const newItem = {...state}
+      dispatch(adminUpdateLineItem({...state}, order))
+      setState(newItem)
+      setEditState(false)
+      setLineItemState([...lineItemState.filter(item => item.id !== newItem.id), newItem])
+    }
+  };
 
   const handleDelete = (lineItem, order) => {
     dispatch(deleteLineItem(lineItem, order));
-    // setLineItemState(line_items.filter(item => item.id !== lineItem.id))
+    setLineItemState([...lineItemState.filter(item => item.id !== lineItem.id)])
   }
 
   return (
@@ -67,36 +89,36 @@ const LineItemTableRow = (props) => {
         <img src={item.imageUrl} style={{maxHeight:'200px', width:'auto', minWidth:'90px', marginRight:'1rem', padding:'.5rem'}} />{item.productName}
       </TableCell>
       <TableCell align='right'>{!editState ? item.productSize 
-        : <Select name='productSize' value={productSize} onChange={handleChange}> 
+        : <FormGroup><Select name='productSize' value={productSize} onChange={handleChange}> 
             <MenuItem name='productSize' value={productSize}>{productSize}</MenuItem>
             {!colorSKUs.length ? '' : colorSKUs.map(_sku => (
               _sku.id !== item.productSKUId ?
               <MenuItem key={_sku.id} name='productSize' value={_sku.size}>{_sku.size}</MenuItem>
               : ''
             ))}
-          </Select>}
+          </Select></FormGroup>}
       </TableCell>
       <TableCell align='right'>{productColor}</TableCell>
       <TableCell align='right'> {!editState ? item.quantity 
-        : <TextField 
+        : <FormGroup><TextField 
         type='number' 
         name='quantity' value={quantity > selectedSKU.availableStock ? selectedSKU.availableStock : quantity} 
         onChange={handleChange} 
         InputProps={{inputProps: {min: 0, max: selectedSKU.availableStock}}} sx={{minWidth:'4rem'}}>
           {quantity}
-        </TextField> }
+        </TextField></FormGroup>}
       </TableCell>
       <TableCell align='right'> {!editState ? `$${productPrice}`
-        : <TextField 
+        : <FormGroup><TextField 
           type='text'
           name='productPrice' value={productPrice} 
           onChange={handleChange}
-          sx={{textAlign:'right', minWidth:'8rem'}} 
+          sx={{textAlign:'right', minWidth:'5rem'}} 
           >
             ${productPrice}
-          </TextField>}
+          </TextField></FormGroup>}
       </TableCell>
-      <TableCell><IconButton disabled={editState ? false : true} onClick={()=> handleDelete(item, order)}><DeleteIcon /></IconButton></TableCell>
+      <TableCell align='center'><IconButton disabled={editState ? false : true} onClick={()=> handleDelete(item, order)}><DeleteIcon /></IconButton></TableCell>
     </TableRow>
   );
 };

@@ -4,14 +4,16 @@ import { Link } from 'react-router-dom';
 import { connect } from 'react-redux'
 
 const Total = props => {
-    const { lineItems, isLoggedIn} = props;
+    const { lineItems, isLoggedIn, onSubmit } = props;
     
     // for checkout page
     const routeProps = props.routeProps? props.routeProps : null;
-    const submitForms = () => {
-        console.log('successfully submitted');
-        document.forms[0].submit((e) => window.localStorage.setItem('address', [e.target.addressLine1.value]));
-        document.forms[1].submit(e => window.localStorage.setItem('paypal', [e.target.cardNumber.value]));
+    const submitForms = (e) => {
+        e.preventDefault();
+        // console.log('successfully submitted', e);
+        // document.forms[0].submit();
+        // document.forms[1].submit();
+
     }
 
 
@@ -55,8 +57,8 @@ const Total = props => {
                 <hr />
                 <div style={{ fontSize: '1.3rem' }}>Estimated total <span style={{ float: 'right' }}>${total}</span></div>
                 {
-                    routeProps && routeProps.location.pathname === '/checkout' ?
-                        <Button color='black' style={{ width: '100%', padding: '10px', fontSize: '1rem' }} variant="contained" onClick={(e) => submitForms()}>
+                    onSubmit ?
+                        <Button color='black' style={{ width: '100%', padding: '10px', fontSize: '1rem' }} variant="contained" onClick={onSubmit} component={Link} to={'/review_order'}>
                             Review Order
                         </Button>
                         : <Component />
@@ -76,4 +78,6 @@ const mapState = state => {
 }
 
 export default connect(mapState)(Total);
+
+// routeProps && routeProps.location.pathname === '/checkout'
 

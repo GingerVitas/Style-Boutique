@@ -36,6 +36,10 @@ const AdminDashboard = () => {
     dispatch(loadAdminOrders());
   }, []);
 
+  useEffect(() => {
+    dispatch(loadAdminUsers());
+  }, [adminOrders]);
+
   if (auth.isAdmin)
     return (
       <div>
