@@ -35,7 +35,7 @@ const Navbar = ({ handleClick, empty_cart, clearOrder, isLoggedIn, lineItems, au
                 <Typography variant='menuitem'>Logout</Typography>
               </MenuItem>
               <MenuItem component={Link} to={"/account"} sx={{ "&:hover": { bgcolor: "transparent" } }}>
-                <Typography variant='menuitem'>Account</Typography>
+                <Typography variant='menuitem'>My account</Typography>
               </MenuItem>
               <MenuItem component={Link} to={"/cart"} sx={{ "&:hover": { bgcolor: "transparent" } }}>
                 <IconButton aria-label="cart" >
