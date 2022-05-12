@@ -14,7 +14,7 @@ import { StyledBadge } from "../../../public/styles";
 // import { styled, alpha } from "@mui/material/styles";
 // import Search, { SearchIconWrapper, StyledInputBase } from "./NavBarElems";
 
-const Navbar = ({ handleClick, empty_cart, clearOrder, isLoggedIn, lineItems, auth }) => {
+const Navbar = ({ handleClick, empty_cart, clearOrder, isLoggedIn, lineItems, auth, firstName }) => {
 
   return(
   <div>
@@ -35,7 +35,7 @@ const Navbar = ({ handleClick, empty_cart, clearOrder, isLoggedIn, lineItems, au
                 <Typography variant='menuitem'>Logout</Typography>
               </MenuItem>
               <MenuItem component={Link} to={"/account"} sx={{ "&:hover": { bgcolor: "transparent" } }}>
-                <Typography variant='menuitem'>My account</Typography>
+                <Typography variant='menuitem'>Hello, {firstName}</Typography>
               </MenuItem>
               <MenuItem component={Link} to={"/cart"} sx={{ "&:hover": { bgcolor: "transparent" } }}>
                 <IconButton aria-label="cart" >
@@ -104,7 +104,8 @@ const mapState = (state) => {
   return {
     lineItems: state.cart,
     isLoggedIn: !!state.auth.id,
-    auth: state.auth
+    auth: state.auth,
+    firstName: state.auth.firstName,
   };
 };
 
