@@ -59,7 +59,8 @@ const Navbar = ({ handleClick, empty_cart, clearOrder, isLoggedIn, lineItems, au
                   to={"/account"}
                   sx={{
                     "&:hover": { bgcolor: "transparent" },
-                    "&.Mui-focusVisible": { bgcolor: "transparent" }
+                    "&.Mui-focusVisible": { bgcolor: "transparent" },
+                    marginLeft: "auto"
                   }}
                 >
                   <Typography variant="menuitem" ref={popoverAnchor} aria-owns="mouse-over-popover" aria-haspopup="true" onMouseEnter={popoverEnter} onMouseLeave={popoverLeave}>
