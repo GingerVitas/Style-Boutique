@@ -36,6 +36,8 @@ const singleProduct = () => {
   const skus = useSelector(state => state.skus);
   const order = useSelector(state => state.order);
   const cart = useSelector(state => state.cart);
+  const categories = useSelector(state=>state.categories)
+  const category = categories.find(category => category.id === product.categoryId)
 
   // local state: useState
   const [size, setSize] = useState('');
@@ -47,7 +49,8 @@ const singleProduct = () => {
     productPrice: 1,
     imageUrl: '',
     quantity: 1,
-    productSKUId: ''
+    productSKUId: '',
+    categoryName: category.id ? category.categoryName : ''
   });
   // modal
   const [open, setOpen] = useState(false);
