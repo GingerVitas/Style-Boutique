@@ -4,11 +4,13 @@ import axios from 'axios';
 const LOAD_ORDER = 'LOAD_ORDER';
 const CREATE_ORDER = 'CREATE_ORDER';
 const CLEAR_ORDER = 'CLEAR_ORDER';
+const CLOSE_ORDER = 'CLOSE_ORDER'
 
 // Action Creators
 const _loadOrder = order => ({ type: LOAD_ORDER , order });
 const _createOrder = order => ({ type: CREATE_ORDER, order  });
 const _clearOrder = () => ({ type: CLEAR_ORDER });
+const _closeOrder = order => ({type: CLOSE_ORDER, order});
 
 // Thunks
 export const loadOrCreate = auth => {
@@ -40,6 +42,16 @@ export const clearOrder = () => async dispatch => {
     }
 }
 
+export const closeOrder = (auth, orderId, total) => async dispatch => {
+    try {
+        console.log(total, typeof total, orderId)
+        let order = (await axios.put(`/api/orders/${auth.id}`, { orderId, total })).data
+        dispatch(_closeOrder(order));
+    } catch(err) {
+        console.log(err)
+    }
+}
+
 export default (state = {}, action) => {
     switch (action.type) {
         case LOAD_ORDER:
@@ -48,6 +60,8 @@ export default (state = {}, action) => {
             return action.order;
         case CLEAR_ORDER:
             return {};
+        case CLOSE_ORDER:
+            return {...action.order}
         default:
             return state
     }

@@ -25,9 +25,8 @@ export const loadCart = (order) =>  async dispatch => {
         const token = window.localStorage.getItem('token');
         if (token) {
             const userCart = (await axios.get(`/api/lineitems/${order.id}`)).data
-            if(userCart.length > 0) {
-                dispatch(_loadCart(userCart));
-            }
+            console.log('user cart found', userCart);
+            dispatch(_loadCart(userCart));
         } else {
             const guestCart = JSON.parse(window.localStorage.getItem('cart'));
             if(!guestCart) {
@@ -45,7 +44,7 @@ export const transformGuestCartToUserCart = (order) => async dispatch => {
     try {
         let guestCart = JSON.parse(window.localStorage.getItem('cart'));
         console.log(guestCart);
-        if(guestCart.length > 0) {
+        if(guestCart) {
             await Promise.all(
                 guestCart.map(async (lineitem) => {
                     const line_item = (await axios.put(`/api/lineitems/${lineitem.id}`, { lineitem, orderId: order.id })).data;

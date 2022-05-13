@@ -52,7 +52,7 @@ const Checkout = props => {
     }
     
     // For total comp to render different price depends on delivery method.
-    const [deliveryMethod, setDeliveryMethod] = useState('standard');
+    const [deliveryMethod, setDeliveryMethod] = useState('ground');
     const handleDeliveryMethod = (e) => {
         setDeliveryMethod(e.target.value)
     }
@@ -70,13 +70,11 @@ const Checkout = props => {
         setAddressFormValue({...addressformValue, [e.target.name]: e.target.value})
     };
 
-    const [billingAddressFormValue, setBillingAddressFormValue] = useState({
-        addressLine1: '',
-        addressLine2: '',
-        city: '',
-        state: '',
-        zipCode: ''
-    });
+    const [billingAddressFormValue, setBillingAddressFormValue] = useState({...addressformValue});
+
+    useEffect(() => {
+        setBillingAddressFormValue({ ...addressformValue })
+    }, [addressformValue])
 
     const onBillingAddressChange = (e) => {
         setBillingAddressFormValue({ ...billingAddressFormValue, [e.target.name]: e.target.value })
@@ -134,6 +132,12 @@ const Checkout = props => {
         }
     }
 
+    const onSSCodeChange = (e) => {
+        if(NUMERIC_REGEX.test(e.target.value)){
+            setcreaditCardFormValue({ ...creditCardFormValue, [e.target.name]: e.target.value })
+        }
+    }
+
     // For payment option radio button.
     const [paymentOption, setPaymentOption] = useState('creditCard');
     const handlePaymentChange = (e) => {
@@ -183,11 +187,23 @@ const Checkout = props => {
     // For billing address same as shipping address
     const [checked, setChecked] = useState(true);
     const sameAsShippingAddress = (e) => {
-        setChecked(e.target.checked);
+        if(e.target.checked) {
+            setBillingAddressFormValue({...addressformValue});
+        } else {
+            setBillingAddressFormValue({
+                addressLine1: '',
+                addressLine2: '',
+                city: '',
+                state: '',
+                zipCode: ''
+            });
+        }
+        setChecked(e.target.checked); 
     }
+   
 
     // Review Order Button
-    const onSubmit = (e) => {
+    const onSubmit = (e, total) => {
         e.preventDefault();
 
         let combinedForms;
@@ -206,7 +222,12 @@ const Checkout = props => {
 
         window.localStorage.setItem('shippingAddress', JSON.stringify(addressformValue));
         window.localStorage.setItem('creditCardInfo', JSON.stringify(creditCardFormValue));
-        window.localStorage.setItem('creditCardInfo', JSON.stringify(billingAddressFormValue));
+        window.localStorage.setItem('billingAddress', JSON.stringify(billingAddressFormValue));
+        window.localStorage.setItem('shippingMethod', shippingMethod);
+        window.localStorage.setItem('deliveryMethod', deliveryMethod);
+        window.localStorage.setItem('pickupDate', (pickupDate).toString());
+        window.localStorage.setItem('pickupEndDate', (pickupEndDate).toString());
+        window.localStorage.setItem('total', (total).toString());
 
         props.routeProps.history.push('/review_order');
     }
@@ -245,11 +266,11 @@ const Checkout = props => {
                                             <FormControl>
                                                 <RadioGroup
                                                     aria-labelledby="demo-radio-buttons-group-label"
-                                                    defaultValue="standard"
+                                                    defaultValue="ground"
                                                     name="radio-buttons-group"
                                                     onChange={handleDeliveryMethod}
                                                 >
-                                                    <FormControlLabel value="standard" control={<Radio />} label={
+                                                    <FormControlLabel value="ground" control={<Radio />} label={
                                                         <div>
                                                             Standard Delivery: <span style={{ color: 'green' }}>get it by {standardShippingDate}</span>
                                                         </div>
@@ -259,7 +280,7 @@ const Checkout = props => {
                                                             Express Delivery: <span style={{ color: 'green' }}>get it by {expressShippingDate}</span>
                                                         </div>
                                                     } />
-                                                    <FormControlLabel value="oneday" control={<Radio />} label={
+                                                    <FormControlLabel value="one day" control={<Radio />} label={
                                                         <div>
                                                             1 Day Delivery: <span style={{ color: 'green' }}>get it by {pickupDate}</span>
                                                         </div>
@@ -278,23 +299,27 @@ const Checkout = props => {
                         <Total lineItems={cartlist} routeProps={props.routeProps} onSubmit={onSubmit} deliveryMethod={deliveryMethod} shippingMethod={shippingMethod} />
                     </div>
                 </Grid>
-                <Grid item xs={8} sx={{ marginTop: '1rem' }}>
-                    <div className='checkout_box'>
-                        <Typography variant='h4' sx={{ fontSize: '1.5rem' }}>Shipping address</Typography>
-                        <Typography variant='h4' sx={{ fontSize: '1rem', margin: '1rem 0' }}><span style={{ color: 'red', verticalAlign: 'text-top' }}>* </span>Required</Typography>
-                        <FormGroup>
-                            <FormControlLabel 
-                                control={<Checkbox checked={sameAsAccountChecked} onChange={sameAsAccount} inputProps={{ 'aria-label': 'controlled' }} />} 
-                                label="Same as account"
-                            />
-                        </FormGroup>
-                        <AddressForm 
-                            onAddressChange={onAddressChange}
-                            addressformValue={addressformValue}
-                            setAddressFormValue={setAddressFormValue}
-                        />
-                    </div>
-                </Grid>
+                {
+                    shippingMethod === 'delivery' ?
+                        <Grid item xs={8} sx={{ marginTop: '1rem' }}>
+                            <div className='checkout_box'>
+                                <Typography variant='h4' sx={{ fontSize: '1.5rem' }}>Shipping address</Typography>
+                                <Typography variant='h4' sx={{ fontSize: '1rem', margin: '1rem 0' }}><span style={{ color: 'red', verticalAlign: 'text-top' }}>* </span>Required</Typography>
+                                <FormGroup>
+                                    <FormControlLabel
+                                        control={<Checkbox checked={sameAsAccountChecked} onChange={sameAsAccount} inputProps={{ 'aria-label': 'controlled' }} />}
+                                        label="Same as account"
+                                    />
+                                </FormGroup>
+                                <AddressForm
+                                    onAddressChange={onAddressChange}
+                                    addressformValue={addressformValue}
+                                    setAddressFormValue={setAddressFormValue}
+                                />
+                            </div>
+                        </Grid>
+                        : <></>
+                }     
                 <Grid item xs={8} sx={{marginTop: '1rem'}}>
                     <div className='checkout_box'>
                         <Typography variant='h4' sx={{ fontSize: '1.5rem' }}>Payment</Typography>
@@ -331,13 +356,17 @@ const Checkout = props => {
                                                 <form id='creditCardForm' name='creditCard' >
                                                     <TextField onKeyDown={onCCKeyDown} value={creditCardFormValue.cardNumber} required id="outlined-basic" label="Card number" variant="outlined" name="cardNumber" type="text" style={{ width: '80%' }} /><br />
                                                     <TextField onKeyDown={onExpDateKeyDown} value={creditCardFormValue.expirationDate} required placeholder="MM/YY" inputProps={{ maxLength: 5 }} id="outlined-basic" label="Expiration date" variant="outlined" name="expirationDate" type="text" style={{ width: '30%' }} /><br />
-                                                    <TextField onChange={onCreditCardChange} value={creditCardFormValue.securityCode} required id="outlined-basic" label="Security code" inputProps={{ maxLength: 3 }} variant="outlined" name="securityCode" type="text" style={{ width: '20%' }} /><br />
+                                                    <TextField onChange={onSSCodeChange} value={creditCardFormValue.securityCode} required id="outlined-basic" label="Security code" inputProps={{ maxLength: 3 }} variant="outlined" name="securityCode" type="text" style={{ width: '20%' }} /><br />
                                                     <TextField onChange={onCreditCardChange} value={creditCardFormValue.firstName} required id="outlined-basic" label="First name" variant="outlined" name="firstName" type="text" style={{ width: '80%' }} /><br />
                                                     <TextField onChange={onCreditCardChange} value={creditCardFormValue.lastName} required id="outlined-basic" label="Last name" variant="outlined" name="lastName" type="text" style={{ width: '80%' }} />
                                                 </form>
-                                                <FormGroup>
-                                                    <FormControlLabel control={<Checkbox checked={checked} onChange={sameAsShippingAddress} inputProps={{ 'aria-label': 'controlled' }}/>} label="Same as shipping address"/> 
-                                                </FormGroup>
+                                                {
+                                                    shippingMethod === 'delivery' ?
+                                                        <FormGroup>
+                                                            <FormControlLabel control={<Checkbox checked={checked} onChange={sameAsShippingAddress} inputProps={{ 'aria-label': 'controlled' }} />} label="Same as shipping address" />
+                                                        </FormGroup>
+                                                        : <></>
+                                                }
                                                 {
                                                     checked ?
                                                      <></>

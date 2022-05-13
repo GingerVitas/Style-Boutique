@@ -40,3 +40,28 @@ router.post('/', async (req, res, next) => {
         next(err)
     }
 })
+
+router.put('/:authId', async( req, res, next) => {
+    try {
+        console.log('LN46...................', req.body)
+        
+        await Order.update({
+            final: true,
+            total: req.body.total
+        }, {
+            where: {
+                id: req.body.orderId,
+                userId: req.params.authId,
+                final: false
+            }
+        });
+
+        const updatedOrder = await Order.findByPk(req.body.orderId)
+
+        console.log('LN61...................', updatedOrder)
+
+        res.json(updatedOrder)
+    } catch (err) {
+        next(err)
+    }
+});

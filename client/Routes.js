@@ -24,6 +24,7 @@ import SingleProduct from "./components/pages/SingleProduct";
 import SignOut from "./components/pages/SignOut";
 import AdminDashboard from "./components/pages/AdminDashboard";
 import Unauthorized from "./components/pages/Unauthorized";
+import OrderPlaced from './components/pages/OrderPlaced';
 
 class Routes extends Component {
   componentDidMount() {
@@ -33,12 +34,20 @@ class Routes extends Component {
   }
 
   componentDidUpdate(prevProps) {
+    // guest -> login
     if (prevProps.auth !== this.props.auth) {
       if (this.props.auth.id) {
         this.props.fetchOrder(this.props.auth);
       }
-    } else if (prevProps.order !== this.props.order) {
-      if (this.props.order.id) {
+    }
+    
+    // empty order to user order
+    // open order to closed order
+    if (prevProps.order !== this.props.order) {
+      if (this.props.order.final) {
+        this.props.fetchOrder(this.props.auth);
+        this.props.fetchCart(this.props.order);
+      } else {
         this.props.fetchCart(this.props.order);
         this.props.transformGuestCartToUserCart(this.props.order);
       }
@@ -70,6 +79,7 @@ class Routes extends Component {
               path="/checkout"
               render={(routeProps) => <Checkout routeProps={routeProps} />}
             />
+            <Route exact path='/order_placed' component={OrderPlaced} />
             <Route path="/review_order" component={ReviewOrder} />
             <Route
               path="/adminDashboard"
