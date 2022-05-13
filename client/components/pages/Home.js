@@ -1,10 +1,10 @@
 import React, {useState} from "react";
-import { connect } from "react-redux";
+import { useSelector } from "react-redux";
 import {Button} from '@mui/material'
 import Products from "../Products";
 
-const Home = (props) => {
-  const { firstName, isAdmin } = props;
+const Home = () => {
+  const { firstName, isAdmin } = useSelector(state=>state.auth);
   const [adminView, setAdminView] = useState(false)
 
   if(!isAdmin) return (
@@ -21,11 +21,4 @@ const Home = (props) => {
   )
 };
 
-const mapState = (state) => {
-  return {
-    firstName: state.auth.firstName,
-    isAdmin: state.auth.isAdmin
-  };
-};
-
-export default connect(mapState)(Home);
+export default (Home);

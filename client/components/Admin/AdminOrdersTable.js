@@ -1,4 +1,4 @@
-import * as React from 'react';
+import React, {useState} from 'react';
 import {Box, Button, Modal, Card, CardContent, Typography, Table, TableBody, TableCell, TableContainer, TablePagination, TableRow, Paper, Checkbox, FormControlLabel, Switch} from '@mui/material';
 import AdminTableToolbar from './AdminTableToolbar';
 import AdminOrdersTableHeader from './AdminOrdersTableHeader';
@@ -22,14 +22,14 @@ function getComparator(order, orderBy) {
 
 export default function AdminOrdersTable(props) {
   const {orders, display} = props
-  const [order, setOrder] = React.useState('asc');
-  const [orderBy, setOrderBy] = React.useState('calories');
-  const [selected, setSelected] = React.useState([]);
-  const [page, setPage] = React.useState(0);
-  const [dense, setDense] = React.useState(false);
-  const [rowsPerPage, setRowsPerPage] = React.useState(10);
-  const [open, setOpen] = React.useState(false);
-  const [selectedOrder, setSelectedOrder] = React.useState({});
+  const [order, setOrder] = useState('asc');
+  const [orderBy, setOrderBy] = useState('calories');
+  const [selected, setSelected] = useState([]);
+  const [page, setPage] = useState(0);
+  const [dense, setDense] = useState(false);
+  const [rowsPerPage, setRowsPerPage] = useState(10);
+  const [open, setOpen] = useState(false);
+  const [selectedOrder, setSelectedOrder] = useState({});
   const handleClose = () => setOpen(false);
   const handleModal = (_order) => {
     setSelectedOrder(_order)  
@@ -66,9 +66,7 @@ export default function AdminOrdersTable(props) {
   const formatter = new Intl.NumberFormat('en-US', {
     style: 'currency',
     currency: 'USD'
-  })
-  
-
+  });
 
   const handleClick = (event, orderObj) => {
     const selectedIndex = selected.indexOf(orderObj);
@@ -111,10 +109,10 @@ export default function AdminOrdersTable(props) {
   return (
     <Box sx={{ width: '100%' }}>
       <Paper sx={{ width: '100%', mb: 2 }}>
-        <AdminTableToolbar selected={selected} display={display} />
-        <TableContainer>
+        <AdminTableToolbar selected={selected} setSelected={setSelected} display={display} />
+        <TableContainer sx={{overflow:'scroll', height:'auto'}} >
           <Table
-            sx={{ minWidth: 750 }}
+            sx={{ minWidth: 750,}}
             aria-labelledby="tableTitle"
             size={dense ? 'small' : 'medium'}
           >
@@ -126,7 +124,7 @@ export default function AdminOrdersTable(props) {
               onRequestSort={handleRequestSort}
               rowCount={orders.length}
             />
-            <TableBody>
+            <TableBody sx={{height:'auto', overflow:'scroll'}}>
               {orders.slice().sort(getComparator(order, orderBy))
                 .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
                 .map((_order, index) => {
@@ -162,16 +160,16 @@ export default function AdminOrdersTable(props) {
                         scope="row"
                         padding="none"
                       >
-                        <Button onClick={()=>handleModal(_order)} >{_order.id}</Button>
+                        <Button sx={{height:'auto'}} onClick={()=>handleModal(_order)} >{_order.id}</Button>
                       </TableCell>
-                      <TableCell align="right">{_order.user.fullName}</TableCell>
-                      <TableCell align="right">{_order.line_items.reduce((acc, lineItem)=> {
+                      <TableCell align="right" >{_order.user.fullName}</TableCell>
+                      <TableCell align="right" >{_order.line_items.reduce((acc, lineItem)=> {
                         acc += lineItem.quantity
                         return acc
                       }, 0)}</TableCell>
-                      <TableCell align="right">{_order.createdAt}</TableCell>
-                      <TableCell align="right">{formatter.format(_order.total)}</TableCell>
-                      <TableCell align="right">{_order.final ? 'Yes' : 'No'}</TableCell>
+                      <TableCell align="right" >{_order.createdAt}</TableCell>
+                      <TableCell align="right" >{formatter.format(_order.total)}</TableCell>
+                      <TableCell align="right" >{_order.final ? 'Yes' : 'No'}</TableCell>
                     </TableRow>
                   );
                 })}
@@ -204,6 +202,7 @@ export default function AdminOrdersTable(props) {
       <Modal
         open={open}
         onClose={handleClose}
+        sx={{overflow:'scroll'}}
         >
           <div>
             <OrderModal order={selectedOrder} />

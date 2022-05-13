@@ -1,125 +1,80 @@
-import React from "react";
-import { connect } from "react-redux";
-import { Link } from "react-router-dom";
-import { updateUser } from "../../store/auth";
+import React, { useState, useEffect } from "react";
+import { useSelector, useDispatch } from "react-redux";
+import { Box, Button } from "@mui/material";
+import PersonalInfo from "./PersonalInfo";
+import Addresses from "./Addresses";
+import OrderHistory from "./OrderHistory";
 
-
-class Account extends React.Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      user: {
-        firstName: this.props.auth ? this.props.auth.firstName : "",
-        lastName: this.props.auth ? this.props.auth.lastName : "",
-        email: this.props.auth ? this.props.auth.email : "",
-      },
-      edit: false,
-    };
-    this.handleChange = this.handleChange.bind(this);
-    this.handleSubmit = this.handleSubmit.bind(this);
-    this.handleEdit = this.handleEdit.bind(this);
-  }
-
-  handleChange(ev) {
-    this.setState({ user: { [ev.target.name]: ev.target.value } });
-  }
-
-  handleSubmit(ev) {
-    ev.preventDefault();
-    try {
-      this.props.updateUser({ ...this.state.user });
-      this.setState({ edit: false });
-    } catch (ex) {
-      console.log(ex);
-    }
-  }
-
-  handleEdit(ev) {
-    ev.preventDefault();
-    this.setState({ edit: true });
-  }
-
-  render() {
-    const auth = this.props.auth;
-    return (
-      <div>
-        <h4 className="account-intro">User Account Information</h4>
-        <div className="account-body">
-          <form className="contact-info">
-            <label className="accountLabel">
-              First Name:
-              <input
-                name="firstName"
-                type="text"
-                allowNull={false}
-                disabled={this.state.edit ? false : true}
-                value={this.state.user.firstName}
-                onChange={this.handleChange}
-              />
-            </label>
-            <label className="accountLabel">
-              Last Name:
-              <input
-                name="lastName"
-                type="text"
-                disabled={this.state.edit ? false : true}
-                value={this.state.user.lastName}
-                onChange={this.handleChange}
-              />
-            </label>
-            <label className="accountLabel">
-              Email:
-              <input
-                name="email"
-                type="text"
-                disabled={this.state.edit ? false : true}
-                value={this.state.user.email}
-                onChange={this.handleChange}
-              />
-            </label>
-
-            <button
-              className="submit"
-              onClick={
-                this.state.edit
-                  ? (ev) => {
-                      this.handleSubmit(ev);
-                    }
-                  : (ev) => {
-                      this.handleEdit(ev);
-                    }
-              }
-            >
-              {this.state.edit ? "SUBMIT" : "EDIT"}
-            </button>
-          </form>
-          <div>
-            <button id="password">Update Password</button>
-
-            <div className="internalLink">
-              <Link to="/addresses">Address Book</Link>
-            </div>
-            <div className="internalLink">
-              <Link to="/order_history">Order History</Link>
-            </div>
-          </div>
-        </div>
-      </div>
-    );
-  }
-}
-
-const mapDispatch = (dispatch) => {
-  return {
-    updateUser: (user) => dispatch(updateUser(user)),
+const Account = (props) => {
+  const dispatch = useDispatch();
+  const auth = useSelector((state) => state.auth); // global state to auth
+  const [display, setDisplay] = useState(""); //display is set when button clicked, onClick calls setDisplay
+  const buttonBoxStyle = {
+    width: "90vw",
+    height: "80vh",
+    display: "flex",
+    flexWrap: "wrap",
+    justifyContent: "space-around",
+    margin: "auto",
   };
+  const buttonStyle = {
+    margin: "1rem",
+  };
+
+  // useEffect(() => {
+  //   dispatch(());
+  // }, []);
+
+  return (
+    <div>
+      <h1 style={{ textAlign: "center" }}>Welcome {auth.firstName}</h1>
+      <Box sx={buttonBoxStyle}>
+        <Button
+          sx={buttonStyle}
+          name="personalInfo"
+          variant={display === "personalInfo" ? "contained" : "outlined"}
+          onClick={() => setDisplay("personalInfo")}
+        >
+          My Information
+        </Button>
+        <Button
+          sx={buttonStyle}
+          name="addresses"
+          variant={display === "addresses" ? "contained" : "outlined"}
+          onClick={() => setDisplay("addresses")}
+        >
+          My Addresses
+        </Button>
+        <Button
+          sx={buttonStyle}
+          name="orders"
+          variant={display === "orders" ? "contained" : "outlined"}
+          onClick={() => setDisplay("orders")}
+        >
+          Order History
+        </Button>
+
+        <Box
+          sx={{
+            flexBasis: "100%",
+            width: "100%",
+            padding: "1rem",
+            margin: "1rem",
+          }}
+        >
+          {display === "personalInfo" ? (
+            <PersonalInfo personalInfo={auth} display={display} />
+          ) : display === "addresses" ? (
+            <Addresses addresses={auth} display={display} />
+          ) : display === "orders" ? (
+            <OrderHistory orders={auth} display={display} />
+          ) : (
+            ""
+          )}
+        </Box>
+      </Box>
+    </div>
+  );
 };
 
-const mapState = (state) => {
-  return {
-    auth: state.auth,
-    order: state.order,
-  };
-};
-
-export default connect(mapState, mapDispatch)(Account);
+export default Account;

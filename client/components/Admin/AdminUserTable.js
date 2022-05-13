@@ -1,5 +1,5 @@
-import React, {useState} from 'react';
-import {useDispatch} from 'react-redux';
+import React, {useState, useEffect} from 'react';
+import {useDispatch, useSelector} from 'react-redux';
 import {deleteUser} from '../../store/admin'
 import {Box, IconButton, Container, Button, Modal, Card, CardContent, Typography, Table, TableBody, TableCell, TableContainer, TablePagination, TableRow, Paper, Checkbox, FormControlLabel, Switch} from '@mui/material';
 import DeleteIcon from '@mui/icons-material/Delete';
@@ -24,8 +24,9 @@ function getComparator(order, orderBy) {
 }
 
 export default function AdminUserTable(props) {
-  const {users, display} = props
+  const {display} = props
   const dispatch = useDispatch();
+  const users = useSelector(state=>state.adminUsers)
   const [order, setOrder] = useState('asc');
   const [orderBy, setOrderBy] = useState('fullName');
   const [selected, setSelected] = useState([]);
@@ -39,6 +40,10 @@ export default function AdminUserTable(props) {
     setUser(user)  
     setOpen(true);
   };
+
+  useEffect(()=> {
+    console.log('****User Table Use Effect*****', users)
+  }, [users])
 
   const handleDelete = user => {
     dispatch(deleteUser(user))

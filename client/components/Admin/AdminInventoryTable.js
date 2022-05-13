@@ -1,7 +1,9 @@
-import * as React from 'react';
+import React, {useState, useEffect} from 'react';
 import {Box, Button, Modal, Card, Typography, Table, TableBody, TableCell, TableContainer, TablePagination, TableRow, Paper, Checkbox, FormControlLabel, Switch} from '@mui/material';
 import AdminTableToolbar from './AdminTableToolbar';
 import AdminInventoryTableHeader from './AdminInventoryTableHeader';
+import InventoryModal from './InventoryModal';
+import AddNewProductModal from './AddNewProductModal';
 
 function descendingComparator(a, b, orderBy) {
   if (b[orderBy] < a[orderBy]) {
@@ -20,20 +22,29 @@ function getComparator(order, orderBy) {
 }
 
 export default function AdminInventoryTable(props) {
-  const {inventory, display} = props
-  const [order, setOrder] = React.useState('asc');
-  const [orderBy, setOrderBy] = React.useState('name');
-  const [selected, setSelected] = React.useState([]);
-  const [page, setPage] = React.useState(0);
-  const [dense, setDense] = React.useState(false);
-  const [rowsPerPage, setRowsPerPage] = React.useState(5);
-  const [open, setOpen] = React.useState(false);
-  const [selectedProduct, setSelectedProduct] = React.useState({});
+  const {inventory, display, setRender} = props
+  const [order, setOrder] = useState('asc');
+  const [orderBy, setOrderBy] = useState('name');
+  const [selected, setSelected] = useState([]);
+  const [page, setPage] = useState(0);
+  const [dense, setDense] = useState(false);
+  const [rowsPerPage, setRowsPerPage] = useState(5);
+  const [open, setOpen] = useState(false);
+  const [selectedProduct, setSelectedProduct] = useState({});
+  const [newItemModal, setNewItemModal] = useState(false);
+
+  const handleNewItemClose = () => setNewItemModal(false);
   const handleClose = () => setOpen(false);
   const handleModal = (product) => {
     setSelectedProduct(product)  
     setOpen(true);
   };
+
+  useEffect(()=>{
+    console.log('re-render', inventory)
+  }, [inventory]);
+
+
   const style = {
     position: 'absolute',
     top: '50%',
@@ -91,9 +102,6 @@ export default function AdminInventoryTable(props) {
     setPage(0);
   };
 
-  const handleChangeDense = (event) => {
-    setDense(event.target.checked);
-  };
 
   const isSelected = (product) => selected.indexOf(product) !== -1;
 
@@ -155,7 +163,7 @@ export default function AdminInventoryTable(props) {
                         <img src={product.imageUrl} style={{height:'100px', width:'auto', minWidth:'95px'}} /><Button onClick={()=>handleModal(product)} sx={{marginLeft:'1rem'}}>{product.name}</Button>
                       </TableCell>
                       <TableCell align="right">{product.brand}</TableCell>
-                      <TableCell align="right">{product.productColors.length}</TableCell>
+                      <TableCell align="right">{product.productColors ? product.productColors.length : 0}</TableCell>
                       <TableCell align="right">{product.createdAt}</TableCell>
                       <TableCell align="right">{product.updatedAt}</TableCell>
                     </TableRow>
@@ -171,24 +179,6 @@ export default function AdminInventoryTable(props) {
                 </TableRow>
               )}
             </TableBody>
-            <Modal
-              open={open}
-              onClose={handleClose}
-              >
-              <Card sx={style}>
-              <Typography variant="h6" component="h2">
-                {selectedProduct.name}
-              </Typography>
-              <Box sx={{display:'flex', flexDirection:'column', margin:'1rem'}}>
-                <Typography variant='h6' component='h3'>
-                  {`Product Brand: ${selectedProduct.brand}
-                  Line Items:${selectedProduct.id ? selectedProduct.productColors.map(color => color.color) : ''}
-                  Created At: ${selectedProduct.createdAt}
-                  Updated At: ${selectedProduct.updatedAt}`}
-                </Typography>
-              </Box>
-            </Card>
-          </Modal>
           </Table>
         </TableContainer>
         <TablePagination
@@ -201,10 +191,21 @@ export default function AdminInventoryTable(props) {
           onRowsPerPageChange={handleChangeRowsPerPage}
         />
       </Paper>
-      <FormControlLabel
-        control={<Switch checked={dense} onChange={handleChangeDense} />}
-        label="Condensed View"
-      />
+      <Button onClick={()=>setNewItemModal(true)}>Add New Product</Button>
+      <Modal
+        open={open}
+        onClose={handleClose}
+        >
+          <div>
+           <InventoryModal product={selectedProduct} setParent={setOpen} setRender={setRender}/>
+          </div>
+      </Modal>
+      <Modal
+        open={newItemModal}
+        onClose={handleNewItemClose}
+      >
+        <div><AddNewProductModal setParent={setNewItemModal}/></div>
+      </Modal>
     </Box>
   );
 }
