@@ -62,7 +62,6 @@ const LineItemTableRow = (props) => {
 
   const handleSubmit = evt => {
     evt.preventDefault();
-    console.log('*********', state)
     if(state.quantity === 0){
       const lineItem = {...state}
       dispatch(deleteLineItem(lineItem, order));

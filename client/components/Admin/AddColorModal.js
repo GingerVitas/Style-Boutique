@@ -71,7 +71,7 @@ const AddColorModal = props => {
         <TextField inputProps={{style:{textAlign:'center'}}} label='Color' name='color' value={state.color}>{state.color}</TextField>
         <TextField inputProps={{style:{textAlign:'center'}}} label='Image URL' name='imageUrl' value={state.imageUrl}>{state.imageUrl}</TextField>
       </FormControl>
-      <Box sx={{display:'flex', alignItems:'center'}}>
+      <Box sx={{display:'flex', alignItems:'center', justifyContent:'center'}}>
         {skus.map((sku, index) => {
           return <AddSKUCard key={index} sku={sku} index={index} skuArray={skus} setSKUs={setSKUs}/>
         })}
