@@ -62,7 +62,7 @@ const ProductCard = (props) => {
   // if (!productName) 
 
   return (
-    <Card style={{ height: '525px', width: '100%' }}>
+    <Card style={{ height: '525px', maxWidth: '325px', width: '100%' }}>
       {adminView ? <Button variant='outlined' sx={{ zIndex: '1', float: 'right', margin: '.75rem' }} onClick={handleOpen}>
         Delete Product
       </Button> : ''}
