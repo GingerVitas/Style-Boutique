@@ -52,7 +52,17 @@ const AddColorModal = props => {
     evt.preventDefault();
     const newSKU = {size: '',availableStock: 1,price: 19.99,};
     setSKUs([...skus, newSKU]);
-  }
+  };
+
+  const removeSKU = evt => {
+    evt.preventDefault();
+    if(skus.length > 1){
+      setSKUs([...skus.slice(0, -1)])
+    }
+    else {
+      alert('You must define at least one SKU')
+    }
+  };
 
   const handleSubmit = evt => {
     console.log('create color, create skus with foreach', state, skus, product);
@@ -71,11 +81,12 @@ const AddColorModal = props => {
         <TextField inputProps={{style:{textAlign:'center'}}} label='Color' name='color' value={state.color}>{state.color}</TextField>
         <TextField inputProps={{style:{textAlign:'center'}}} label='Image URL' name='imageUrl' value={state.imageUrl}>{state.imageUrl}</TextField>
       </FormControl>
-      <Box sx={{display:'flex', alignItems:'center'}}>
+      <Box sx={{display:'flex', alignItems:'center', justifyContent:'center'}}>
         {skus.map((sku, index) => {
           return <AddSKUCard key={index} sku={sku} index={index} skuArray={skus} setSKUs={setSKUs}/>
         })}
         <Button onClick={(evt)=>addSKU(evt)} variant='outlined'>Add another SKU</Button>
+        <Button onClick={(evt)=>removeSKU(evt)} variant='outlined'>Remove SKU</Button>
       </Box>
       <Button onClick={(evt)=>handleSubmit(evt)}>Create Color Variant</Button>
     </Box>

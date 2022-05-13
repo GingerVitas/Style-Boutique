@@ -10,20 +10,10 @@ import { deleteProduct } from '../store/admin'
 import { Grid, Card, CardActionArea, Button, Modal, Box, FormControl, InputLabel, Select, MenuItem, CardContent, CardMedia, Typography, Rating } from '@mui/material';
 
 const ProductCard = (props) => {
-  const { product, adminView } = props;
+  const { product, adminView, category } = props;
 
   //hooks
   const dispatch = useDispatch();
-  const category = props.categories.filter(category => category.id === product.categoryId)[0];
-  // const {productName} = useParams();
-
-  // For admin delete modal
-  const [open, setOpen] = useState(false);
-  const handleOpen = () => setOpen(true);
-  const handleClose = () => setOpen(false);
-  const handleDelete = (_product) => {
-    dispatch(deleteProduct(_product));
-  }
 
   // For price, since product db doesn't have price info.
   const [price, setPrice] = useState(0);
@@ -35,6 +25,14 @@ const ProductCard = (props) => {
   useEffect(() => {
     getPrice();
   }, [])
+
+  // For admin delete modal
+  const [open, setOpen] = useState(false);
+  const handleOpen = () => setOpen(true);
+  const handleClose = () => setOpen(false);
+  const handleDelete = (_product) => {
+    dispatch(deleteProduct(_product));
+  }
 
   const style = {
     position: 'absolute',
@@ -60,10 +58,9 @@ const ProductCard = (props) => {
   // }
   // (product)=>handleDelete(product)
   // if (!productName) 
+
   return (
-    //  <Link to={`/${category.categoryName}/${product.name}`}>
-    // sx={{ maxWidth: '310px', margin: '.5rem' }}
-    <Card style={{ height: '525px', width: '100%' }}>
+    <Card style={{ height: '525px', width: '100%', marginBottom:'1rem' }}>
       {adminView ? <Button variant='outlined' sx={{ zIndex: '1', float: 'right', margin: '.75rem' }} onClick={handleOpen}>
         Delete Product
       </Button> : ''}
@@ -85,26 +82,20 @@ const ProductCard = (props) => {
           </Box>
         </Box>
       </Modal>
-      <CardActionArea component={Link} to={`/${category.categoryName}/${product.name}`} sx={{height: '100%'}}>
-        {/* <CardMedia
-          component='img'
-          image={product.imageUrl}
-          height='435'
-          width='300'
-        /> */}
+      <CardActionArea component={Link} to={`/shop/${category}/${product.name}`} sx={{height: '100%'}}>
         <Grid
           container
           direction="column"
           justifyContent="center"
           alignItems="center"
         >
-          <Grid item sx={8}>
-            <div style={{ width: '100%', height: '330px' }}>
-              <img src={product.imageUrl} style={{ height: '100%' }} />
+          <Grid item xs={8}>
+            <div style={{ width: '100%', height: '330px', justifyContent:'center', display:'flex',  alignItems:'center'}}>
+              <img src={product.imageUrl} style={{ height: 'auto', maxHeight:'330px', width:'100%'}} />
             </div>
           </Grid>
-          <Grid item sx={4}>
-            <CardContent>
+          <Grid item xs={4}>
+            <CardContent sx={{textAlign:'center'}}>
               <Typography gutterBottom variant='subtitle1'>
                 {product.brand}
               </Typography>
@@ -124,11 +115,8 @@ const ProductCard = (props) => {
             </CardContent> 
           </Grid>
         </Grid>
-            
-
       </CardActionArea>
     </Card>
-    /* </Link> */
   )
   // else return (
   //   <Card sx={{maxWidth:'280', margin:'.5rem'}} style={{height:'100%'}}>
@@ -166,20 +154,3 @@ const ProductCard = (props) => {
 }
 
 export default ProductCard
-
-
-//   < Grid container
-// direction = "row"
-// justifyContent = "center"
-// alignItems = "center" >
-//                 <Grid item xs={9} style={{ textAlign: 'right' }}>
-//                   <Rating
-//                     name="read-only"
-//                     readOnly
-//                     value={Math.floor(Math.random() * 2 + 3)}
-//                   />
-//                 </Grid>
-//                 <Grid item xs={3} style={{ textAlign: 'left' }}>
-//                   ({Math.floor(Math.random() * 350 + 150)})
-//                 </Grid>
-//               </Grid >

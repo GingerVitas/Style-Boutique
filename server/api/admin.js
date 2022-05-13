@@ -99,6 +99,16 @@ router.get('/productSKUs/all', isAdmin, async(req, res, next) => {
   }
 });
 
+router.post('/product', isAdmin, async(req, res, next) => {
+  try{
+    const product = await Product.create(req.body);
+    res.send(product)
+  }
+  catch(err){
+    next(err)
+  }
+})
+
 router.post('/color', isAdmin, async(req, res, next) => {
   try{
     const newColor = await ProductColor.create(req.body);

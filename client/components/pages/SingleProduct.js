@@ -58,6 +58,7 @@ const singleProduct = () => {
   useEffect(()=> {
     dispatch(loadColors(productName)),
     dispatch(loadSKUs(productName))
+    console.log(skus)
   }, [])
 
   // For Size DropDown
@@ -69,6 +70,7 @@ const singleProduct = () => {
 
   // For Color DropDown
   const handleColor = (event) => {
+    console.log(skus)
     const selectedColor = event.target.value;
     setColor(selectedColor);
     setLineItem({ ...lineItem, productName: product.name, productColor: selectedColor.color, imageUrl: selectedColor.imageUrl});

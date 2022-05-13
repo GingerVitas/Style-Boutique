@@ -176,6 +176,7 @@ button:hover {
 
 .checkout {
   margin: 0 3rem;
+  margin-bottom: 3rem;
 }
 
 .checkout_box{
@@ -188,5 +189,6 @@ button:hover {
   .checkout {
     width: 80%;
     margin: 0 auto;
+    margin-bottom: 3rem;
   }
 }

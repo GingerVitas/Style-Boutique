@@ -1,26 +1,34 @@
 "use strict";
 const {
-  dressesProduct,
-  dressData,
+  dressProduct,
   dressColorData,
+  dressSKUData,
   topsProduct,
-  topsData,
+  topsColorData,
+  topsSKUData,
   leggingsProduct,
-  leggingsData,
+  leggingsColorData,
+  leggingsSKUData,
   jeansProduct,
-  jeansData,
+  jeansColorData,
+  jeansSKUData,
   pantsProduct,
-  pantsData,
+  pantsColorData,
+  pantsSKUData,
   sweatersProduct,
-  sweatersData,
+  sweatersColorData,
+  sweatersSKUData,
   skirtProduct,
-  skirtData,
+  skirtColorData,
+  skirtSKUData,
   shoeProduct,
-  shoeData,
+  shoeColorData,
+  shoeSKUData,
   beltProduct,
-  beltData,
+  beltColorData,
+  beltSKUData,
   accessoriesProduct,
-  accessoryData,
+  accessorySKUData,
   accessoryColorData
 } = require("./seed-data");
 const {
@@ -30,16 +38,16 @@ const {
 const { faker } = require("@faker-js/faker");
 
 const categories = [
-  { categoryName: "Top" },
-  { categoryName: "Skirt" },
-  { categoryName: "Dress" },
-  { categoryName: "Jeans" },
-  { categoryName: "Leggings" },
-  { categoryName: "Pants" },
-  { categoryName: "Sweater" },
-  { categoryName: "Shoes" },
-  { categoryName: "Belts" },
-  { categoryName: "Accessories" },
+  { categoryName: "top" },
+  { categoryName: "skirt" },
+  { categoryName: "dress" },
+  { categoryName: "jeans" },
+  { categoryName: "leggings" },
+  { categoryName: "pants" },
+  { categoryName: "sweater" },
+  { categoryName: "shoes" },
+  { categoryName: "belts" },
+  { categoryName: "accessories" },
 ];
 
 const productFinder = async (productName) => {
@@ -48,9 +56,9 @@ const productFinder = async (productName) => {
   });
   return product;
 };
-const productColorFinder = async (color) => {
+const productColorFinder = async (seedId) => {
   const productColor = await db.models.productColor.findOne({
-    where: {color}
+    where: {seedId}
   })
   return productColor;
  };
@@ -133,195 +141,241 @@ async function seed() {
   // Creating Products ****************************************************************
 
   await Category.bulkCreate(categories).then(console.log(`**** ${categories.length} Categories Seeded****`))
-  // const dresses = (await Promise.all(dressesProduct.map(async(dress)=> {
-  //   const foundCategory = await categoryFinder('Dress');
-  //   return {...dress, categoryId: foundCategory.id}
-  // })));
-  // await Product.bulkCreate(dresses).then(console.log(`**** ${dresses.length} Dresses Seeded****`));
+  const dresses = (await Promise.all(dressProduct.map(async(dress)=> {
+    const foundCategory = await categoryFinder('dress');
+    return {...dress, categoryId: foundCategory.id}
+  })));
+  await Product.bulkCreate(dresses).then(console.log(`**** ${dresses.length} Dresses Seeded****`));
   
-  // const dressColors = (await Promise.all(dressColorData.map(async(dress) => {
-  //   const product = await productFinder(dress.productName);
-  //   return {...dress, productId: product.id}
-  // })))
-  // await ProductColor.bulkCreate(dresscolors).then(console.log(`**** ${dressColors.length} Dress Colors Seeded ****`))
-  // const dressSKUs = (await Promise.all(dressData.flatMap(async(dress)=>{
-  //   const productColor = await productColorFinder(dress.color);
-  //   return [
-  //    {...dress, availableStock: randomStock(), size: "XS", productColorId: productColor.id},
-  //    {...dress, availableStock: randomStock(), size: "Small", productColorId: productColor.id},
-  //    {...dress, availableStock: randomStock(), size: "Medium", productColorId: productColor.id},
-  //    {...dress, availableStock: randomStock(), size: "Large", productColorId: productColor.id},
-  //    {...dress, availableStock: randomStock(), size: "XL", productColorId: productColor.id}
-  //   ]
-  // }))).flat
-  // await ProductSKU.bulkCreate(dressSKUs).then(console.log(`**** ${dressSKUs.length} Dress SKUs Seeded****`));
+  const dressColors = (await Promise.all(dressColorData.map(async(dress) => {
+    const product = await productFinder(dress.productName);
+    return {...dress, productId: product.id}
+  })))
+  await ProductColor.bulkCreate(dressColors).then(console.log(`**** ${dressColors.length} Dress Colors Seeded ****`))
 
-  // const tops = (await Promise.all(topsProduct.map(async(top)=>{
-  //   const foundCategory = await categoryFinder('Top');
-  //   return {...top, categoryId: foundCategory.id}
-  // })));
-  // await Product.bulkCreate(tops).then(console.log(`**** ${tops.length} Tops Seeded****`));
-  // const topsSKUs = (await Promise.all(topsData.flatMap(async(top)=> {
-  //   const product = await productFinder(top.productName);
-  //   const foundCategory = await categoryFinder('Top');
-  //   return [
-  //     {...top, availableStock: randomStock(), size: 'XS', productId: product.id, categoryId: foundCategory.id},
-  //     {...top, availableStock: randomStock(), size: 'Small', productId: product.id, categoryId: foundCategory.id},
-  //     {...top, availableStock: randomStock(), size: 'Medium', productId: product.id, categoryId: foundCategory.id},
-  //     {...top, availableStock: randomStock(), size: 'Large', productId: product.id, categoryId: foundCategory.id},
-  //     {...top, availableStock: randomStock(), size: 'XL', productId: product.id, categoryId: foundCategory.id},
-  //   ]
-  // }))).flat();
-  // await ProductSKU.bulkCreate(topsSKUs).then(console.log(`**** ${topsSKUs.length} Top SKUs Seeded****`));
+  const dressSKUs = (await Promise.all(dressSKUData.flatMap(async(dress)=>{
+    const productColor = await productColorFinder(dress.seedId);
+    return [
+     {...dress, availableStock: randomStock(), size: "XS", productColorId: productColor.id},
+     {...dress, availableStock: randomStock(), size: "Small", productColorId: productColor.id},
+     {...dress, availableStock: randomStock(), size: "Medium", productColorId: productColor.id},
+     {...dress, availableStock: randomStock(), size: "Large", productColorId: productColor.id},
+     {...dress, availableStock: randomStock(), size: "XL", productColorId: productColor.id}
+    ]
+  }))).flat()
+  await ProductSKU.bulkCreate(dressSKUs).then(console.log(`**** ${dressSKUs.length} Dress SKUs Seeded****`));
 
-  // const leggings = (await Promise.all(leggingsProduct.map(async(legging) => {
-  //   const foundCategory = await categoryFinder('Leggings');
-  //   return {...legging, categoryId: foundCategory.id}
-  // })));
-  // await Product.bulkCreate(leggings).then(console.log(`**** ${leggings.length} Leggings Seeded`));
-  // const leggingsSKUs = (await Promise.all(leggingsData.flatMap(async(legging)=>{
-  //   const product = await productFinder(legging.productName);
-  //   const foundCategory = await categoryFinder('Leggings');
-  //   return [
-  //     {...legging, availableStock: randomStock(), size: 'XS', productId: product.id, categoryId: foundCategory.id},
-  //     {...legging, availableStock: randomStock(), size: 'Small', productId: product.id, categoryId: foundCategory.id},
-  //     {...legging, availableStock: randomStock(), size: 'Medium', productId: product.id, categoryId: foundCategory.id},
-  //     {...legging, availableStock: randomStock(), size: 'Large', productId: product.id, categoryId: foundCategory.id},
-  //     {...legging, availableStock: randomStock(), size: 'XL', productId: product.id, categoryId: foundCategory.id},
-  //   ]
-  // }))).flat();
-  // await ProductSKU.bulkCreate(leggingsSKUs).then(console.log(`**** ${leggingsSKUs.length} Legging SKUs Seeded****`));
+  const tops = (await Promise.all(topsProduct.map(async(top)=>{
+    const foundCategory = await categoryFinder('top');
+    return {...top, categoryId: foundCategory.id}
+  })));
+  await Product.bulkCreate(tops).then(console.log(`**** ${tops.length} Tops Seeded****`));
 
-  // const jeans = (await Promise.all(jeansProduct.map(async(jean)=>{
-  //   const foundCategory = await categoryFinder('Jeans');
-  //   return {...jean, categoryId: foundCategory.id}
-  // })));
-  // await Product.bulkCreate(jeans).then(console.log(`**** ${jeans.length} Jeans Seeded****`));
-  // const jeansSKUs = (await Promise.all(jeansData.flatMap(async(jeans)=> {
-  //   const product = await productFinder(jeans.productName);
-  //   const foundCategory = await categoryFinder('Jeans');
-  //   return [
-  //     {...jeans, availableStock: randomStock(), size: '23', productId: product.id, categoryId: foundCategory.id},
-  //     {...jeans, availableStock: randomStock(), size: '24', productId: product.id, categoryId: foundCategory.id},
-  //     {...jeans, availableStock: randomStock(), size: '25', productId: product.id, categoryId: foundCategory.id},
-  //     {...jeans, availableStock: randomStock(), size: '26', productId: product.id, categoryId: foundCategory.id},
-  //     {...jeans, availableStock: randomStock(), size: '27', productId: product.id, categoryId: foundCategory.id},
-  //     {...jeans, availableStock: randomStock(), size: '28', productId: product.id, categoryId: foundCategory.id},
-  //     {...jeans, availableStock: randomStock(), size: '29', productId: product.id, categoryId: foundCategory.id},
-  //     {...jeans, availableStock: randomStock(), size: '30', productId: product.id, categoryId: foundCategory.id},
-  //     {...jeans, availableStock: randomStock(), size: '31', productId: product.id, categoryId: foundCategory.id},
-  //     {...jeans, availableStock: randomStock(), size: '32', productId: product.id, categoryId: foundCategory.id}
-  //   ]
-  // }))).flat();
-  // await ProductSKU.bulkCreate(jeansSKUs).then(console.log(`**** ${jeansSKUs.length} Jeans SKUs Seeded****`));
+  const topsColors = (await Promise.all(topsColorData.map(async(top) => {
+    const product = await productFinder(top.productName);
+    return {...top, productId: product.id}
+  })));
+  await ProductColor.bulkCreate(topsColors).then(console.log(`**** ${topsColors.length} Top Colors Seeded ****`))
+
+  const topsSKUs = (await Promise.all(topsSKUData.flatMap(async(top)=> {
+    const productColor = await productColorFinder(top.seedId);
+    return [
+      {...top, availableStock: randomStock(), size: 'XS', productColorId: productColor.id},
+      {...top, availableStock: randomStock(), size: 'Small', productColorId: productColor.id},
+      {...top, availableStock: randomStock(), size: 'Medium', productColorId: productColor.id},
+      {...top, availableStock: randomStock(), size: 'Large', productColorId: productColor.id},
+      {...top, availableStock: randomStock(), size: 'XL', productColorId: productColor.id},
+    ]
+  }))).flat();
+  await ProductSKU.bulkCreate(topsSKUs).then(console.log(`**** ${topsSKUs.length} Top SKUs Seeded****`));
+
+  const leggings = (await Promise.all(leggingsProduct.map(async(legging) => {
+    const foundCategory = await categoryFinder('leggings');
+    return {...legging, categoryId: foundCategory.id}
+  })));
+  await Product.bulkCreate(leggings).then(console.log(`**** ${leggings.length} Leggings Seeded`));
+
+  const leggingsColors = (await Promise.all(leggingsColorData.map(async(legging)=>{
+    const product = await productFinder(legging.productName);
+    return {...legging, productId: product.id}
+  })));
+  await ProductColor.bulkCreate(leggingsColors).then(console.log(`**** ${leggingsColors.length} Legging Colors Seeded`));
+
+  const leggingsSKUs = (await Promise.all(leggingsSKUData.flatMap(async(legging)=>{
+    const productColor = await productColorFinder(legging.seedId)
+    return [
+      {...legging, availableStock: randomStock(), size: 'XS', productColorId: productColor.id},
+      {...legging, availableStock: randomStock(), size: 'Small', productColorId: productColor.id},
+      {...legging, availableStock: randomStock(), size: 'Medium', productColorId: productColor.id},
+      {...legging, availableStock: randomStock(), size: 'Large', productColorId: productColor.id},
+      {...legging, availableStock: randomStock(), size: 'XL', productColorId: productColor.id},
+    ]
+  }))).flat();
+  await ProductSKU.bulkCreate(leggingsSKUs).then(console.log(`**** ${leggingsSKUs.length} Legging SKUs Seeded****`));
+
+  const jeans = (await Promise.all(jeansProduct.map(async(jean)=>{
+    const foundCategory = await categoryFinder('jeans');
+    return {...jean, categoryId: foundCategory.id}
+  })));
+  await Product.bulkCreate(jeans).then(console.log(`**** ${jeans.length} Jeans Seeded****`));
+
+  const jeansColors = (await Promise.all(jeansColorData.map(async(jeans)=>{
+    const product = await productFinder(jeans.productName);
+    return {...jeans, productId: product.id}
+  })));
+  await ProductColor.bulkCreate(jeansColors).then(console.log(`**** ${jeansColors.length} Jeans Colors Seeded ****`));
+
+  const jeansSKUs = (await Promise.all(jeansSKUData.flatMap(async(jeans)=> {
+    const productColor = await productColorFinder(jeans.seedId)
+    return [
+      {...jeans, availableStock: randomStock(), size: '23', productColorId: productColor.id},
+      {...jeans, availableStock: randomStock(), size: '24', productColorId: productColor.id},
+      {...jeans, availableStock: randomStock(), size: '25', productColorId: productColor.id},
+      {...jeans, availableStock: randomStock(), size: '26', productColorId: productColor.id},
+      {...jeans, availableStock: randomStock(), size: '27', productColorId: productColor.id},
+      {...jeans, availableStock: randomStock(), size: '28', productColorId: productColor.id},
+      {...jeans, availableStock: randomStock(), size: '29', productColorId: productColor.id},
+      {...jeans, availableStock: randomStock(), size: '30', productColorId: productColor.id},
+      {...jeans, availableStock: randomStock(), size: '31', productColorId: productColor.id},
+      {...jeans, availableStock: randomStock(), size: '32', productColorId: productColor.id}
+    ]
+  }))).flat();
+  await ProductSKU.bulkCreate(jeansSKUs).then(console.log(`**** ${jeansSKUs.length} Jeans SKUs Seeded****`));
   
-  // const pants = (await Promise.all(pantsProduct.map(async(pants)=>{
-  //   const foundCategory = await categoryFinder('Pants');
-  //   return {...pants, categoryId: foundCategory.id};
-  // })));
-  // await Product.bulkCreate(pants).then(console.log(`**** ${pants.length} Pants Seeded`));
-  // const pantsSKUs = (await Promise.all(pantsData.flatMap(async(pants)=>{
-  //   const product = await productFinder(pants.productName);
-  //   const foundCategory = await categoryFinder('Pants');
-  //   return [
-  //     {...pants, availableStock: randomStock(), size: '23', productId: product.id, categoryId: foundCategory.id},
-  //     {...pants, availableStock: randomStock(), size: '24', productId: product.id, categoryId: foundCategory.id},
-  //     {...pants, availableStock: randomStock(), size: '25', productId: product.id, categoryId: foundCategory.id},
-  //     {...pants, availableStock: randomStock(), size: '26', productId: product.id, categoryId: foundCategory.id},
-  //     {...pants, availableStock: randomStock(), size: '27', productId: product.id, categoryId: foundCategory.id},
-  //     {...pants, availableStock: randomStock(), size: '28', productId: product.id, categoryId: foundCategory.id},
-  //     {...pants, availableStock: randomStock(), size: '29', productId: product.id, categoryId: foundCategory.id},
-  //     {...pants, availableStock: randomStock(), size: '30', productId: product.id, categoryId: foundCategory.id},
-  //     {...pants, availableStock: randomStock(), size: '31', productId: product.id, categoryId: foundCategory.id},
-  //     {...pants, availableStock: randomStock(), size: '32', productId: product.id, categoryId: foundCategory.id}
-  //   ]
-  // }))).flat();
-  // await ProductSKU.bulkCreate(pantsSKUs).then(console.log(`**** ${pantsSKUs.length} Pants SKUs Seeded****`));
+  const pants = (await Promise.all(pantsProduct.map(async(pants)=>{
+    const foundCategory = await categoryFinder('pants');
+    return {...pants, categoryId: foundCategory.id};
+  })));
+  await Product.bulkCreate(pants).then(console.log(`**** ${pants.length} Pants Seeded ****`));
 
-  // const sweaters = (await Promise.all(sweatersProduct.map(async(sweater)=>{
-  //   const foundCategory = await categoryFinder('Sweater');
-  //   return {...sweater, categoryId: foundCategory.id}
-  // })));
-  // await Product.bulkCreate(sweaters).then(console.log(`**** ${sweaters.length} Sweaters Seeded****`));
-  // const sweatersSKUs = (await Promise.all(sweatersData.flatMap(async(sweater)=>{
-  //   const product = await productFinder(sweater.productName);
-  //   const foundCategory = await categoryFinder('Sweater');
-  //   return [
-  //     {...sweater, availableStock: randomStock(), size: 'XS', productId: product.id, categoryId: foundCategory.id},
-  //     {...sweater, availableStock: randomStock(), size: 'Small', productId: product.id, categoryId: foundCategory.id},
-  //     {...sweater, availableStock: randomStock(), size: 'Medium', productId: product.id, categoryId: foundCategory.id},
-  //     {...sweater, availableStock: randomStock(), size: 'Large', productId: product.id, categoryId: foundCategory.id},
-  //     {...sweater, availableStock: randomStock(), size: 'XL', productId: product.id, categoryId: foundCategory.id},
-  //   ]
-  // }))).flat();
-  // await ProductSKU.bulkCreate(sweatersSKUs).then(console.log(`**** ${sweatersSKUs.length} Sweater SKUs Seeded`));
+  const pantsColors = (await Promise.all(pantsColorData.map(async(pants)=>{
+    const product = await productFinder(pants.productName);
+    return {...pants, productId: product.id}
+  })))
+  await ProductColor.bulkCreate(pantsColors).then(console.log(`**** ${pantsColors.length} pants colors seeded ****`))
 
-  // const skirts = (await Promise.all(skirtProduct.map(async(skirt)=>{
-  //   const foundCategory = await categoryFinder('Skirt');
-  //   return {...skirt, categoryId: foundCategory.id}
-  // })));
-  // await Product.bulkCreate(skirts).then(console.log(`**** ${skirts.length} Skirts Seeded****`));
-  // const skirtSKUs = (await Promise.all(skirtData.flatMap(async(skirt)=>{
-  //   const product = await productFinder(skirt.productName);
-  //   const foundCategory = await categoryFinder('Skirt');
-  //   return [
-  //     {...skirt, availableStock: randomStock(), size: 'XS', productId: product.id, categoryId: foundCategory.id},
-  //     {...skirt, availableStock: randomStock(), size: 'Small', productId: product.id, categoryId: foundCategory.id},
-  //     {...skirt, availableStock: randomStock(), size: 'Medium', productId: product.id, categoryId: foundCategory.id},
-  //     {...skirt, availableStock: randomStock(), size: 'Large', productId: product.id, categoryId: foundCategory.id},
-  //     {...skirt, availableStock: randomStock(), size: 'XL', productId: product.id, categoryId: foundCategory.id},
-  //   ]
-  // }))).flat();
-  // await ProductSKU.bulkCreate(skirtSKUs).then(console.log(`**** ${skirtSKUs.length} Skirt SKUs seeded`));
+  const pantsSKUs = (await Promise.all(pantsSKUData.flatMap(async(pants)=>{
+    const productColor = await productColorFinder(pants.seedId)
+    return [
+      {...pants, availableStock: randomStock(), size: '23', productColorId: productColor.id},
+      {...pants, availableStock: randomStock(), size: '24', productColorId: productColor.id},
+      {...pants, availableStock: randomStock(), size: '25', productColorId: productColor.id},
+      {...pants, availableStock: randomStock(), size: '26', productColorId: productColor.id},
+      {...pants, availableStock: randomStock(), size: '27', productColorId: productColor.id},
+      {...pants, availableStock: randomStock(), size: '28', productColorId: productColor.id},
+      {...pants, availableStock: randomStock(), size: '29', productColorId: productColor.id},
+      {...pants, availableStock: randomStock(), size: '30', productColorId: productColor.id},
+      {...pants, availableStock: randomStock(), size: '31', productColorId: productColor.id},
+      {...pants, availableStock: randomStock(), size: '32', productColorId: productColor.id}
+    ]
+  }))).flat();
+  await ProductSKU.bulkCreate(pantsSKUs).then(console.log(`**** ${pantsSKUs.length} Pants SKUs Seeded****`));
 
-  // const shoes = (await Promise.all(shoeProduct.map(async(shoe)=>{
-  //   const foundCategory = await categoryFinder('Shoes');
-  //   return {...shoe, categoryId: foundCategory.id}
-  // })));
-  // await Product.bulkCreate(shoes).then(console.log(`**** ${shoes.length} Shoes Seeded****`));
-  // const shoeSKUs = (await Promise.all(shoeData.flatMap(async(shoe)=>{
-  //   const product = await productFinder(shoe.productName);
-  //   const foundCategory = await categoryFinder('Shoes');
-  //   return [
-  //     {...shoe, availableStock: randomStock(), size: '5', productId: product.id, categoryId: foundCategory.id},
-  //     {...shoe, availableStock: randomStock(), size: '5.5', productId: product.id, categoryId: foundCategory.id},
-  //     {...shoe, availableStock: randomStock(), size: '6', productId: product.id, categoryId: foundCategory.id},
-  //     {...shoe, availableStock: randomStock(), size: '6.5', productId: product.id, categoryId: foundCategory.id},
-  //     {...shoe, availableStock: randomStock(), size: '7', productId: product.id, categoryId: foundCategory.id},
-  //     {...shoe, availableStock: randomStock(), size: '7.5', productId: product.id, categoryId: foundCategory.id},
-  //     {...shoe, availableStock: randomStock(), size: '8', productId: product.id, categoryId: foundCategory.id},
-  //     {...shoe, availableStock: randomStock(), size: '8.5', productId: product.id, categoryId: foundCategory.id},
-  //     {...shoe, availableStock: randomStock(), size: '9', productId: product.id, categoryId: foundCategory.id},
-  //     {...shoe, availableStock: randomStock(), size: '9.5', productId: product.id, categoryId: foundCategory.id},
-  //     {...shoe, availableStock: randomStock(), size: '10', productId: product.id, categoryId: foundCategory.id},
-  //     {...shoe, availableStock: randomStock(), size: '10.5', productId: product.id, categoryId: foundCategory.id},
-  //     {...shoe, availableStock: randomStock(), size: '11', productId: product.id, categoryId: foundCategory.id},
-  //     {...shoe, availableStock: randomStock(), size: '11.5', productId: product.id, categoryId: foundCategory.id},
-  //     {...shoe, availableStock: randomStock(), size: '12', productId: product.id, categoryId: foundCategory.id},
-  //   ]
-  // }))).flat();
-  // await ProductSKU.bulkCreate(shoeSKUs).then(console.log(`**** ${shoeSKUs.length} Shoe SKUs Seeded`));
+  const sweaters = (await Promise.all(sweatersProduct.map(async(sweater)=>{
+    const foundCategory = await categoryFinder('sweater');
+    return {...sweater, categoryId: foundCategory.id}
+  })));
+  await Product.bulkCreate(sweaters).then(console.log(`**** ${sweaters.length} Sweaters Seeded****`));
 
-  // const belts = (await Promise.all(beltProduct.map(async(belt)=>{
-  //   const foundCategory = await categoryFinder('Belts');
-  //   return {...belt, categoryId: foundCategory.id}
-  // })));
-  // await Product.bulkCreate(belts).then(console.log(`**** ${belts.length} Belts Seeded****`));
-  // const beltSKUs = (await Promise.all(beltData.flatMap(async(belt)=>{
-  //   const product = await productFinder(belt.productName);
-  //   const foundCategory = await categoryFinder('Belts');
-  //   return [
-  //     {...belt, availableStock: randomStock(), size: 'XS', productId: product.id, categoryId: foundCategory.id},
-  //     {...belt, availableStock: randomStock(), size: 'Small', productId: product.id, categoryId: foundCategory.id},
-  //     {...belt, availableStock: randomStock(), size: 'Medium', productId: product.id, categoryId: foundCategory.id},
-  //     {...belt, availableStock: randomStock(), size: 'Large', productId: product.id, categoryId: foundCategory.id},
-  //     {...belt, availableStock: randomStock(), size: 'XL', productId: product.id, categoryId: foundCategory.id},
-  //   ]
-  // }))).flat();
-  // await ProductSKU.bulkCreate(beltSKUs).then(console.log(`**** ${beltSKUs.length} Belt SKUs Seeded****`));
+  const sweaterColors = (await Promise.all(sweatersColorData.map(async(sweater)=>{
+    const product = await productFinder(sweater.productName);
+    return {...sweater, productId: product.id};
+  })));
+  await ProductColor.bulkCreate(sweaterColors).then(console.log(`**** ${sweaterColors.length} Sweater Colors Seeded ****`))
+
+  const sweatersSKUs = (await Promise.all(sweatersSKUData.flatMap(async(sweater)=>{
+    const productColor = await productColorFinder(sweater.seedId)
+    return [
+      {...sweater, availableStock: randomStock(), size: 'XS', productColorId: productColor.id},
+      {...sweater, availableStock: randomStock(), size: 'Small', productColorId: productColor.id},
+      {...sweater, availableStock: randomStock(), size: 'Medium', productColorId: productColor.id},
+      {...sweater, availableStock: randomStock(), size: 'Large', productColorId: productColor.id},
+      {...sweater, availableStock: randomStock(), size: 'XL', productColorId: productColor.id},
+    ]
+  }))).flat();
+  await ProductSKU.bulkCreate(sweatersSKUs).then(console.log(`**** ${sweatersSKUs.length} Sweater SKUs Seeded`));
+
+  const skirts = (await Promise.all(skirtProduct.map(async(skirt)=>{
+    const foundCategory = await categoryFinder('skirt');
+    return {...skirt, categoryId: foundCategory.id}
+  })));
+  await Product.bulkCreate(skirts).then(console.log(`**** ${skirts.length} Skirts Seeded****`));
+
+  const skirtColors = (await Promise.all(skirtColorData.map(async(skirt)=> {
+    const product = await productFinder(skirt.productName);
+    return {...skirt, productId: product.id}
+  })));
+  await ProductColor.bulkCreate(skirtColors).then(console.log(`**** ${skirtColors.length} Skirt Colors Seeded ****`))
+
+  const skirtSKUs = (await Promise.all(skirtSKUData.flatMap(async(skirt)=>{
+    const productColor = await productColorFinder(skirt.seedId)
+    return [
+      {...skirt, availableStock: randomStock(), size: 'XS', productColorId: productColor.id},
+      {...skirt, availableStock: randomStock(), size: 'Small', productColorId: productColor.id},
+      {...skirt, availableStock: randomStock(), size: 'Medium', productColorId: productColor.id},
+      {...skirt, availableStock: randomStock(), size: 'Large', productColorId: productColor.id},
+      {...skirt, availableStock: randomStock(), size: 'XL', productColorId: productColor.id},
+    ]
+  }))).flat();
+  await ProductSKU.bulkCreate(skirtSKUs).then(console.log(`**** ${skirtSKUs.length} Skirt SKUs seeded`));
+
+  const shoes = (await Promise.all(shoeProduct.map(async(shoe)=>{
+    const foundCategory = await categoryFinder('shoes');
+    return {...shoe, categoryId: foundCategory.id}
+  })));
+  await Product.bulkCreate(shoes).then(console.log(`**** ${shoes.length} Shoes Seeded****`));
+
+  const shoeColors = (await Promise.all(shoeColorData.map(async(shoe)=>{
+    const product = await productFinder(shoe.productName);
+    return {...shoe, productId: product.id}
+  })));
+  await ProductColor.bulkCreate(shoeColors).then(console.log(`**** ${shoeColors.length} Shoe Colors Seeded ****`))
+
+  const shoeSKUs = (await Promise.all(shoeSKUData.flatMap(async(shoe)=>{
+    const productColor = await productColorFinder(shoe.seedId)
+    return [
+      {...shoe, availableStock: randomStock(), size: '5', productColorId: productColor.id},
+      {...shoe, availableStock: randomStock(), size: '5.5', productColorId: productColor.id},
+      {...shoe, availableStock: randomStock(), size: '6', productColorId: productColor.id},
+      {...shoe, availableStock: randomStock(), size: '6.5', productColorId: productColor.id},
+      {...shoe, availableStock: randomStock(), size: '7', productColorId: productColor.id},
+      {...shoe, availableStock: randomStock(), size: '7.5', productColorId: productColor.id},
+      {...shoe, availableStock: randomStock(), size: '8', productColorId: productColor.id},
+      {...shoe, availableStock: randomStock(), size: '8.5', productColorId: productColor.id},
+      {...shoe, availableStock: randomStock(), size: '9', productColorId: productColor.id},
+      {...shoe, availableStock: randomStock(), size: '9.5', productColorId: productColor.id},
+      {...shoe, availableStock: randomStock(), size: '10', productColorId: productColor.id},
+      {...shoe, availableStock: randomStock(), size: '10.5', productColorId: productColor.id},
+      {...shoe, availableStock: randomStock(), size: '11', productColorId: productColor.id},
+      {...shoe, availableStock: randomStock(), size: '11.5', productColorId: productColor.id},
+      {...shoe, availableStock: randomStock(), size: '12', productColorId: productColor.id},
+    ]
+  }))).flat();
+  await ProductSKU.bulkCreate(shoeSKUs).then(console.log(`**** ${shoeSKUs.length} Shoe SKUs Seeded`));
+
+  const belts = (await Promise.all(beltProduct.map(async(belt)=>{
+    const foundCategory = await categoryFinder('belts');
+    return {...belt, categoryId: foundCategory.id}
+  })));
+  await Product.bulkCreate(belts).then(console.log(`**** ${belts.length} Belts Seeded****`));
+
+  const beltColors = (await Promise.all(beltColorData.map(async(belt) => {
+    const product = await productFinder(belt.productName);
+    return {...belt, productId: product.id}
+  })));
+  await ProductColor.bulkCreate(beltColors).then(console.log(`**** ${beltColors.length} Belt Colors Seeded ****`))
+
+  const beltSKUs = (await Promise.all(beltSKUData.flatMap(async(belt)=>{
+    const productColor = await productColorFinder(belt.seedId)
+    return [
+      {...belt, availableStock: randomStock(), size: 'Small', productColorId: productColor.id},
+      {...belt, availableStock: randomStock(), size: 'Large', productColorId: productColor.id},
+    ]
+  }))).flat();
+  await ProductSKU.bulkCreate(beltSKUs).then(console.log(`**** ${beltSKUs.length} Belt SKUs Seeded****`));
 
   const accessories = (await Promise.all(accessoriesProduct.map(async(accessory)=>{
-    const foundCategory = await categoryFinder('Accessories');
+    const foundCategory = await categoryFinder('accessories');
     return {...accessory, categoryId: foundCategory.id};
   })));
   await Product.bulkCreate(accessories).then(console.log(`**** ${accessories.length} Accessories Seeded****`));
@@ -330,16 +384,11 @@ async function seed() {
     return {...accessory, productId: product.id}
   })))
   await ProductColor.bulkCreate(accessoriesColors).then(console.log(`**** ${accessoriesColors.length} Accessory Colors Seeded ****`))
-  const accessoriesSKUs = (await Promise.all(accessoryData.flatMap(async(accessory)=>{
-    const productColor = await productColorFinder(accessory.color);
-    return [
-      {...accessory, availableStock: randomStock(), size: 'XS', productColorId: productColor.id},
-      {...accessory, availableStock: randomStock(), size: 'Small', productColorId: productColor.id},
-      {...accessory, availableStock: randomStock(), size: 'Medium', productColorId: productColor.id},
-      {...accessory, availableStock: randomStock(), size: 'Large', productColorId: productColor.id},
-      {...accessory, availableStock: randomStock(), size: 'XL', productColorId: productColor.id},
-    ]    
-  }))).flat();
+
+  const accessoriesSKUs = (await Promise.all(accessorySKUData.map(async(accessory)=>{
+    const productColor = await productColorFinder(accessory.seedId);
+    return {...accessory, availableStock: randomStock(), size: 'One-Size-Fits-All', productColorId: productColor.id}   
+  })));
   await ProductSKU.bulkCreate(accessoriesSKUs).then(console.log(`**** ${accessoriesSKUs.length} Accessory SKUs Seeded****`));
 
   console.log(`seeded successfully`);
