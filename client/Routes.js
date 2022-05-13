@@ -63,11 +63,11 @@ class Routes extends Component {
             <Route path="/account" component={Account} />
             <Route path="/addresses" component={Addresses} />
             <Route path="/cart" component={Cart} />
-            <Route path='/shop/:category' component={Products} />
             <Route
-              path="/:categoryName/:productName"
+              path="/shop/:category/:productName"
               component={SingleProduct}
             />
+            <Route path='/shop/:category' component={Products} />
             <Route
               path="/checkout"
               render={(routeProps) => <Checkout routeProps={routeProps} />}
