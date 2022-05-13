@@ -22,6 +22,9 @@ const ProductColor = db.define('productColor', {
       notEmpty: true,
       isUrl: true
     }
+  },
+  seedId: {
+    type: Sequelize.INTEGER
   }
 });
 
