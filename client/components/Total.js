@@ -9,13 +9,15 @@ const Total = props => {
 
     // variables
     const subtotal = lineItems.length > 0 ? (lineItems.map(line_item => +line_item.total).reduce((a, b) => a + b)).toFixed(2) : 0;
+
     const shipping = deliveryMethod === 'express' ?
         (25).toFixed(2)
-        : deliveryMethod === 'oneday' ?
+        : deliveryMethod === 'one day' ?
         (35).toFixed(2)
         : (10).toFixed(2);
+
     const tax = (0).toFixed(2);
-    // const total = subtotal >= 50 ? ((+subtotal) + (+tax)).toFixed(2) : ((+subtotal) + (+shipping) + (+tax)).toFixed(2);
+
     let total;
     if (shippingMethod === 'delivery') {
         if (subtotal >= 50) {
@@ -73,7 +75,7 @@ const Total = props => {
                 <div style={{ fontSize: '1.3rem' }}>Estimated total <span style={{ float: 'right' }}>${total}</span></div>
                 {
                     onSubmit ?
-                        <Button color='black' style={{ width: '100%', padding: '10px', fontSize: '1rem' }} variant="contained" onClick={onSubmit}>
+                        <Button color='black' style={{ width: '100%', padding: '10px', fontSize: '1rem' }} variant="contained" onClick={(e)=> onSubmit(e, total)}>
                             Review Order
                         </Button>
                         : <Component />

@@ -11,7 +11,7 @@ const AddressForm = props => {
             <div>
                 <form id='shippingAddressForm' name='shippingAddress'>
                     <TextField onChange={onAddressChange} value={addressformValue.addressLine1} required id="outlined-basic" label="Address" variant="outlined" name="addressLine1" type="text" style={{ width: '80%' }} /><br />
-                    <TextField onChange={onAddressChange} value={addressformValue.addressLine2} required id="outlined-password-input" label="Apt, suite, company, c/o (optional)" variant="outlined" name="addressLine2" type="text" style={{ width: '80%' }} /><br />
+                    <TextField onChange={onAddressChange} value={addressformValue.addressLine2} id="outlined-password-input" label="Apt, suite, company, c/o (optional)" variant="outlined" name="addressLine2" type="text" style={{ width: '80%' }} /><br />
                     <TextField onChange={onAddressChange} value={addressformValue.city} required id="outlined-password-input" label="City" variant="outlined" name="city" type="text" style={{ width: '80%' }} /><br />
                     <Autocomplete
                         disablePortal
