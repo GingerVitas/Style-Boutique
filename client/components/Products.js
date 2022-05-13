@@ -1,12 +1,18 @@
 import React from "react";
 import { connect } from "react-redux";
 import ProductCard from "./ProductCard";
-import {Grid, Container} from '@mui/material';
+import {Grid, Container, Stack, CircularProgress } from '@mui/material';
 
 const Products = (props) => {
   const { products, categories, adminView } = props;
   console.log('************Categories*********', categories)
-  if(!categories.length) return <h1>Loading...</h1>
+  if(!categories.length) {
+    return( 
+      <div style={{marginLeft: '3rem'}}>
+        <h1>Loading...</h1>
+      </div>
+    )
+  }
   return (
     // <Container style={{width:'90%', textAlign:'center', border:'red 1px solid', margin:'0 0'}}>
     //style={{gridTemplateColumns: "repeat(4, 1fr)"}}

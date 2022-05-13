@@ -3,16 +3,12 @@ import { connect } from "react-redux";
 import {Button} from '@mui/material'
 import Products from "../Products";
 
-/**
- * COMPONENT
- */
 const Home = (props) => {
   const { firstName, isAdmin } = props;
   const [adminView, setAdminView] = useState(false)
 
   if(!isAdmin) return (
     <div>
-      <h3 style={{marginLeft: '40px'}}>Welcome, {firstName ? firstName : "Guest"}</h3>
       <Products adminView={adminView}/>
     </div>
   );
@@ -25,9 +21,6 @@ const Home = (props) => {
   )
 };
 
-/**
- * CONTAINER
- */
 const mapState = (state) => {
   return {
     firstName: state.auth.firstName,
