@@ -51,9 +51,9 @@ class LineItem extends React.Component {
                         Size: {item.productSize}<br />
                         Color: {item.productColor}<br />
                         Price: ${item.productPrice}<br />
-                        SKU number: {item.productSKUId}<br />
+                        {/* SKU number: {item.productSKUId}<br />
                         Line Item Id: {item.id}<br />
-                        Order Id: {item.orderId}<br />
+                        Order Id: {item.orderId}<br /> */}
                         {
                             routeProps.match.path === '/cart' ?
                                 <div>
