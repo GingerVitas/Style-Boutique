@@ -13,12 +13,12 @@ import AdminOrdersTable from "../Admin/AdminOrdersTable";
 
 const AdminDashboard = () => {
   const dispatch = useDispatch();
-  const auth = useSelector(state=>state.auth)
-  const adminUsers = useSelector(state=>state.adminUsers)
-  const adminInventory = useSelector(state=>state.adminProducts)
-  const adminOrders = useSelector(state=>state.adminOrders)
-  const [display, setDisplay] = useState('')
-  const [render, setRender] = useState(false)
+  const auth = useSelector((state) => state.auth);
+  const adminUsers = useSelector((state) => state.adminUsers);
+  const adminInventory = useSelector((state) => state.adminProducts);
+  const adminOrders = useSelector((state) => state.adminOrders);
+  const [display, setDisplay] = useState("");
+  const [render, setRender] = useState(false);
   const buttonBoxStyle = {
     width: "90vw",
     height: "80vh",
@@ -32,23 +32,25 @@ const AdminDashboard = () => {
   };
 
   useEffect(() => {
-    dispatch(loadAdminUsers());
-    dispatch(loadAdminProducts());
-    dispatch(loadAdminOrders());
+    setTimeout( ()=> {
+      dispatch(loadAdminUsers());
+      dispatch(loadAdminProducts());
+      dispatch(loadAdminOrders());
+    }, 500)
   }, []);
 
   useEffect(() => {
     dispatch(loadAdminUsers());
   }, [adminOrders]);
 
-  useEffect(()=>{
-    if(render){
-      console.log('Admin Dashboard Render');
+  useEffect(() => {
+    if (render) {
+      console.log("Admin Dashboard Render");
       dispatch(loadAdminProducts());
-      setRender(false)
+      setRender(false);
     }
-  }, [render])
-
+  }, [render]);
+  
   if(auth.isAdmin) return (
     <div>
     <h1 style={{textAlign:'center'}}>Welcome Administrator {auth.lastName}</h1>

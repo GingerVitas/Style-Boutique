@@ -5,7 +5,7 @@ import CloseOutlinedIcon from '@mui/icons-material/CloseOutlined';
 import NewColorSKUCard from './NewColorSKUCard';
 import {adminAddColor} from '../../store/admin';
 
-const AddColorModal = props => {
+const NewColorCard = props => {
   const {color, colorArray, setColorArray, index} = props;
   const dispatch = useDispatch();
   const [localColor, setLocalColor] = useState(color);
@@ -31,11 +31,26 @@ const AddColorModal = props => {
     newColorArray[index].skuArray[skuCount] = newSKU
     setColorArray(newColorArray);
     setSKUCount(skuCount+1)
+    console.log('Local Color', localColor)
+  };
+
+  const removeSKU = evt => {
+    evt.preventDefault();
+    if(skuCount > 1){
+      const newColorArray = [...colorArray];
+      localColor.skuArray = localColor.skuArray.slice(0, -1);
+      newColorArray[index].skuArray = localColor.skuArray
+      setColorArray(newColorArray)
+      setSKUCount(skuCount-1)
+    }
+    else {
+      alert('You must define at least one SKU')
+    }
   };
 
   const handleSave = evt => {
     evt.preventDefault();
-    
+
     colorArray[index] = {...localColor};
     setColorArray(colorArray)
   }
@@ -49,19 +64,17 @@ const AddColorModal = props => {
 
   return(
     <Card sx={{marginBottom:'.5rem'}}>
-      <IconButton sx={{position:'fixed', top:0, right:0}} onClick={()=>setOpen(false)} >
-        <CloseOutlinedIcon />
-      </IconButton>
       <Typography sx={{marginTop:'1rem'}} variant='h5'>Add new color variant</Typography>
       <FormControl sx={{width:'80%'}} onChange={handleChange}>
         <TextField inputProps={{style:{textAlign:'center'}}} label='Color' name='color' value={localColor.color}>{localColor.color}</TextField>
         <TextField inputProps={{style:{textAlign:'center'}}} label='Image URL' name='imageUrl' value={localColor.imageUrl}>{localColor.imageUrl}</TextField>
       </FormControl>
-      <Box sx={{display:'flex', alignItems:'center', justifyContent:'center'}}>
+      <Box sx={{display:'flex', alignItems:'center', justifyContent:'center', margin:'.5rem'}}>
         {localColor.skuArray.map((sku, index) => {
           return <NewColorSKUCard key={index} sku={sku} index={index} setSKUs={setColorArray} colorArray={newColorArray} colorIndex={colorIndex}/>
         })}
         <Button onClick={(evt)=>addSKU(evt)} variant='outlined'>Add another SKU</Button>
+        <Button onClick={(evt)=>removeSKU(evt)} variant='outlined'>Remove SKU</Button>
       </Box>
       <Button sx={{margin:'1rem', }} onClick={(evt)=>handleSave(evt)} variant='outlined'>Save Color Variant</Button>
     </Card>
@@ -74,4 +87,4 @@ const AddColorModal = props => {
 
 }
 
-export default AddColorModal
+export default NewColorCard

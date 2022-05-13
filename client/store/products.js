@@ -10,10 +10,10 @@ const _loadProducts = products => ({ type: LOAD_PRODUCTS, products });
 
 
 // THUNK CREATORS
-export const loadProducts = () => async dispatch => {
+export const loadProducts = (category, query) => async dispatch => {
     try {
-        const { data } = await axios.get('/api/products');
-        dispatch(_loadProducts(data));
+        const products = (await axios.get(`/api/products/shop/${category}${query}`)).data;
+        dispatch(_loadProducts(products.content));
     } catch (err) {
         console.log(err)
     }
