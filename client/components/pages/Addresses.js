@@ -3,12 +3,20 @@ import { useSelector, useDispatch } from "react-redux";
 import { connect } from "react-redux";
 import { Link } from "react-router-dom";
 import {
-  Card,
-  CardHeader,
   Box,
   Button,
-  CardContent,
+  Paper,
+  IconButton,
   Typography,
+  FormControl,
+  FormGroup,
+  MenuItem,
+  Select,
+  TextField,
+  Modal,
+  Card,
+  CardHeader,
+  CardContent,
   Accordion,
   AccordionSummary,
   AccordionDetails,
@@ -18,15 +26,12 @@ import {
   TableRow,
   TableCell,
   TableBody,
-  FormControl,
   InputLabel,
-  Select,
-  MenuItem,
   FormControlLabel,
-  Switch,
+  Switch
 } from "@mui/material";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
-//import thunks: import addAddress from
+import { addAddress, deleteAddress } from "/client/store/address";
 
 const Addresses = (props) => {
   const dispatch = useDispatch();
@@ -45,14 +50,13 @@ const Addresses = (props) => {
     height: "auto",
     maxHeight: "80vh",
     width: "auto",
-    overflow: "scroll",
+    overflow: "scroll"
   };
-
-  // call thunks in handleSubmit()
 
   const handleSubmit = (evt) => {
     evt.preventDefault();
-    dispatch(addAddress);
+    //dispatch(addAddress);
+    //dispatch(deleteAddress);
   };
 
   const [address, setAddress] = useState({
@@ -62,26 +66,57 @@ const Addresses = (props) => {
     city: "",
     state: "",
     zip: 12345,
-    country: "USA",
+    country: "USA"
   });
-
-  //value = {address.addressLine1}
 
   //pass in address to thunk, no this or binding
 
-  // useEffect to load all addresses
+  // Loads all addresses:
   // useEffect(() => {
-  //   dispatch(());
+  //   dispatch(address);
   // }, []);
+
+  // For Edit Button
+  const handleEdit = (event) => {};
+
+  // For Remove/Delete Button
+  const handleDelete = (event) => {
+    destroy(address.id);
+  };
 
   return (
     <div>
       <h4>Shipping Addresses</h4>
+
       <div>
         <ul>
-          All addresses will be listed here.
-          <button>Edit</button>
-          <button>Remove</button>
+          {auth.addresses.map((address) => {
+            return `
+            <li>${address.addressLine1}</li>
+            <li>${address.addressLine2} </li>
+            <li>${address.city} </li>
+            <li>${address.state} </li>
+            <li>${address.zip}</li>
+            <li>${address.country}</li>`;
+          })}
+          <Button
+            color="black"
+            variant="contained"
+            onClick={() => {
+              handleEdit();
+            }}
+          >
+            Edit
+          </Button>
+          <Button
+            color="black"
+            variant="contained"
+            onClick={() => {
+              handleDelete();
+            }}
+          >
+            Remove
+          </Button>
         </ul>
       </div>
 
@@ -90,8 +125,7 @@ const Addresses = (props) => {
         <div>
           <form className="addAddressForm">
             <label className="addressLabel">
-              First Name
-              <input name="firstName" type="text" />
+              First Name <input name="firstName" type="text" />
             </label>
             <label className="addressLabel">
               Last Name
@@ -118,16 +152,17 @@ const Addresses = (props) => {
               <input name="state" type="text" />
             </label>
             <label className="addressLabel">
-              Country
-              <input name="country" type="text" />
+              Country <input name="country" type="text" />
             </label>
-            <button className="checkbox" onClick={() => {}}>
-              Make this my default shipping address.
-            </button>
+            <label>
+              <input type="checkbox" /> Make this my default shipping address.
+            </label>
+
             <button className="save" onClick={() => {}}>
               SAVE
             </button>
           </form>
+
           <div id="cancelLink">
             <Link to="/addresses">Cancel</Link>
           </div>
