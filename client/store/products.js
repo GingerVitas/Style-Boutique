@@ -13,7 +13,7 @@ const _loadProducts = products => ({ type: LOAD_PRODUCTS, products });
 export const loadProducts = (category, query) => async dispatch => {
     try {
         const products = (await axios.get(`/api/products/shop/${category}${query}`)).data;
-        dispatch(_loadProducts(products.content));
+        dispatch(_loadProducts(products));
     } catch (err) {
         console.log(err)
     }
@@ -21,7 +21,7 @@ export const loadProducts = (category, query) => async dispatch => {
 
 
 
-export default (state = [], action) => {
+export default (state = {}, action) => {
     switch(action.type) {
         case LOAD_PRODUCTS:
             return action.products;
