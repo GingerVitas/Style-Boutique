@@ -37,9 +37,8 @@ router.get('/shop/:category', async(req, res, next) => {
 
         const pageAsNumber = Number.parseInt(req.query.page);
         const sizeAsNumber = Number.parseInt(req.query.size);
-        console.log('***********************************************',req.query)
 
-        let page = 0;
+        let page = 1;
         if(!Number.isNaN(pageAsNumber) && pageAsNumber > 0){
             page = pageAsNumber
         };
@@ -54,7 +53,7 @@ router.get('/shop/:category', async(req, res, next) => {
                 categoryId: category.id
             },
             limit: size,
-            offset: page*size
+            offset: (page-1)*size
         });
 
         if(page*size > products.count) {
