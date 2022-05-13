@@ -3,6 +3,7 @@ import {Box, Button, Modal, Card, Typography, Table, TableBody, TableCell, Table
 import AdminTableToolbar from './AdminTableToolbar';
 import AdminInventoryTableHeader from './AdminInventoryTableHeader';
 import InventoryModal from './InventoryModal';
+import AddNewProductModal from './AddNewProductModal';
 
 function descendingComparator(a, b, orderBy) {
   if (b[orderBy] < a[orderBy]) {
@@ -30,6 +31,9 @@ export default function AdminInventoryTable(props) {
   const [rowsPerPage, setRowsPerPage] = useState(5);
   const [open, setOpen] = useState(false);
   const [selectedProduct, setSelectedProduct] = useState({});
+  const [newItemModal, setNewItemModal] = useState(false);
+
+  const handleNewItemClose = () => setNewItemModal(false);
   const handleClose = () => setOpen(false);
   const handleModal = (product) => {
     setSelectedProduct(product)  
@@ -38,7 +42,7 @@ export default function AdminInventoryTable(props) {
 
   useEffect(()=>{
     console.log('re-render', inventory)
-  }, [inventory])
+  }, [inventory]);
 
 
   const style = {
@@ -98,9 +102,6 @@ export default function AdminInventoryTable(props) {
     setPage(0);
   };
 
-  const handleChangeDense = (event) => {
-    setDense(event.target.checked);
-  };
 
   const isSelected = (product) => selected.indexOf(product) !== -1;
 
@@ -190,10 +191,7 @@ export default function AdminInventoryTable(props) {
           onRowsPerPageChange={handleChangeRowsPerPage}
         />
       </Paper>
-      <FormControlLabel
-        control={<Switch checked={dense} onChange={handleChangeDense} />}
-        label="Condensed View"
-      />
+      <Button onClick={()=>setNewItemModal(true)}>Add New Product</Button>
       <Modal
         open={open}
         onClose={handleClose}
@@ -201,6 +199,12 @@ export default function AdminInventoryTable(props) {
           <div>
            <InventoryModal product={selectedProduct} setParent={setOpen} setRender={setRender}/>
           </div>
+      </Modal>
+      <Modal
+        open={newItemModal}
+        onClose={handleNewItemClose}
+      >
+        <div><AddNewProductModal setParent={setNewItemModal}/></div>
       </Modal>
     </Box>
   );
