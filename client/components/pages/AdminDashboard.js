@@ -61,7 +61,6 @@ const AdminDashboard = () => {
         : display === 'inventory' ? <AdminInventoryTable inventory={adminInventory} display={display} setRender={setRender}/> 
         : display === 'orders' ? <AdminOrdersTable orders={adminOrders} display={display} /> : ''} 
       </Box>
-      
     </Box>
   </div>
   )
@@ -71,6 +70,7 @@ return (
       believe you are receiving this message in error, please contact a system
       administrator.
     </h1>
+  )
 };
 
 export default AdminDashboard;

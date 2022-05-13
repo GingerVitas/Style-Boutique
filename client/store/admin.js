@@ -24,37 +24,28 @@ const _loadOrders = orders => ({type: LOAD_ORDERS, orders});
 const _deleteOrder = order => ({type: DELETE_ORDER, order});
 const _updateOrder = order => ({type: UPDATE_ORDER, order});
 
+const auth = { headers: {authorization: window.localStorage.getItem('token')}}
+
+
 // User Thunks
 
 export const loadAdminUsers = () => {
   return async(dispatch) => {
-    const users = (await axios.get(`/api/admin/users/`, {
-      headers: {
-        authorization: window.localStorage.getItem('token')
-      }
-    })).data;
+    const users = (await axios.get(`/api/admin/users/`, auth)).data;
     dispatch(_loadUsers(users))
   }
 };
 
 export const deleteUser = (user) => {
   return async(dispatch) => {
-    await axios.delete(`/api/admin/users/${user.id}`, {
-      headers: {
-        authorization: window.localStorage.getItem('token')
-      }
-    });
+    await axios.delete(`/api/admin/users/${user.id}`, auth);
     dispatch(_deleteUser(user))
   }
 };
 
 export const adminUpdateUser = user => {
   return async(dispatch) => {
-   const updatedUser = (await axios.put(`/api/admin/users/${user.id}`,  user, {
-    headers: {
-      authorization: window.localStorage.getItem('token')
-    }
-  })).data;
+   const updatedUser = (await axios.put(`/api/admin/users/${user.id}`,  user, auth)).data;
    dispatch(_updateUser(updatedUser))
   }
 }
@@ -62,93 +53,62 @@ export const adminUpdateUser = user => {
 //Product Thunks
 export const loadAdminProducts = () => {
   return async(dispatch) => {
-    const products = (await axios.get(`/api/admin/products/`, {
-      headers: {
-        authorization: window.localStorage.getItem('token')
-      }
-    })).data;
+    const products = (await axios.get(`/api/admin/products/`, auth)).data;
     dispatch(_loadProducts(products))
   }
 };
 
 export const adminAddProduct = (product, colorArray) => {
   return async(dispatch) => {
-    const newProduct = (await axios.post('/api/admin/product', product, {
-      headers: {
-        authorization: window.localStorage.getItem('token')
-      }
-    })).data;
-    console.log('****New Product*****', newProduct)
+    const newProduct = (await axios.post('/api/admin/product', product, auth)).data;
+
     const assignProductToColors = colorArray.map(color => {
       return {...color, productId: newProduct.id}
     });
-    console.log('******Colors with ProductID*******', assignProductToColors)
+
     const onlyColorArray = assignProductToColors.map(color => {
       const {productSKUs, ...newColor} = color;
       return {...newColor}
     });
-    console.log('******Colors with ProductID and no skus*******', onlyColorArray)
+
     const onlySKUArray = colorArray.map(color => {
       const {skuArray, ...justColors} = color;
       return skuArray
     });
-    console.log('******SKU Array*******', onlySKUArray)
+
     const colorsWithId = (await  Promise.all(onlyColorArray.map(async(color)=>{
-      return (await axios.post('/api/admin/color', color, {
-        headers: {
-          authorization: window.localStorage.getItem('token')
-        }
-      })).data
+      return (await axios.post('/api/admin/color', color, auth)).data
     }))).flat();
-    console.log('*********** IN ADMIN ADD PRODUCT ********', colorsWithId)
+
     const colorsWithIdAndSKUs = colorsWithId.map((color, index) => {
       return {...color, productSKUs: onlySKUArray[index]}
     });
-    console.log('******Colors with ID AND SKUS*******', colorsWithIdAndSKUs)
+
     const assignColorToSKUs = colorsWithIdAndSKUs.map(color => {
       return color.productSKUs.map(sku => {
         return {...sku, productColorId: color.id}
       })
     }).flat(2);
-    console.log('******SKUS with ColorID*******', assignColorToSKUs)
-    assignColorToSKUs.forEach(async(sku) => await axios.post('/api/admin/sku', sku, {
-      headers: {
-        authorization: window.localStorage.getItem('token')
-      }
-    }));
-    const finalProduct = (await axios.get(`/api/admin/products/${newProduct.id}`, {
-      headers: {
-        authorization: window.localStorage.getItem('token')
-      }
-    })).data;
-    console.log('******Final Product*******', finalProduct)
+
+    assignColorToSKUs.forEach(async(sku) => await axios.post('/api/admin/sku', sku, auth));
+    
+    const finalProduct = (await axios.get(`/api/admin/products/${newProduct.id}`, auth)).data;
+
     dispatch(_addProduct(finalProduct))
   }
 }
 
 export const adminAddColor = (color, skuArray) => {
   return async(dispatch) => {
-    const productColor = (await axios.post(`/api/admin/color`, color, {
-      headers: {
-        authorization: window.localStorage.getItem('token')
-      }
-    })).data;
+    const productColor = (await axios.post(`/api/admin/color`, color, auth)).data;
     const newSKUArray = skuArray.map(sku => {
       return {
         ...sku,
         productColorId: productColor.id
       }
     })
-    newSKUArray.forEach(async(sku) => await axios.post('/api/admin/sku', sku, {
-      headers: {
-        authorization: window.localStorage.getItem('token')
-      }
-    }));
-    const products = (await axios.get(`/api/admin/products/`, {
-      headers: {
-        authorization: window.localStorage.getItem('token')
-      }
-    })).data;
+    newSKUArray.forEach(async(sku) => await axios.post('/api/admin/sku', sku, auth));
+    const products = (await axios.get(`/api/admin/products/`, auth)).data;
     dispatch(_loadProducts(products))
   }
 }
@@ -162,26 +122,14 @@ export const deleteProduct = (product) => async dispatch => {
     }))).flat()
     
     skus.forEach(async(sku) => {
-      await axios.delete(`/api/admin/productSKU/${sku.id}`, {
-        headers: {
-          authorization: window.localStorage.getItem('token')
-        }
-      })
+      await axios.delete(`/api/admin/productSKU/${sku.id}`, auth)
     });
 
     colors.forEach(async(color)=> {
-      await axios.delete(`/api/admin/productColor/${color.id}`, {
-        headers: {
-          authorization: window.localStorage.getItem('token')
-        }
-      });
+      await axios.delete(`/api/admin/productColor/${color.id}`, auth);
     });
 
-    await axios.delete(`/api/admin/products/${product.id}`, {
-      headers: {
-        authorization: window.localStorage.getItem('token')
-      }
-    });
+    await axios.delete(`/api/admin/products/${product.id}`, auth);
     dispatch(_deleteProduct(product));
   }
   catch(err) {
@@ -191,27 +139,15 @@ export const deleteProduct = (product) => async dispatch => {
 
 export const adminUpdateProduct = (product) => {
   return async(dispatch) => {
-    const updatedProduct = (await axios.put(`/api/admin/products/${product.id}`, product, {
-      headers: {
-        authorization: window.localStorage.getItem('token')
-      }
-    })).data;
+    const updatedProduct = (await axios.put(`/api/admin/products/${product.id}`, product, auth)).data;
     dispatch(_updateProduct(updatedProduct))
   }
 };
 
 export const adminUpdateSKU = (sku, product) => {
   return async(dispatch) => {
-    await axios.put(`/api/admin/sku/${sku.id}`, sku, {
-      headers: {
-        authorization: window.localStorage.getItem('token')
-      }
-    });
-    const updatedProduct = (await axios.get(`/api/admin/products/${product.id}`, {
-      headers: {
-        authorization: window.localStorage.getItem('token')
-      }
-    })).data
+    await axios.put(`/api/admin/sku/${sku.id}`, sku, auth);
+    const updatedProduct = (await axios.get(`/api/admin/products/${product.id}`, auth)).data
     dispatch(_updateProduct(updatedProduct))
   }
 }
@@ -220,87 +156,46 @@ export const adminUpdateSKU = (sku, product) => {
 //Order Thunks
 export const loadAdminOrders = () => {
   return async(dispatch) => {
-    const orders = (await axios.get(`/api/admin/orders/`, {
-      headers: {
-        authorization: window.localStorage.getItem('token')
-      }
-    })).data;
+    const orders = (await axios.get(`/api/admin/orders/`, auth)).data;
     dispatch(_loadOrders(orders))
   }
 };
 
 export const deleteOrder = order => {
   return async(dispatch) => {
-    await axios.delete(`/api/admin/orders/${order.id}`, {
-      headers: {
-        authorization: window.localStorage.getItem('token')
-      }
-    });
+    await axios.delete(`/api/admin/orders/${order.id}`, auth);
     dispatch(_deleteOrder(order));
-    // loadAdminUsers();
   }
 };
 
 export const updateAdminOrder = (order) => {
   return async(dispatch) => {
-    const updatedOrder = (await axios.put(`/api/admin/orders/${order.id}`, order, {
-      headers: {
-        authorization: window.localStorage.getItem('token')
-      }
-    }));
+    const updatedOrder = (await axios.put(`/api/admin/orders/${order.id}`, order, auth));
     dispatch(_updateOrder(updatedOrder));
-    // loadAdminUsers();
   }
 };
 
 export const deleteLineItem = (lineItem, order) => {
   return async(dispatch) => {
-    await axios.delete(`/api/admin/orders/lineItems/delete/${lineItem.id}`, {
-      headers: {
-        authorization: window.localStorage.getItem('token')
-      }
-    });
-    const updatedOrder = (await axios.get(`/api/admin/orders/${order.id}`, {
-      headers: {
-        authorization: window.localStorage.getItem('token')
-      }
-    })).data;
+    await axios.delete(`/api/admin/orders/lineItems/delete/${lineItem.id}`, auth);
+    const updatedOrder = (await axios.get(`/api/admin/orders/${order.id}`, auth)).data;
     dispatch(_updateOrder(updatedOrder))
-    // loadAdminUsers();
   }
 };
 
 export const adminUpdateLineItem = (lineItem, order) => {
   return async(dispatch) => {
-    await axios.put(`/api/admin/orders/lineItems/update/${lineItem.id}`, lineItem, {
-      headers: {
-        authorization: window.localStorage.getItem('token')
-      }
-    });
-    const updatedOrder = (await axios.get(`/api/admin/orders/${order.id}`, {
-      headers: {
-        authorization: window.localStorage.getItem('token')
-      }
-    })).data;
+    await axios.put(`/api/admin/orders/lineItems/update/${lineItem.id}`, lineItem, auth);
+    const updatedOrder = (await axios.get(`/api/admin/orders/${order.id}`, auth)).data;
     dispatch(_updateOrder(updatedOrder))
-    // loadAdminUsers();
   }
 };
 
 export const adminAddLineItem = (lineItem, order) => {
   return async(dispatch) => {
-    await axios.post(`/api/admin/orders/lineItem`, lineItem, {
-      headers: {
-        authorization: window.localStorage.getItem('token')
-      }
-    })
-    const updatedOrder = (await axios.get(`/api/admin/orders/${order.id}`, {
-      headers: {
-        authorization: window.localStorage.getItem('token')
-      }
-    })).data;
+    await axios.post(`/api/admin/orders/lineItem`, lineItem, auth)
+    const updatedOrder = (await axios.get(`/api/admin/orders/${order.id}`, auth)).data;
     dispatch(_updateOrder(updatedOrder));
-    // loadAdminUsers();
   }
 }
 
