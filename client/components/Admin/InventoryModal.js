@@ -6,7 +6,7 @@ import {adminUpdateProduct, adminUpdateSKU, deleteProduct} from '../../store/adm
 import AddColorModal from './AddColorModal';
 
 const InventoryModal = props => {
-  const {product, setParent, setRender} = props
+  const {product, setParent} = props
   const dispatch = useDispatch();
   const [state, setState] = useState({
     selectedProduct: product,

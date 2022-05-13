@@ -30,6 +30,9 @@ const ProductSKU = db.define("productSKU", {
       min: 0.01,
     },
   },
+  seedId: {
+    type: Sequelize.INTEGER
+  }
 });
 
 module.exports = ProductSKU;
