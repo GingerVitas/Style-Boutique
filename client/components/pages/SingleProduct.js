@@ -31,7 +31,7 @@ const singleProduct = () => {
   const {productName} = useParams();
 
   // redux- state: useSelector
-  const product = useSelector(state => (state.products.find(product => product.name === productName)));
+  const product = useSelector(state => (state.products.content.find(product => product.name === productName)));
   const colors = useSelector(state=>state.productColors);
   const skus = useSelector(state => state.skus);
   const order = useSelector(state => state.order);

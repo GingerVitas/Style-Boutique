@@ -4,7 +4,7 @@ import axios from 'axios';
 const LOAD_USERS = 'LOAD_USERS';
 const DELETE_USER = 'DELETE_USER';
 const UPDATE_USER = 'UPDATE_USER';
-const LOAD_PRODUCTS = 'LOAD_PRODUCTS';
+const LOAD_ADMIN_PRODUCTS = 'LOAD_ADMIN_PRODUCTS';
 const ADD_PRODUCT = 'ADD_PRODUCT'
 const DELETE_PRODUCT = 'DELETE_PRODUCT';
 const UPDATE_PRODUCT = 'UPDATE_PRODUCT';
@@ -16,7 +16,7 @@ const UPDATE_ORDER = 'UPDATE_ORDER';
 const _loadUsers = users => ({type: LOAD_USERS, users});
 const _deleteUser = user => ({type: DELETE_USER, user});
 const _updateUser = user => ({type: UPDATE_USER, user})
-const _loadProducts = products => ({type: LOAD_PRODUCTS, products});
+const _loadAdminProducts = products => ({type: LOAD_ADMIN_PRODUCTS, products});
 const _addProduct = product => ({type: ADD_PRODUCT, product})
 const _deleteProduct = product => ({type: DELETE_PRODUCT, product});
 const _updateProduct = product => ({type: UPDATE_PRODUCT, product});
@@ -54,7 +54,7 @@ export const adminUpdateUser = user => {
 export const loadAdminProducts = () => {
   return async(dispatch) => {
     const products = (await axios.get(`/api/admin/products/`, auth)).data;
-    dispatch(_loadProducts(products))
+    dispatch(_loadAdminProducts(products))
   }
 };
 
@@ -216,7 +216,7 @@ export const adminUsers = (state = [], action) => {
 
 export const adminProducts = (state = [], action) => {
   switch (action.type) {
-    case LOAD_PRODUCTS:
+    case LOAD_ADMIN_PRODUCTS:
       return action.products;
     case DELETE_PRODUCT:
       return [...state.filter(product => product.id !== action.product.id)]
