@@ -19,7 +19,7 @@ const CartList = props => {
                     <hr />
                     <LineItems lineItems={cartlist} routeProps={routeProps} />
                     <div style={{ float: 'right', width: '50%' }}>
-                        <Total lineItems={cartlist} />
+                        <Total lineItems={cartlist} routeProps={routeProps} />
                     </div>
                 </div>
                 :

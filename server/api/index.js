@@ -10,6 +10,7 @@ router.use('/skus', require('./skus'));
 router.use('/categories', require('./categories'));
 router.use('/colors', require('./productColors'));
 router.use('/admin', require('./admin'));
+router.use('/checkout', require('./checkout'));
 
 router.use((req, res, next) => {
   const error = new Error('Not Found')
