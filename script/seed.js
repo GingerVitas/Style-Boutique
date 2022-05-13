@@ -38,16 +38,16 @@ const {
 const { faker } = require("@faker-js/faker");
 
 const categories = [
-  { categoryName: "Top" },
-  { categoryName: "Skirt" },
-  { categoryName: "Dress" },
-  { categoryName: "Jeans" },
-  { categoryName: "Leggings" },
-  { categoryName: "Pants" },
-  { categoryName: "Sweater" },
-  { categoryName: "Shoes" },
-  { categoryName: "Belts" },
-  { categoryName: "Accessories" },
+  { categoryName: "top" },
+  { categoryName: "skirt" },
+  { categoryName: "dress" },
+  { categoryName: "jeans" },
+  { categoryName: "leggings" },
+  { categoryName: "pants" },
+  { categoryName: "sweater" },
+  { categoryName: "shoes" },
+  { categoryName: "belts" },
+  { categoryName: "accessories" },
 ];
 
 const productFinder = async (productName) => {
@@ -142,7 +142,7 @@ async function seed() {
 
   await Category.bulkCreate(categories).then(console.log(`**** ${categories.length} Categories Seeded****`))
   const dresses = (await Promise.all(dressProduct.map(async(dress)=> {
-    const foundCategory = await categoryFinder('Dress');
+    const foundCategory = await categoryFinder('dress');
     return {...dress, categoryId: foundCategory.id}
   })));
   await Product.bulkCreate(dresses).then(console.log(`**** ${dresses.length} Dresses Seeded****`));
@@ -166,7 +166,7 @@ async function seed() {
   await ProductSKU.bulkCreate(dressSKUs).then(console.log(`**** ${dressSKUs.length} Dress SKUs Seeded****`));
 
   const tops = (await Promise.all(topsProduct.map(async(top)=>{
-    const foundCategory = await categoryFinder('Top');
+    const foundCategory = await categoryFinder('top');
     return {...top, categoryId: foundCategory.id}
   })));
   await Product.bulkCreate(tops).then(console.log(`**** ${tops.length} Tops Seeded****`));
@@ -190,7 +190,7 @@ async function seed() {
   await ProductSKU.bulkCreate(topsSKUs).then(console.log(`**** ${topsSKUs.length} Top SKUs Seeded****`));
 
   const leggings = (await Promise.all(leggingsProduct.map(async(legging) => {
-    const foundCategory = await categoryFinder('Leggings');
+    const foundCategory = await categoryFinder('leggings');
     return {...legging, categoryId: foundCategory.id}
   })));
   await Product.bulkCreate(leggings).then(console.log(`**** ${leggings.length} Leggings Seeded`));
@@ -214,7 +214,7 @@ async function seed() {
   await ProductSKU.bulkCreate(leggingsSKUs).then(console.log(`**** ${leggingsSKUs.length} Legging SKUs Seeded****`));
 
   const jeans = (await Promise.all(jeansProduct.map(async(jean)=>{
-    const foundCategory = await categoryFinder('Jeans');
+    const foundCategory = await categoryFinder('jeans');
     return {...jean, categoryId: foundCategory.id}
   })));
   await Product.bulkCreate(jeans).then(console.log(`**** ${jeans.length} Jeans Seeded****`));
@@ -243,7 +243,7 @@ async function seed() {
   await ProductSKU.bulkCreate(jeansSKUs).then(console.log(`**** ${jeansSKUs.length} Jeans SKUs Seeded****`));
   
   const pants = (await Promise.all(pantsProduct.map(async(pants)=>{
-    const foundCategory = await categoryFinder('Pants');
+    const foundCategory = await categoryFinder('pants');
     return {...pants, categoryId: foundCategory.id};
   })));
   await Product.bulkCreate(pants).then(console.log(`**** ${pants.length} Pants Seeded ****`));
@@ -272,7 +272,7 @@ async function seed() {
   await ProductSKU.bulkCreate(pantsSKUs).then(console.log(`**** ${pantsSKUs.length} Pants SKUs Seeded****`));
 
   const sweaters = (await Promise.all(sweatersProduct.map(async(sweater)=>{
-    const foundCategory = await categoryFinder('Sweater');
+    const foundCategory = await categoryFinder('sweater');
     return {...sweater, categoryId: foundCategory.id}
   })));
   await Product.bulkCreate(sweaters).then(console.log(`**** ${sweaters.length} Sweaters Seeded****`));
@@ -296,7 +296,7 @@ async function seed() {
   await ProductSKU.bulkCreate(sweatersSKUs).then(console.log(`**** ${sweatersSKUs.length} Sweater SKUs Seeded`));
 
   const skirts = (await Promise.all(skirtProduct.map(async(skirt)=>{
-    const foundCategory = await categoryFinder('Skirt');
+    const foundCategory = await categoryFinder('skirt');
     return {...skirt, categoryId: foundCategory.id}
   })));
   await Product.bulkCreate(skirts).then(console.log(`**** ${skirts.length} Skirts Seeded****`));
@@ -320,7 +320,7 @@ async function seed() {
   await ProductSKU.bulkCreate(skirtSKUs).then(console.log(`**** ${skirtSKUs.length} Skirt SKUs seeded`));
 
   const shoes = (await Promise.all(shoeProduct.map(async(shoe)=>{
-    const foundCategory = await categoryFinder('Shoes');
+    const foundCategory = await categoryFinder('shoes');
     return {...shoe, categoryId: foundCategory.id}
   })));
   await Product.bulkCreate(shoes).then(console.log(`**** ${shoes.length} Shoes Seeded****`));
@@ -354,7 +354,7 @@ async function seed() {
   await ProductSKU.bulkCreate(shoeSKUs).then(console.log(`**** ${shoeSKUs.length} Shoe SKUs Seeded`));
 
   const belts = (await Promise.all(beltProduct.map(async(belt)=>{
-    const foundCategory = await categoryFinder('Belts');
+    const foundCategory = await categoryFinder('belts');
     return {...belt, categoryId: foundCategory.id}
   })));
   await Product.bulkCreate(belts).then(console.log(`**** ${belts.length} Belts Seeded****`));
@@ -375,7 +375,7 @@ async function seed() {
   await ProductSKU.bulkCreate(beltSKUs).then(console.log(`**** ${beltSKUs.length} Belt SKUs Seeded****`));
 
   const accessories = (await Promise.all(accessoriesProduct.map(async(accessory)=>{
-    const foundCategory = await categoryFinder('Accessories');
+    const foundCategory = await categoryFinder('accessories');
     return {...accessory, categoryId: foundCategory.id};
   })));
   await Product.bulkCreate(accessories).then(console.log(`**** ${accessories.length} Accessories Seeded****`));

@@ -24,6 +24,7 @@ import SingleProduct from "./components/pages/SingleProduct";
 import SignOut from "./components/pages/SignOut";
 import AdminDashboard from "./components/pages/AdminDashboard";
 import Unauthorized from "./components/pages/Unauthorized";
+import Products from './components/Products';
 
 class Routes extends Component {
   componentDidMount() {
@@ -62,6 +63,7 @@ class Routes extends Component {
             <Route path="/account" component={Account} />
             <Route path="/addresses" component={Addresses} />
             <Route path="/cart" component={Cart} />
+            <Route path='/shop/:category' component={Products} />
             <Route
               path="/:categoryName/:productName"
               component={SingleProduct}
@@ -101,9 +103,10 @@ class Routes extends Component {
               render={(routeProps) => <Cart routeProps={routeProps} />}
             />
             <Route
-              path="/:categoryName/:productName"
+              path="/shop/:category/:productName"
               component={SingleProduct}
             />
+            <Route path='/shop/:category' component={Products} />
             <Route
               path="/checkout"
               render={(routeProps) => <Checkout routeProps={routeProps} />}

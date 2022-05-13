@@ -10,12 +10,10 @@ import { deleteProduct } from '../store/admin'
 import { Grid, Card, CardActionArea, Button, Modal, Box, FormControl, InputLabel, Select, MenuItem, CardContent, CardMedia, Typography, Rating } from '@mui/material';
 
 const ProductCard = (props) => {
-  const { product, adminView } = props;
+  const { product, adminView, category } = props;
 
   //hooks
   const dispatch = useDispatch();
-  const category = props.categories.filter(category => category.id === product.categoryId)[0];
-  // const {productName} = useParams();
 
   // For price, since product db doesn't have price info.
   const [price, setPrice] = useState(0);
@@ -62,7 +60,7 @@ const ProductCard = (props) => {
   // if (!productName) 
 
   return (
-    <Card style={{ height: '525px', width: '100%' }}>
+    <Card style={{ height: '525px', width: '100%', marginBottom:'1rem' }}>
       {adminView ? <Button variant='outlined' sx={{ zIndex: '1', float: 'right', margin: '.75rem' }} onClick={handleOpen}>
         Delete Product
       </Button> : ''}
@@ -84,7 +82,7 @@ const ProductCard = (props) => {
           </Box>
         </Box>
       </Modal>
-      <CardActionArea component={Link} to={`/${category.categoryName}/${product.name}`} sx={{height: '100%'}}>
+      <CardActionArea component={Link} to={`/shop/${category}/${product.name}`} sx={{height: '100%'}}>
         <Grid
           container
           direction="column"
