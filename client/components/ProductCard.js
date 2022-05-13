@@ -63,7 +63,7 @@ const ProductCard = (props) => {
   return (
     //  <Link to={`/${category.categoryName}/${product.name}`}>
     // sx={{ maxWidth: '310px', margin: '.5rem' }}
-    <Card style={{ height: '525px', width: '100%' }}>
+    <Card style={{ height: '525px', maxWidth:'325px', width: '100%' }}>
       {adminView ? <Button variant='outlined' sx={{ zIndex: '1', float: 'right', margin: '.75rem' }} onClick={handleOpen}>
         Delete Product
       </Button> : ''}
@@ -98,13 +98,13 @@ const ProductCard = (props) => {
           justifyContent="center"
           alignItems="center"
         >
-          <Grid item sx={8}>
-            <div style={{ width: '100%', height: '330px' }}>
-              <img src={product.imageUrl} style={{ height: '100%' }} />
+          <Grid item xs={8}>
+            <div style={{ width: '100%', height: '330px', justifyContent:'center', display:'flex',  alignItems:'center'}}>
+              <img src={product.imageUrl} style={{ height: 'auto', maxHeight:'330px', width:'100%'}} />
             </div>
           </Grid>
-          <Grid item sx={4}>
-            <CardContent>
+          <Grid item xs={4}>
+            <CardContent sx={{textAlign:'center'}}>
               <Typography gutterBottom variant='subtitle1'>
                 {product.brand}
               </Typography>
