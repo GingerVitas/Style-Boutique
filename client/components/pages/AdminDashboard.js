@@ -32,9 +32,11 @@ const AdminDashboard = () => {
   };
 
   useEffect(() => {
-    dispatch(loadAdminUsers());
-    dispatch(loadAdminProducts());
-    dispatch(loadAdminOrders());
+    setTimeout( ()=> {
+      dispatch(loadAdminUsers());
+      dispatch(loadAdminProducts());
+      dispatch(loadAdminOrders());
+    }, 500)
   }, []);
 
   useEffect(() => {

@@ -15,7 +15,6 @@ const Home = () => {
   else return (
     <div>
       <h3 style={{marginLeft: '40px'}}>Welcome, {firstName}</h3>
-      <Button variant={adminView ? 'contained' : 'outlined'} onClick={()=>adminView ? setAdminView(false) : setAdminView(true)} className={adminView ? 'selected' : ''} sx={{padding:'.5rem', margin:'1rem'}}>Toggle Admin View</Button>
       <Products adminView={adminView}/>
     </div>
   )

@@ -57,10 +57,25 @@ router.get('/shop/:category', async(req, res, next) => {
             offset: page*size
         });
 
-        res.send({
-            content: products.rows,
-            totalPages: Math.ceil(products.count/size)
-        })
+        if(page*size > products.count) {
+            page = Math.ceil(products.count/size)
+            const resetProducts = await Product.findAndCountAll({
+                where: {
+                    categoryId: category.id
+                },
+                limit: size,
+                offset: (page-1)*size
+            });
+            res.send({
+                content: resetProducts.rows,
+                totalPages: Math.ceil(products.count/size)
+            })
+        } else {
+            res.send({
+                content: products.rows,
+                totalPages: Math.ceil(products.count/size)
+            })
+        }
     }
     catch(err){
         next(err)
