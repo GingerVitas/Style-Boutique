@@ -33,19 +33,18 @@ class LineItem extends React.Component {
     }
 
     render() {
-        const { item, routeProps, remove, save, hide, removeWish, addBackToCart, product, categories } = this.props;
+        const { item, routeProps, remove, save, hide, removeWish, addBackToCart } = this.props;
         const { quantity } = this.state;
-        const category = categories.find(category => category.id === product.categoryId);
 
         return (
             <div >
                 <Grid container direction="row" spacing={0} justifyContent="space-evenly" alignItems="center" sx={{ margin: '2rem 0' }}>
                     <Grid item xs={2} sx={{ padding: '0 1rem' }}>
-                        <Link to={`/${category.categoryName}/${product.name}`}><img src={item.imageUrl} className='lineitem_img' /></Link>
+                        <Link to={`/${item.categoryName}/${item.productName}`}><img src={item.imageUrl} className='lineitem_img' /></Link>
                     </Grid>
                     <Grid item xs={6}>
-                        {product && product.brand}<br />
-                        <Link to={`/${category.categoryName}/${product.name}`} className='line_item_link'>{item.productName}</Link>
+                        {item && item.productName}<br />
+                        <Link to={`/${item.categoryName}/${item.productName}`} className='line_item_link'>{item.productName}</Link>
                         <br />
                         <br />
                         Size: {item.productSize}<br />
@@ -99,9 +98,8 @@ class LineItem extends React.Component {
     }
 }
 
-const mapState = (state, { item, product }) => {
+const mapState = (state) => {
     return {
-        product: state.products.find(product => product.name === item.productName),
         order: state.order,
         categories: state.categories
     };

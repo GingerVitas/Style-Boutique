@@ -49,6 +49,9 @@ const LineItem = db.define("line_item", {
     type: Sequelize.INTEGER,
     defaultValue: 1,
   },
+  categoryName: {
+    type: Sequelize.STRING
+  },
   total: {
     type: Sequelize.VIRTUAL,
     get() {

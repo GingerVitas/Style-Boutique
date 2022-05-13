@@ -9,6 +9,14 @@ const AddLineItemModal = props => {
   const dispatch = useDispatch();
   const categories = useSelector(state=>state.categories)
   const products = useSelector(state=>state.adminProducts)
+  const [selectedProduct, setSelectedProduct] = useState({
+    category: {},
+    product: {},
+    productColor: {},
+    productSize: {}
+  });
+  const [filteredProducts, setFilteredProducts] = useState([]);
+  const {category, product, productColor, productSize} = selectedProduct;
   const [lineItem, setLineItem] = useState({
     productName: '',
     productColor: '',
@@ -17,20 +25,16 @@ const AddLineItemModal = props => {
     imageUrl: '',
     quantity: 1,
     orderId: order.id,
-    productSKUId: ''
+    productSKUId: '',
+    categoryName: category.id ? category.categoryName : ''
   });
-  const [selectedProduct, setSelectedProduct] = useState({
-    category: {},
-    product: {},
-    productColor: {},
-    productSize: {}
-  });
-  const {category, product, productColor, productSize} = selectedProduct;
 
 
   const handleChange = (evt) => {
     if(evt.target.name === 'category'){
       setSelectedProduct({...selectedProduct, category:evt.target.value})
+      setLineItem({...lineItem, categoryName: evt.target.value.categoryName})
+      setFilteredProducts(products.filter(product => product.categoryId === evt.target.value.id))
     } else if (evt.target.name === 'product') {
       setSelectedProduct({...selectedProduct, product:evt.target.value})
       setLineItem({...lineItem, productName: evt.target.value.name})
@@ -109,7 +113,7 @@ const AddLineItemModal = props => {
               fullWidth
             >
               {!category.id ? <MenuItem>Please select a Category</MenuItem> 
-              : products.map(product => (
+              : filteredProducts.map(product => (
                 <MenuItem key={product.id} value={product} sx={{alignItems:'center'}}><img src={product.imageUrl} style={{maxHeight:'100px', width:'auto', marginRight:'1rem', padding:'.5rem'}}/>{product.name}</MenuItem>
               ))
               }
