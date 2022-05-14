@@ -3,17 +3,16 @@ import { connect } from "react-redux";
 import { Link } from "react-router-dom";
 import { updateUser } from "../../store/auth";
 import { Box, Button, Grid, TextField, Typography } from "@mui/material";
-import Password from "../Password";
+//import Password from "../Password";
 
 class PersonalInfo extends React.Component {
   constructor(props) {
     super(props);
-
     this.state = {
-        firstName: this.props.auth ? this.props.auth.firstName : "",
-        lastName: this.props.auth ? this.props.auth.lastName : "",
-        email: this.props.auth ? this.props.auth.email : "",
-        edit: false,
+      firstName: this.props.auth ? this.props.auth.firstName : "",
+      lastName: this.props.auth ? this.props.auth.lastName : "",
+      email: this.props.auth ? this.props.auth.email : "",
+      edit: false
     };
     this.handleChange = this.handleChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
@@ -21,15 +20,15 @@ class PersonalInfo extends React.Component {
   }
 
   handleChange(ev) {
-    this.setState({[ev.target.name]:ev.target.value});
+    this.setState({ [ev.target.name]: ev.target.value });
   }
 
   handleSubmit(ev) {
-    console.log(this.state)
+    console.log(this.state);
     ev.preventDefault();
     try {
-      const {edit, ...user} = this.state
-      console.log(user)
+      const { edit, ...user } = this.state;
+      console.log(user);
       this.props.updateUser(user);
       this.setState({ edit: false });
     } catch (ex) {
@@ -45,7 +44,7 @@ class PersonalInfo extends React.Component {
   render() {
     const auth = this.props.auth;
     return (
-      <Box textAlign="center" margin-bottom="15px">
+      <Box textAlign="center" sx={{ p: 2 }}>
         <div>
           <Typography variant="h4">Personal Information</Typography>
           <div className="account-body">
@@ -91,7 +90,6 @@ class PersonalInfo extends React.Component {
                 Update Password
               </Button>
             </div>
-
           </div>
         </div>
       </Box>
