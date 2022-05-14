@@ -55,7 +55,7 @@ class PersonalInfo extends React.Component {
             <form className="contact-info">
               <Typography variant="h6">
                 First Name
-                <TextField name="firstName" type="text" size="small" variant="outlined" required id="outlined-password-input" style={{ width: "60%" }} disabled={this.state.edit ? false : true} value={this.state.user.firstName} onChange={this.handleChange} />
+                {/* <TextField name="firstName" type="text" size="small" variant="outlined" required id="outlined-password-input" style={{ width: "60%" }} disabled={this.state.edit ? false : true} value={this.state.user.firstName} onChange={this.handleChange} /> */}
               </Typography>
               <Typography variant="h6">
                 Last Name
