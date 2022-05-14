@@ -31,6 +31,21 @@ router.get('/:id', async(req, res, next)=> {
     }
 });
 
+// Janie Added 05/13/22 8:00pm For line item brand to render.
+router.get('/product/:productName', async(req,res,next)=> {
+    try {
+        const product = await Product.findOne({
+            where: {
+                name: req.params.productName
+            }
+        });
+        console.log('LN42..............', product)
+        res.send(product);
+    } catch(err) {
+        next(err)
+    }
+})
+
 router.get('/shop/:category', async(req, res, next) => {
     try{
         const category = await Category.findOne({where: {categoryName:req.params.category}});
