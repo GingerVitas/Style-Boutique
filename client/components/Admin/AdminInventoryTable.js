@@ -66,7 +66,8 @@ export default function AdminInventoryTable(props) {
 
   const handleSelectAllClick = (event) => {
     if (event.target.checked) {
-      const newSelecteds = inventory.map((product) => product);
+      const newSelecteds = inventory.slice().sort(getComparator(order, orderBy))
+      .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage);
       setSelected(newSelecteds);
       return;
     }
@@ -124,7 +125,7 @@ export default function AdminInventoryTable(props) {
               orderBy={orderBy}
               onSelectAllClick={handleSelectAllClick}
               onRequestSort={handleRequestSort}
-              rowCount={inventory.length}
+              rowCount={rowsPerPage}
             />
             <TableBody>
               {inventory.slice().sort(getComparator(order, orderBy))

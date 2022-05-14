@@ -10,7 +10,7 @@ const EmptyCart = props => {
         <div>
             <div>
                 <h4>Your bag is empty</h4>
-                <p>Sign in to see what you may have saved before, or start shopping now!</p>
+                <p> {!isLoggedIn ? 'Sign in to see what you may have saved before, or start shopping now!' : 'What are you waiting for?! Get inspired and start shopping now!'}</p>
             </div>
             {
                 !isLoggedIn ?
