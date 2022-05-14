@@ -81,7 +81,7 @@ const Home = () => {
             sx={{width: '80%', margin: '0 auto', textAlign: 'center'}}
             >
             {products.map((product) => {
-              return <Grid item xs={12} sm={6} md={4} lg={3} key={product.id}><TitleCard product={product} /></Grid>;
+              return <Grid item xs={12} sm={6} md={4} lg={3} key={product.category}><TitleCard key={product.categoryName} product={product} /></Grid>;
             })}
           </Grid>
       </Box>

@@ -151,7 +151,7 @@ const Navbar = ({ handleClick, empty_cart, clearOrder, isLoggedIn, lineItems, au
                           handleClick();
                           empty_cart();
                           clearOrder();
-                        }} to={"/home"} sx={{ "&:hover": { bgcolor: "transparent" }, marginCenter: !auth.isAdmin ? "auto" : "" }}>
+                        }} to={"/logout"} sx={{ "&:hover": { bgcolor: "transparent" }, marginCenter: !auth.isAdmin ? "auto" : "" }}>
                           <Typography sx={{ p: 1 }}>Log Out</Typography>
                         </Link>
                       </Grid>
