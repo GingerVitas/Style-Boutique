@@ -10,12 +10,10 @@ class PersonalInfo extends React.Component {
     super(props);
 
     this.state = {
-      user: {
         firstName: this.props.auth ? this.props.auth.firstName : "",
         lastName: this.props.auth ? this.props.auth.lastName : "",
-        email: this.props.auth ? this.props.auth.email : ""
-      },
-      edit: false
+        email: this.props.auth ? this.props.auth.email : "",
+        edit: false,
     };
     this.handleChange = this.handleChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
@@ -23,13 +21,16 @@ class PersonalInfo extends React.Component {
   }
 
   handleChange(ev) {
-    this.setState({ user: { [ev.target.name]: ev.target.value } });
+    this.setState({[ev.target.name]:ev.target.value});
   }
 
   handleSubmit(ev) {
+    console.log(this.state)
     ev.preventDefault();
     try {
-      this.props.updateUser({ ...this.state.user });
+      const {edit, ...user} = this.state
+      console.log(user)
+      this.props.updateUser(user);
       this.setState({ edit: false });
     } catch (ex) {
       console.log(ex);
@@ -90,6 +91,7 @@ class PersonalInfo extends React.Component {
                 Update Password
               </Button>
             </div>
+
           </div>
         </div>
       </Box>

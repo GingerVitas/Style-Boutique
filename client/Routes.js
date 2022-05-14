@@ -59,7 +59,7 @@ class Routes extends Component {
 
   render() {
     const { isLoggedIn, auth } = this.props;
-    console.log("this.props.auth: ", this.props.auth, "this.props.order: ", this.props.order);
+    console.log("this.props.auth: ", this.props.auth, "this.props.order: ", this.props.order, this.props);
     return (
       <div>
         {isLoggedIn ? (

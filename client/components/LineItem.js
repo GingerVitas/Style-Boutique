@@ -15,7 +15,8 @@ class LineItem extends React.Component {
         super(props);
         this.state = {
             quantity: this.props.item.quantity&& this.props.item.quantity ,
-            sku : {}
+            sku : {},
+            product: {}
         }
         this.handleQuantity = this.handleQuantity.bind(this);
     }
@@ -23,7 +24,10 @@ class LineItem extends React.Component {
     async componentDidMount(){
         const skus = (await axios.get(`/api/skus/${this.props.item.productName}`)).data
         const sku = skus.find(sku => sku.id === this.props.item.productSKUId);
-        this.setState({ sku })
+        this.setState({ sku });
+
+        const product = (await axios.get(`/api/products/product/${this.props.item.productName}`)).data;
+        this.setState({product});
     }
 
     handleQuantity(event) {
@@ -35,16 +39,16 @@ class LineItem extends React.Component {
     render() {
         const { item, routeProps, remove, save, hide, removeWish, addBackToCart } = this.props;
         const { quantity } = this.state;
-
+        console.log('line item brand name', this.state.product && this.state.product)
         return (
             <div >
                 <Grid container direction="row" spacing={0} justifyContent="space-evenly" alignItems="center" sx={{ margin: '2rem 0' }}>
                     <Grid item xs={2} sx={{ padding: '0 1rem' }}>
-                        <Link to={`/${item.categoryName}/${item.productName}`}><img src={item.imageUrl} className='lineitem_img' /></Link>
+                        <Link to={`/shop/${item.categoryName}/${item.productName.split(' ').join('%20')}`}><img src={item.imageUrl} className='lineitem_img' /></Link>
                     </Grid>
                     <Grid item xs={6}>
-                        {item && item.productName}<br />
-                        <Link to={`/${item.categoryName}/${item.productName}`} className='line_item_link'>{item.productName}</Link>
+                        {this.state.product && this.state.product.brand}<br />
+                        <Link to={`/shop/${item.categoryName}/${item.productName}`} className='line_item_link' sx={{ color: 'black' }}>{item.productName}</Link>
                         <br />
                         <br />
                         Size: {item.productSize}<br />

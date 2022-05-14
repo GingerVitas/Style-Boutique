@@ -54,6 +54,12 @@ p {
   margin-bottom: 10px;
 }
 /* CART: LINE ITEM COMPONENT _____________________________________________________*/
+
+.line_item_link {
+  color: black;
+  text-decoration: none;
+}
+
 .line_item_link:visited {
   text-decoration: none;
   color: #444444;

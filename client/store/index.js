@@ -11,6 +11,7 @@ import categories from "./categories";
 import productColors from "./productColors";
 import order from "./order";
 import address from "./address";
+import product from "./product";
 import { adminUsers, adminProducts, adminOrders } from "./admin";
 
 const reducer = combineReducers({
@@ -25,7 +26,8 @@ const reducer = combineReducers({
   order,
   adminUsers,
   adminProducts,
-  adminOrders
+  adminOrders,
+  product
 });
 
 const middleware = composeWithDevTools(applyMiddleware(thunkMiddleware, createLogger({ collapsed: true })));
