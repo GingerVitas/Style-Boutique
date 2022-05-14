@@ -176,7 +176,7 @@ const Addresses = (props) => {
       <div>
         <Typography variant="h4">Shipping Addresses</Typography>
         <Box sx={{ marginTop: "1rem", display: "flex", justifyContent: "center" }}>
-          {auth.addresses.length
+          {auth.addresses
             ? auth.addresses.map((address) => {
                 return (
                   <div>
