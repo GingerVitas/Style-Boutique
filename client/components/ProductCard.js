@@ -10,7 +10,7 @@ import { deleteProduct } from '../store/admin'
 import { Grid, Card, CardActionArea, Button, Modal, Box, CardContent, Typography, Rating } from '@mui/material';
 
 const ProductCard = (props) => {
-  const { product, adminView, category } = props;
+  const { product, adminView, category, setProductArr, productArr } = props;
 
   //hooks
   const dispatch = useDispatch();
@@ -26,12 +26,17 @@ const ProductCard = (props) => {
     getPrice();
   }, [])
 
+  console.log(productArr)
+
   // For admin delete modal
   const [open, setOpen] = useState(false);
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
   const handleDelete = (_product) => {
     dispatch(deleteProduct(_product));
+    setProductArr(...productArr.filter(__product => __product.id =! product.id))
+
+    setOpen(false)
   }
 
   const style = {

@@ -14,7 +14,7 @@ const AddressCard = ({address, addressArray, setAddressArray}) => {
 
   const handleSave = async(evt) => {
     evt.preventDefault();
-    await axios.put(`/api/users/address/${address.id}`, address, {
+    await axios.put(`/api/users/address/${address.id}`, addressState, {
       headers: {
         authorization: window.localStorage.getItem('token')
       }
