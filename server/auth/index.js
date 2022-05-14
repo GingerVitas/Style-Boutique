@@ -39,10 +39,9 @@ router.get("/me", async (req, res, next) => {
 
 router.put("/me", async (req, res, next) => {
   try {
+    console.log(req.body)
     let user = await User.findByToken(req.headers.authorization);
-    await User.update(req.body, {
-      where: { id: user.id },
-    });
+    await user.update(req.body)
     user = await User.findByToken(req.headers.authorization);
     res.status(200).json(user);
   } catch (ex) {
