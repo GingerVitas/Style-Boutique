@@ -28,7 +28,6 @@ class PersonalInfo extends React.Component {
     ev.preventDefault();
     try {
       const { edit, ...user } = this.state;
-      console.log(user);
       this.props.updateUser(user);
       this.setState({ edit: false });
     } catch (ex) {
@@ -55,15 +54,15 @@ class PersonalInfo extends React.Component {
             <form className="contact-info">
               <Typography variant="h6">
                 First Name
-                <TextField name="firstName" type="text" size="small" variant="outlined" required id="outlined-password-input" style={{ width: "60%" }} disabled={this.state.edit ? false : true} value={this.state.user.firstName} onChange={this.handleChange} />
+                <TextField name="firstName" type="text" size="small" variant="outlined" required id="outlined-password-input" style={{ width: "60%" }} disabled={this.state.edit ? false : true} value={this.state.firstName} onChange={this.handleChange} />
               </Typography>
               <Typography variant="h6">
                 Last Name
-                <TextField name="lastName" type="text" size="small" variant="outlined" required id="outlined-password-input" style={{ width: "60%" }} disabled={this.state.edit ? false : true} value={this.state.user.lastName} onChange={this.handleChange} />
+                <TextField name="lastName" type="text" size="small" variant="outlined" required id="outlined-password-input" style={{ width: "60%" }} disabled={this.state.edit ? false : true} value={this.state.lastName} onChange={this.handleChange} />
               </Typography>
               <Typography variant="h6">
                 Email
-                <TextField name="email" type="email" size="small" variant="outlined" required id="outlined-password-input" style={{ width: "60%" }} disabled={this.state.edit ? false : true} value={this.state.user.email} onChange={this.handleChange} />
+                <TextField name="email" type="email" size="small" variant="outlined" required id="outlined-password-input" style={{ width: "60%" }} disabled={this.state.edit ? false : true} value={this.state.email} onChange={this.handleChange} />
               </Typography>
               {/* </Grid> */}
 
