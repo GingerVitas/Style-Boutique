@@ -36,23 +36,12 @@ Sync and seed your database by running `npm run seed`. Running `npm run start:de
 
 <img width="1860" alt="Screen Shot 2022-05-14 at 1 12 22 AM" src="https://user-images.githubusercontent.com/58411107/168411839-04d23b46-d273-4bf4-b1ff-2bb542ca0c34.png">
 
-
-
-
-
-
-
-
-
 <img width="1854" alt="Screen Shot 2022-05-14 at 1 12 47 AM" src="https://user-images.githubusercontent.com/58411107/168411850-8137b520-d00c-4c91-a0c8-7782408352fa.png">
 
-
-
-
-
-
-
-
-
 <img width="1853" alt="Screen Shot 2022-05-14 at 1 13 00 AM" src="https://user-images.githubusercontent.com/58411107/168411858-a13728cd-73f9-44fa-88df-ccfb3ec16a06.png">
+
+<img width="1857" alt="Screen Shot 2022-05-14 at 1 20 17 AM" src="https://user-images.githubusercontent.com/58411107/168411923-8a1d7b9d-bf35-4a4f-b63c-fc3d435b0670.png">
+
+<img width="1852" alt="Screen Shot 2022-05-14 at 1 20 31 AM" src="https://user-images.githubusercontent.com/58411107/168411947-76e5d8a2-71ac-441a-99a7-15369a103b51.png">
+
 
