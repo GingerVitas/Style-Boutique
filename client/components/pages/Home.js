@@ -13,7 +13,7 @@ const Home = () => {
   },
   {
     category: "dress",
-    categoryName: 'Dress',
+    categoryName: 'Dresses',
     imageUrl: "https://n.nordstrommedia.com/id/sr3/d7e42901-ebc8-4e2b-bb43-13a10b1c3b07.jpeg?crop=pad&pad_color=FFF&format=jpeg&w=780&h=1196",
   },
   {
@@ -57,7 +57,7 @@ const Home = () => {
     imageUrl: "https://n.nordstrommedia.com/id/sr3/9b935e3d-c608-4e0f-8fa4-604e7211e901.jpeg?crop=pad&pad_color=FFF&format=jpeg&w=780&h=1196"
   }
   ];
-  
+
   return (
     <div>
       <Box sx={{display:'flex', textAlign:'center', flexDirection:'column', justifyContent:'center', alignItems:'center', backgroundImage:'url(https://cdn.builder.io/api/v1/image/assets%2FbqNZC3dTGjwbxXySE419%2F90b637f86e6a4f41b800905192f3dc02?width=2000)', minHeight:'500px', backgroundSize:'cover', zIndex:'-1'}}>
@@ -68,7 +68,7 @@ const Home = () => {
         </Box>
       </Box>
       <Box>
-        <Typography variant='h3' sx={{fontFamily:'Cardo', marginLeft:'14vw'}}>{firstName}, shop the latest styles now!</Typography>
+        <Typography variant='h3' sx={{fontFamily:'Cardo', marginLeft:'14vw'}}>{firstName ? `${firstName}, shop the latest styles now!` : 'Shop the latest styles now!'}</Typography>
       </Box>
       <Box>
         <Grid 
@@ -90,6 +90,3 @@ const Home = () => {
 };
 
 export default (Home);
-
-
-//Shop the latest
