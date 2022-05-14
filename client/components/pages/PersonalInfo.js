@@ -8,12 +8,10 @@ class PersonalInfo extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      user: {
         firstName: this.props.auth ? this.props.auth.firstName : "",
         lastName: this.props.auth ? this.props.auth.lastName : "",
         email: this.props.auth ? this.props.auth.email : "",
-      },
-      edit: false,
+        edit: false,
     };
     this.handleChange = this.handleChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
@@ -21,13 +19,16 @@ class PersonalInfo extends React.Component {
   }
 
   handleChange(ev) {
-    this.setState({ user: { [ev.target.name]: ev.target.value } });
+    this.setState({[ev.target.name]:ev.target.value});
   }
 
   handleSubmit(ev) {
+    console.log(this.state)
     ev.preventDefault();
     try {
-      this.props.updateUser({ ...this.state.user });
+      const {edit, ...user} = this.state
+      console.log(user)
+      this.props.updateUser(user);
       this.setState({ edit: false });
     } catch (ex) {
       console.log(ex);
@@ -53,7 +54,7 @@ class PersonalInfo extends React.Component {
                 type="text"
                 allownull="false"
                 disabled={this.state.edit ? false : true}
-                value={this.state.user.firstName}
+                value={this.state.firstName}
                 onChange={this.handleChange}
               />
             </label>
@@ -64,7 +65,7 @@ class PersonalInfo extends React.Component {
                 type="text"
                 allownull="false"
                 disabled={this.state.edit ? false : true}
-                value={this.state.user.lastName}
+                value={this.state.lastName}
                 onChange={this.handleChange}
               />
             </label>
@@ -75,7 +76,7 @@ class PersonalInfo extends React.Component {
                 type="email"
                 allownull="false"
                 disabled={this.state.edit ? false : true}
-                value={this.state.user.email}
+                value={this.state.email}
                 onChange={this.handleChange}
               />
             </label>
