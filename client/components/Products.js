@@ -24,6 +24,10 @@ const Products = (props) => {
     dispatch(loadProducts(category, query))
   }, [page])
 
+  useEffect(() => {
+    dispatch(loadProducts(category, query))
+  }, [category])
+
   const handleChange = (evt, value) => {
     evt.preventDefault();
     setPage(value);
