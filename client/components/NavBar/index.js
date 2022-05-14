@@ -1,4 +1,4 @@
-import React, { useState, useRef } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { Link } from "react-router-dom";
 
 // REDUX
@@ -13,6 +13,10 @@ import { ShoppingCart } from "@mui/icons-material";
 import { StyledBadge } from "../../../public/styles";
 import { makeStyles } from "@material-ui/core/styles";
 
+// Child components
+import ClothingMenu from "./ClothingMenu";
+import AccessoriesMenu from "./AccessoriesMenu";
+
 const useStyles = makeStyles((theme) => ({
   popover: {
     pointerEvents: "none"
@@ -24,6 +28,37 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 const Navbar = ({ handleClick, empty_cart, clearOrder, isLoggedIn, lineItems, auth, firstName }) => {
+  const clothingLink = useRef(null);
+  const footwearLink = useRef(null);
+  const accessoriesLink = useRef(null);
+  // For Clothing Dropdown
+  const [clothingChecked, setClothingChecked] = useState(false);
+  const handleClothingLinkClick = () => {
+    setAccessoriesChecked(false);
+    setClothingChecked(!clothingChecked);
+    clothingLink.current.firstChild.style.color = 'black';
+    footwearLink.current.firstChild.style.color = 'grey';
+    accessoriesLink.current.firstChild.style.color = 'grey';
+  }
+
+  //For Accessories Dropdown
+  const [accessoriesChecked, setAccessoriesChecked] = useState(false);
+  const handleAccessoriesLinkClick = () => {
+    setClothingChecked(false);
+    setAccessoriesChecked(!accessoriesChecked);
+    accessoriesLink.current.firstChild.style.color = 'black';
+    clothingLink.current.firstChild.style.color = 'grey';
+    footwearLink.current.firstChild.style.color = 'grey';
+  }
+
+  const handleFootwearLinkClick = () => {
+    setClothingChecked(false);
+    setAccessoriesChecked(false);
+    footwearLink.current.firstChild.style.color = 'black';
+    clothingLink.current.firstChild.style.color = 'grey';
+    accessoriesLink.current.firstChild.style.color = 'grey';
+  }
+
   // For user account pop-over at hover
   const [openedPopover, setOpenedPopover] = useState(false);
   const popoverAnchor = useRef(null);
@@ -127,16 +162,23 @@ const Navbar = ({ handleClick, empty_cart, clearOrder, isLoggedIn, lineItems, au
               </Toolbar>
 
               <Toolbar sx={{ ["@media(min-width: 600px)"]: { minHeight: 10 } }}>
-                <MenuItem component={Link} to={"/clothing"} sx={{ "&:hover": { bgcolor: "transparent" } }}>
+                <MenuItem onClick={ handleClothingLinkClick } className='clothingLink' ref={clothingLink} sx={{ "&:hover": { bgcolor: "transparent" } }}>
                   <Typography variant="menuitem">Clothing</Typography>
                 </MenuItem>
-                <MenuItem component={Link} to={"/footwear"} sx={{ "&:hover": { bgcolor: "transparent" } }}>
+                <MenuItem component={Link} to={`/shop/shoes`} onClick={handleFootwearLinkClick} className='footwearLink' ref={footwearLink} sx={{ "&:hover": { bgcolor: "transparent" } }}>
                   <Typography variant="menuitem">Footwear</Typography>
                 </MenuItem>
-                <MenuItem component={Link} to={"/accessories"} sx={{ "&:hover": { bgcolor: "transparent" } }}>
+                <MenuItem onClick={handleAccessoriesLinkClick} className='accessoriesLink' ref={accessoriesLink} sx={{ "&:hover": { bgcolor: "transparent" } }}>
                   <Typography variant="menuitem">Accessories</Typography>
                 </MenuItem>
               </Toolbar>
+              {
+                clothingChecked? 
+                <ClothingMenu />
+                : accessoriesChecked?
+                <AccessoriesMenu />
+                : <></>
+              }
             </AppBar>
           </div>
         ) : (

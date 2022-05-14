@@ -44,11 +44,11 @@ class LineItem extends React.Component {
             <div >
                 <Grid container direction="row" spacing={0} justifyContent="space-evenly" alignItems="center" sx={{ margin: '2rem 0' }}>
                     <Grid item xs={2} sx={{ padding: '0 1rem' }}>
-                        <Link to={`/${item.categoryName}/${item.productName}`}><img src={item.imageUrl} className='lineitem_img' /></Link>
+                        <Link to={`/shop/${item.categoryName}/${item.productName.split(' ').join('%20')}`}><img src={item.imageUrl} className='lineitem_img' /></Link>
                     </Grid>
                     <Grid item xs={6}>
                         {this.state.product && this.state.product.brand}<br />
-                        <Link to={`/${item.categoryName}/${item.productName}`} className='line_item_link' sx={{ color: 'black' }}>{item.productName}</Link>
+                        <Link to={`/shop/${item.categoryName}/${item.productName}`} className='line_item_link' sx={{ color: 'black' }}>{item.productName}</Link>
                         <br />
                         <br />
                         Size: {item.productSize}<br />
