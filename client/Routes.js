@@ -16,6 +16,7 @@ import { Login, Signup } from "./components/pages/AuthForm";
 import Home from "./components/pages/Home";
 import Account from "./components/pages/Account";
 import Addresses from "./components/pages/Addresses";
+import PersonalInfo from "./components/pages/PersonalInfo";
 import OrderHistory from "./components/pages/OrderHistory";
 import ContactUs from "./components/pages/ContactUs";
 import Cart from "./components/pages/Cart";
@@ -25,8 +26,8 @@ import SingleProduct from "./components/pages/SingleProduct";
 import SignOut from "./components/pages/SignOut";
 import AdminDashboard from "./components/pages/AdminDashboard";
 import Unauthorized from "./components/pages/Unauthorized";
-import OrderPlaced from './components/pages/OrderPlaced';
-import Products from './components/Products';
+import OrderPlaced from "./components/pages/OrderPlaced";
+import Products from "./components/Products";
 
 class Routes extends Component {
   componentDidMount() {
@@ -42,7 +43,7 @@ class Routes extends Component {
         this.props.fetchOrder(this.props.auth);
       }
     }
-    
+
     // empty order to user order
     // open order to closed order
     if (prevProps.order !== this.props.order) {
@@ -66,19 +67,12 @@ class Routes extends Component {
             <Route exact path="/home" component={Home} />
             <Route path="/order_history" component={OrderHistory} />
             <Route path="/account" component={Account} />
-            <Route path="/addresses" component={Addresses} />
             <Route path="/contact_us" component={ContactUs} />
             <Route path="/cart" component={Cart} />
-            <Route
-              path="/shop/:category/:productName"
-              component={SingleProduct}
-            />
-            <Route path='/shop/:category' component={Products} />
-            <Route
-              path="/checkout"
-              render={(routeProps) => <Checkout routeProps={routeProps} />}
-            />
-            <Route exact path='/order_placed' component={OrderPlaced} />
+            <Route path="/shop/:category/:productName" component={SingleProduct} />
+            <Route path="/shop/:category" component={Products} />
+            <Route path="/checkout" render={(routeProps) => <Checkout routeProps={routeProps} />} />
+            <Route exact path="/order_placed" component={OrderPlaced} />
             <Route path="/review_order" component={ReviewOrder} />
             <Route path="/adminDashboard" component={auth.isAdmin ? AdminDashboard : Unauthorized} />
             <Redirect to={this.props.location.state && this.props.location.state.prevPath === "/cart" ? "/cart" : "/home"} />
