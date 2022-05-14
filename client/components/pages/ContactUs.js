@@ -3,7 +3,7 @@ import { Box, Button, Grid, spacing, TextField, Typography } from "@mui/material
 
 const ContactUs = () => {
   return (
-    <Box textAlign="center" sx={{ p: 2 }}>
+    <Box textAlign="center" sx={[{ m: 2 }, { display: "flex" }]}>
       <div>
         <Typography variant="h4">Customer Support</Typography>
 
