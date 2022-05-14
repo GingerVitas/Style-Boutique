@@ -24,12 +24,12 @@ const Account = (props) => {
   return (
     <div className="content">
       <h4>Welcome, {auth.firstName ? auth.firstName : auth.username}</h4>
-      <div style={{ display: "flex", padding: "30px 0" }}>
-        <ToggleButtonGroup value={newToggle} exclusive onChange={handleToggle} aria-label="text alignment">
+      <div style={{ display: "flex", padding: "30px 0", justifyContent: 'center' }}>
+        <ToggleButtonGroup value={newToggle}  exclusive onChange={handleToggle} aria-label="text alignment">
           <ToggleButton value="personalInfo" component={Link} to={"/account"}>
             My Information
           </ToggleButton>
-          <ToggleButton value="addresses" component={Link} to={"/account/addresses"}>
+          <ToggleButton value="addresses" component={Link} to={"/account/addresses"} >
             My Addresses
           </ToggleButton>
         </ToggleButtonGroup>
