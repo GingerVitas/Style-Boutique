@@ -2,7 +2,7 @@ import React from "react";
 import { connect } from "react-redux";
 import { Link } from "react-router-dom";
 import { updateUser } from "../../store/auth";
-import { Box, Button, Grid, TextField, Typography } from "@mui/material";
+import { Box, Button, Card, TextField, Typography } from "@mui/material";
 import Password from "../Password";
 
 class PersonalInfo extends React.Component {
@@ -42,63 +42,46 @@ class PersonalInfo extends React.Component {
 
   render() {
     const auth = this.props.auth;
-    return (
-      <Box textAlign="center" sx={{ p: 2 }}>
-        <div>
-          <Grid container direction="column" justifyContent="left" alignItems="left" spacing={1} sx={{ display: "flex" }}>
-            <Grid item lg={6} sx={{ width: "100%" }}>
-              <Typography variant="h4">Personal Information</Typography>
-            </Grid>
-            <div className="account-body">
-              {/* <form className="contact-info"> */}
-              <Grid item xs={6} sx={{ width: "100%" }}>
-                <Typography variant="h6">
-                  First Name
-                  <TextField name="firstName" type="text" size="small" variant="outlined" required id="outlined-password-input" style={{ width: "60%" }} disabled={this.state.edit ? false : true} value={this.state.firstName} onChange={this.handleChange} />
-                </Typography>
-              </Grid>
-              <Grid item xs={6} sx={{ width: "100%" }}>
-                <Typography variant="h6">
-                  Last Name
-                  <TextField name="lastName" type="text" size="small" variant="outlined" required id="outlined-password-input" style={{ width: "60%" }} disabled={this.state.edit ? false : true} value={this.state.lastName} onChange={this.handleChange} />
-                </Typography>
-              </Grid>
-              <Grid item xs={6} sx={{ width: "100%" }}>
-                <Typography variant="h6">
-                  Email
-                  <TextField name="email" type="email" size="small" variant="outlined" required id="outlined-password-input" style={{ width: "60%" }} disabled={this.state.edit ? false : true} value={this.state.email} onChange={this.handleChange} />
-                </Typography>
-              </Grid>
-              <Grid item xs={6} sx={{ width: "100%" }}>
-                <Button
-                  color="black"
-                  variant="contained"
-                  sx={{ mb: 2 }}
-                  onClick={
-                    this.state.edit
-                      ? (ev) => {
-                          this.handleSubmit(ev);
-                        }
-                      : (ev) => {
-                          this.handleEdit(ev);
-                        }
-                  }
-                >
-                  {this.state.edit ? "SUBMIT" : "EDIT"}
-                </Button>
-                {/* </form> */}
-              </Grid>
 
-              <div>
-                <Password />
-                <Button color="black" style={{ m: 1, width: "50%", padding: "10px", fontSize: "1rem" }} variant="contained">
-                  Update Password
-                </Button>
-              </div>
-            </div>
-          </Grid>
-        </div>
-      </Box>
+    return (
+      <div>
+        <Box sx={{ p: 2, textAlign: "center" }}>
+          <div>
+            <Typography variant="h4">Personal Information</Typography>
+          </div>
+        </Box>
+        <Box sx={{ p: 2, display: "flex", flexDirection: "column", textAlign: "center" }}>
+          <div style={{ display: "flex", alignItems: "center" }}>
+            <Typography variant="h6" sx={{ flexBasis: "30%" }}>
+              First Name
+            </Typography>
+            <TextField name="firstName" type="text" size="small" sx={{ flexBasis: "70%" }} variant="outlined" required id="outlined-password-input" style={{ width: "60%" }} disabled={this.state.edit ? false : true} value={this.state.firstName} onChange={this.handleChange} />
+          </div>
+          <div style={{ display: "flex", alignItems: "center" }}>
+            <Typography variant="h6" sx={{ flexBasis: "30%" }}>
+              Last Name{" "}
+            </Typography>
+            <TextField name="lastName" type="text" size="small" sx={{ flexBasis: "70%" }} variant="outlined" required id="outlined-password-input" style={{ width: "60%" }} disabled={this.state.edit ? false : true} value={this.state.lastName} onChange={this.handleChange} />
+          </div>
+          <div style={{ display: "flex", alignItems: "space-around" }}>
+            <Typography variant="h6" sx={{ flexBasis: "30%" }}>
+              Email{" "}
+            </Typography>
+            <TextField name="email" type="email" size="small" sx={{ flexBasis: "70%" }} variant="outlined" required id="outlined-password-input" style={{ width: "60%" }} disabled={this.state.edit ? false : true} value={this.state.email} onChange={this.handleChange} />
+          </div>
+          <div style={{ display: "flex", justifyContent: "center" }}>
+            <Button color="black" variant="contained" sx={{ mb: 2, maxWidth: "20vw" }} onClick={this.state.edit ? (ev) => this.handleSubmit(ev) : (ev) => this.handleEdit(ev)}>
+              {this.state.edit ? "SUBMIT" : "EDIT"}
+            </Button>
+          </div>
+          <div>
+            <Password />
+            <Button color="black" style={{ m: 1, width: "50%", padding: "10px", fontSize: "1rem" }} variant="contained">
+              Update Password
+            </Button>
+          </div>
+        </Box>
+      </div>
     );
   }
 }
