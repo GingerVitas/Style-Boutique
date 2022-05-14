@@ -1,5 +1,5 @@
 const router = require("express").Router();
-const {models: {Address}} = require('../db');
+const {models: {Address, Order, LineItem}} = require('../db');
 const {
   models: { User },
 } = require("../db");
@@ -30,7 +30,8 @@ router.get("/me", async (req, res, next) => {
   try {
     const user = await User.findByToken(req.headers.authorization)
     res.send(await User.findByPk(user.id, {
-      include: [{model: Address}]
+      include: [{model: Address},{model: Order, include:{model: LineItem}}],
+      order: [['createdAt', 'DESC']]
     }));
   } catch (ex) {
     next(ex);

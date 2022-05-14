@@ -17,14 +17,14 @@ import { makeStyles } from "@material-ui/core/styles";
 import ClothingMenu from "./ClothingMenu";
 import AccessoriesMenu from "./AccessoriesMenu";
 
-const useStyles = makeStyles((theme) => ({
+const useStyles = makeStyles(theme => ({
   popover: {
-    pointerEvents: "none"
+    pointerEvents: 'none',
   },
   popoverContent: {
-    pointerEvents: "auto",
+    pointerEvents: 'auto',
     padding: theme.spacing(1)
-  }
+  },
 }));
 
 const Navbar = ({ handleClick, empty_cart, clearOrder, isLoggedIn, lineItems, auth, firstName }) => {
@@ -69,23 +69,46 @@ const Navbar = ({ handleClick, empty_cart, clearOrder, isLoggedIn, lineItems, au
     setAccessoriesChecked(false);
   }
 
+
+  const useStyles = makeStyles(theme => ({
+    popover: {
+      pointerEvents: 'none',
+    },
+    popoverContent: {
+      pointerEvents: 'auto',
+      padding: theme.spacing(1)
+    },
+  }));
+
+
   // For user account pop-over at hover
   const [openedPopover, setOpenedPopover] = useState(false)
   const popoverAnchor = useRef(null);
-  const popoverEnter = ({ currentTarget }) => {
+  const popoverEnter = () => {
     setOpenedPopover(true)
   };
-  const popoverLeave = ({ currentTarget }) => {
+  const popoverLeave = () => {
     setOpenedPopover(false)
   };
   const classes = useStyles();
+
+  const appBar = useRef(null);
+  console.log(appBar.current)
+  useEffect(() => {
+    popoverLeave();
+    () => {
+      appBar.current.ariaHidden = false;
+      popoverLeave();
+    }
+  }, []);
+
 
   return (
     <div>
       <nav>
         {isLoggedIn ? (
           <div>
-            <AppBar position="fixed" sx={{ bgcolor: "white" }}>
+            <AppBar position="fixed" sx={{ bgcolor: "white" }} ref={appBar}>
               <Toolbar sx={{ borderBottom: "solid 1px grey" }}>
                 <MenuItem component={Link} to={"/home"} sx={{ "&:hover": { bgcolor: "transparent" } }}>
                   <Typography variant="logo">STYLE BOUTIQUE</Typography>
@@ -99,16 +122,19 @@ const Navbar = ({ handleClick, empty_cart, clearOrder, isLoggedIn, lineItems, au
                   ""
                 )}
 
-                <MenuItem
-                  component={Link}
-                  to={"/account"}
-                  sx={{
-                    "&:hover": { bgcolor: "transparent" },
-                    "&.Mui-focusVisible": { bgcolor: "transparent" },
-                    marginLeft: "auto"
-                  }}
+                <MenuItem component={Link} to={"/account"} sx={{
+                  "&:hover": { bgcolor: "transparent" },
+                  "&.Mui-focusVisible": { bgcolor: "transparent" },
+                  marginLeft: "auto" }}
                 >
-                  <Typography variant="menuitem" ref={popoverAnchor} aria-owns="mouse-over-popover" aria-haspopup="true" onMouseEnter={popoverEnter} onMouseLeave={popoverLeave}>
+                  <Typography
+                    variant='menuitem'
+                    ref={popoverAnchor}
+                    // aria-owns="mouse-over-popover"
+                    // aria-haspopup="true"
+                    onMouseEnter={popoverEnter}
+                    onMouseLeave={popoverLeave}
+                  >
                     Hello, {firstName ? firstName : auth.username}
                   </Typography>
                   <Popover
@@ -151,7 +177,8 @@ const Navbar = ({ handleClick, empty_cart, clearOrder, isLoggedIn, lineItems, au
                           handleClick();
                           empty_cart();
                           clearOrder();
-                        }} to={"/logout"} sx={{ "&:hover": { bgcolor: "transparent" }, marginCenter: !auth.isAdmin ? "auto" : "" }}>
+                        }} to={"/home"} sx={{ textDecoration: "none" }}>
+
                           <Typography sx={{ p: 1 }}>Log Out</Typography>
                         </Link>
                       </Grid>
