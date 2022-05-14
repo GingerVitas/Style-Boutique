@@ -28,7 +28,6 @@ class PersonalInfo extends React.Component {
     ev.preventDefault();
     try {
       const { edit, ...user } = this.state;
-      console.log(user);
       this.props.updateUser(user);
       this.setState({ edit: false });
     } catch (ex) {

@@ -23,7 +23,7 @@ const Account = (props) => {
 
   return (
     <div className="content">
-      <h4>Welcome, {auth.firstName}</h4>
+      <h4>Welcome, {auth.firstName ? auth.firstName : auth.username}</h4>
       <div style={{ display: "flex", padding: "30px 0" }}>
         <ToggleButtonGroup value={newToggle} exclusive onChange={handleToggle} aria-label="text alignment">
           <ToggleButton value="personalInfo" component={Link} to={"/account"}>
