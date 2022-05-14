@@ -109,7 +109,7 @@ const Navbar = ({ handleClick, empty_cart, clearOrder, isLoggedIn, lineItems, au
                   }}
                 >
                   <Typography variant="menuitem" ref={popoverAnchor} aria-owns="mouse-over-popover" aria-haspopup="true" onMouseEnter={popoverEnter} onMouseLeave={popoverLeave}>
-                    Hello, {firstName}
+                    Hello, {firstName ? firstName : auth.username}
                   </Typography>
                   <Popover
                     id="mouse-over-popover"
