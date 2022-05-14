@@ -1,7 +1,7 @@
 # STYLE BOUTIQUE
 
 ## Shopping experience web application
-Style Boutique is a shopping web app that clones Nordstrom database. User can add items to cart and a guest or a user. Guest cart is saved even when you close the window and re-opens our website. Your cart will be saved when you logout. You can modify quantities of items, explore our diverse categories of female fashion and finally checkout to place an order.
+Style Boutique is a shopping web app that clones Nordstrom database. User can add items to cart and a guest or a user. Guest cart is saved even when you close the window and re-opens our website. Your cart will be saved when you logout. You can modify quantities of items, explore our diverse categories of female fashion and finally checkout to place an order. Also an Admin account can manage inventories, users and orders deleting and adding, viewing in sort.
 
 ### Stacks used for Style Boutique
 * JavaScript
