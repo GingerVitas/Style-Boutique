@@ -2,7 +2,7 @@ import React, {useState, useEffect} from "react";
 import { useSelector, useDispatch } from "react-redux";
 import {useHistory, useParams} from 'react-router-dom'
 import ProductCard from "./ProductCard";
-import {Grid, Button, Pagination} from '@mui/material';
+import {Grid, Button, Pagination, Typography} from '@mui/material';
 import {loadProducts} from '../store/products';
 
 const Products = (props) => {
@@ -34,6 +34,9 @@ const Products = (props) => {
   return (
     <div>
       {isAdmin ? <Button variant={adminView ? 'contained' : 'outlined'} onClick={()=>adminView ? setAdminView(false) : setAdminView(true)} className={adminView ? 'selected' : ''} sx={{padding:'.5rem', margin:'1rem'}}>Toggle Admin View</Button> : null}
+        <div style={{textAlign:'center'}}>
+          <Typography variant='h3' sx={{fontFamily:'Cardo'}}>Get inspired! Find the perfect {category} for your wardrobe.</Typography>
+        </div>
         <Grid 
           container
           direction="row"

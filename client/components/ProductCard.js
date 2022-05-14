@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Link, useParams } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import axios from 'axios'
 
 //redux
@@ -7,7 +7,7 @@ import { useDispatch } from 'react-redux'
 import { deleteProduct } from '../store/admin'
 
 //mui
-import { Grid, Card, CardActionArea, Button, Modal, Box, FormControl, InputLabel, Select, MenuItem, CardContent, CardMedia, Typography, Rating } from '@mui/material';
+import { Grid, Card, CardActionArea, Button, Modal, Box, CardContent, Typography, Rating } from '@mui/material';
 
 const ProductCard = (props) => {
   const { product, adminView, category } = props;
@@ -51,13 +51,6 @@ const ProductCard = (props) => {
     margin: '1.5rem',
     padding: '1.5rem'
   }
-
-  // const handleChange = (ev) => {
-  //   ev.preventDefault();
-
-  // }
-  // (product)=>handleDelete(product)
-  // if (!productName) 
 
   return (
     <Card style={{ height: '525px', width: '100%', marginBottom:'1rem' }}>
@@ -118,39 +111,6 @@ const ProductCard = (props) => {
       </CardActionArea>
     </Card>
   )
-  // else return (
-  //   <Card sx={{maxWidth:'280', margin:'.5rem'}} style={{height:'100%'}}>
-  //       <CardMedia
-  //         component='img'
-  //         image={product.imageUrl}
-  //         height='435'
-  //         width='300'
-  //       />
-  //       <CardContent>
-  //         <Typography gutterBottom variant='subtitle1'>
-  //           {product.brand}
-  //         </Typography>3
-  //         <Typography variant='subtitle2'>
-  //           {product.name}
-  //         </Typography>
-  //         <FormControl size='small'>
-  //               <InputLabel id='skuColor'>Color</InputLabel>
-  //               <Select 
-  //                 labelId='skuColor'
-  //                 id='skuColor'
-  //                 value={skuColor}
-  //                 label='color'
-  //                 onChange={handleChange}
-  //               >
-  //                 {skuColors.map(sku => (
-  //                   <MenuItem key={sku.id} value={sku.id*1}>{sku.color}</MenuItem>
-  //                 ))}
-  //               </Select>
-
-  //             </FormControl>
-  //       </CardContent>
-  //     </Card>
-  // )
 }
 
 export default ProductCard
