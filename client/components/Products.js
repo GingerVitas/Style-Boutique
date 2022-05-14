@@ -12,7 +12,7 @@ const Products = (props) => {
   const {category} = useParams();
   const [adminView, setAdminView] = useState(false)
   const [page, setPage] = useState(1)
-  const history = useHistory();
+  const {history} = props
   const totalPages = products.totalPages
   const query = window.location.search
 
@@ -20,15 +20,14 @@ const Products = (props) => {
     dispatch(loadProducts(category, query))
   }, [])
 
+  useEffect(()=>{
+    dispatch(loadProducts(category, query))
+  }, [page])
+
   const handleChange = (evt, value) => {
     evt.preventDefault();
     setPage(value);
-    window.location.href = `${window.location.origin}${window.location.pathname}?page=${value}`
-    // console.log(window.location.origin + window.location.pathname)
-    // if(query){
-    //   history.push(`${window.location.slice(-query.length)}?page=${page}`)
-    // }
-    // history.push(`?page=${page}`)
+    history.push(`${window.location.pathname}?page=${value}`)
   }
 
   if(!products.content) return <h1>Loading...</h1>

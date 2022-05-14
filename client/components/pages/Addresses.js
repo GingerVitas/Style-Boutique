@@ -84,6 +84,7 @@ const Addresses = (props) => {
     destroy(address.id);
   };
 
+  // replace input with textfield
   return (
     <div>
       <h4>Shipping Addresses</h4>
