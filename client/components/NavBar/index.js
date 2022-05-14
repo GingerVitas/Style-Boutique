@@ -149,7 +149,7 @@ const Navbar = ({ handleClick, empty_cart, clearOrder, isLoggedIn, lineItems, au
                 <MenuItem component={Link} to={"/login"} sx={{ "&:hover": { bgcolor: "transparent" }, marginLeft: "auto" }}>
                   <Typography variant="menuitem">Login</Typography>
                 </MenuItem>
-                <Typography>/</Typography>
+                <Typography>|</Typography>
                 <MenuItem component={Link} to={"/signup"} sx={{ "&:hover": { bgcolor: "transparent" } }}>
                   <Typography variant="menuitem">Sign Up</Typography>
                 </MenuItem>
