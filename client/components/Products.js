@@ -12,12 +12,18 @@ const Products = (props) => {
   const {category} = useParams();
   const [adminView, setAdminView] = useState(false)
   const [page, setPage] = useState(1)
+  const [productArr, setProductArr] = useState(products.content)
   const {history} = props
   const totalPages = products.totalPages
   const query = window.location.search
+  console.log('PRODUCTS', productArr)
 
   useEffect(()=>{
     dispatch(loadProducts(category, query))
+    setTimeout(()=>{
+      setProductArr(products.content);
+      console.log('Set Product Arr')
+    }, 500)
   }, [])
 
   useEffect(()=>{
@@ -27,6 +33,11 @@ const Products = (props) => {
   useEffect(() => {
     dispatch(loadProducts(category, query))
   }, [category])
+
+  useEffect(() => {
+    dispatch(loadProducts(category, query))
+    console.log('productArr Updated******************')
+  }, [productArr])
 
   const handleChange = (evt, value) => {
     evt.preventDefault();
@@ -51,7 +62,7 @@ const Products = (props) => {
           sx={{width: '80%', margin: '0 auto', textAlign: 'center'}}
           >
           {products.content.map((product) => {
-            return <Grid item xs={12} sm={6} md={4} lg={3} xl={2} key={product.id}><ProductCard product={product} category={category} adminView={adminView}/></Grid>;
+            return <Grid item xs={12} sm={6} md={4} lg={3} xl={2} key={product.id}><ProductCard product={product} category={category} adminView={adminView} productArr={productArr} setProductArr={setProductArr}/></Grid>;
           })}
         </Grid>
         <div style={{display:'flex', justifyContent:'center', marginBottom:'2rem'}}>
