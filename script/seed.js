@@ -121,6 +121,8 @@ async function seed() {
   })
 
   await Address.create({
+    firstName: 'Scott',
+    lastName: 'Johnson',
     addressLine1:'123 FullStack Way',
     city: 'New York',
     state: 'NY',

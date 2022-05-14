@@ -4,10 +4,12 @@ const TOKEN = "token";
 // ACTION TYPES
 const LOAD_ADDRESSES = "LOAD_ADDRESSES";
 const ADD_ADDRESS = "ADD_ADDRESS";
+const UPDATE_ADDRESS = 'UPDATE_ADDRESS';
 const DELETE_ADDRESS = "DELETE_ADDRESS";
 
 // ACTION CREATORS
 const _loadAddresses = (addresses) => ({ type: LOAD_ADDRESSES, addresses });
+const _updateAddress = address => ({type: UPDATE_ADDRESS, address})
 const _addAddress = (address) => ({ type: ADD_ADDRESS, address });
 const _deleteAddress = (address) => ({ type: DELETE_ADDRESS, address });
 
@@ -27,6 +29,16 @@ const _deleteAddress = (address) => ({ type: DELETE_ADDRESS, address });
 //     dispatch(_loadAddresses(addresses));
 //   };
 // };
+
+export const updateAddress = address => {
+  return async(dispatch) => {
+    await axios.put(`/api/user/address/${address.id}`, address, {
+      headers: {
+        authorization: window.localStorage.getItem(TOKEN)
+      }
+    })
+  }
+}
 
 export const deleteAddress = (address) => {
   return async (dispatch) => {

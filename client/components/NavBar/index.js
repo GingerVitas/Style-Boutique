@@ -178,6 +178,7 @@ const Navbar = ({ handleClick, empty_cart, clearOrder, isLoggedIn, lineItems, au
                           empty_cart();
                           clearOrder();
                         }} to={"/home"} sx={{ textDecoration: "none" }}>
+
                           <Typography sx={{ p: 1 }}>Log Out</Typography>
                         </Link>
                       </Grid>

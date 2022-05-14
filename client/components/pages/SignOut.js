@@ -6,7 +6,7 @@ const history = useHistory();
 useEffect(()=>{
   setTimeout(()=>{
     history.push('/')
-  }, 1000)
+  }, 2000)
 })
 
 
