@@ -1,12 +1,14 @@
 import React from "react";
 import { connect } from "react-redux";
 import { Link } from "react-router-dom";
-import Button from "@mui/material/Button";
 import { updateUser } from "../../store/auth";
+import { Box, Button, Grid, TextField, Typography } from "@mui/material";
+import Password from "../Password";
 
 class PersonalInfo extends React.Component {
   constructor(props) {
     super(props);
+
     this.state = {
         firstName: this.props.auth ? this.props.auth.firstName : "",
         lastName: this.props.auth ? this.props.auth.lastName : "",
@@ -43,78 +45,70 @@ class PersonalInfo extends React.Component {
   render() {
     const auth = this.props.auth;
     return (
-      <div>
-        <h4 className="account-intro">Personal Information</h4>
-        <div className="account-body">
-          <form className="contact-info">
-            <label className="accountLabel">
-              First Name
-              <input
-                name="firstName"
-                type="text"
-                allownull="false"
-                disabled={this.state.edit ? false : true}
-                value={this.state.firstName}
-                onChange={this.handleChange}
-              />
-            </label>
-            <label className="accountLabel">
-              Last Name
-              <input
-                name="lastName"
-                type="text"
-                allownull="false"
-                disabled={this.state.edit ? false : true}
-                value={this.state.lastName}
-                onChange={this.handleChange}
-              />
-            </label>
-            <label className="accountLabel">
-              Email
-              <input
-                name="email"
-                type="email"
-                allownull="false"
-                disabled={this.state.edit ? false : true}
-                value={this.state.email}
-                onChange={this.handleChange}
-              />
-            </label>
-            <Button
-              color="black"
-              variant="contained"
-              onClick={
-                this.state.edit
-                  ? (ev) => {
-                      this.handleSubmit(ev);
-                    }
-                  : (ev) => {
-                      this.handleEdit(ev);
-                    }
-              }
-            >
-              {this.state.edit ? "SUBMIT" : "EDIT"}
-            </Button>
-          </form>
-          <div>
-            <button id="password">Update Password</button>
+      <Box textAlign="center" margin-bottom="15px">
+        <div>
+          <Typography variant="h4">Personal Information</Typography>
+          <div className="account-body">
+            {/* <Grid container direction="row" alignItems="center">
+              <Grid item>
+              </Grid> */}
+
+            <form className="contact-info">
+              <Typography variant="h6">
+                First Name
+                <TextField name="firstName" type="text" size="small" variant="outlined" required id="outlined-password-input" style={{ width: "60%" }} disabled={this.state.edit ? false : true} value={this.state.user.firstName} onChange={this.handleChange} />
+              </Typography>
+              <Typography variant="h6">
+                Last Name
+                <TextField name="lastName" type="text" size="small" variant="outlined" required id="outlined-password-input" style={{ width: "60%" }} disabled={this.state.edit ? false : true} value={this.state.user.lastName} onChange={this.handleChange} />
+              </Typography>
+              <Typography variant="h6">
+                Email
+                <TextField name="email" type="email" size="small" variant="outlined" required id="outlined-password-input" style={{ width: "60%" }} disabled={this.state.edit ? false : true} value={this.state.user.email} onChange={this.handleChange} />
+              </Typography>
+              {/* </Grid> */}
+
+              <Button
+                color="black"
+                variant="contained"
+                onClick={
+                  this.state.edit
+                    ? (ev) => {
+                        this.handleSubmit(ev);
+                      }
+                    : (ev) => {
+                        this.handleEdit(ev);
+                      }
+                }
+              >
+                {this.state.edit ? "SUBMIT" : "EDIT"}
+              </Button>
+            </form>
+
+            <div>
+              <Button color="black" style={{ width: "80%", padding: "10px", fontSize: "1rem" }} variant="contained">
+                {/* component={Link} to={Password} */}
+                Update Password
+              </Button>
+            </div>
+
           </div>
         </div>
-      </div>
+      </Box>
     );
   }
 }
 
 const mapDispatch = (dispatch) => {
   return {
-    updateUser: (user) => dispatch(updateUser(user)),
+    updateUser: (user) => dispatch(updateUser(user))
   };
 };
 
 const mapState = (state) => {
   return {
     auth: state.auth,
-    order: state.order,
+    order: state.order
   };
 };
 
