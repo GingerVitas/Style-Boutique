@@ -7,7 +7,6 @@ import PersonalInfo from "./PersonalInfo";
 import Addresses from "./Addresses";
 
 //MUI
-//import { Box, Button } from "@mui/material";
 import { ToggleButton } from "@mui/material";
 import { ToggleButtonGroup } from "@mui/material";
 
@@ -25,7 +24,6 @@ const Account = (props) => {
   return (
     <div className="content">
       <h4>Welcome, {auth.firstName}</h4>
-
       <div style={{ display: "flex", padding: "30px 0" }}>
         <ToggleButtonGroup value={newToggle} exclusive onChange={handleToggle} aria-label="text alignment">
           <ToggleButton value="personalInfo" component={Link} to={"/account"}>
