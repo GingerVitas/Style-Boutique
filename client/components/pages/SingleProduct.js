@@ -7,6 +7,7 @@ import { Link } from 'react-router-dom';
 //REDUX
 import { useSelector, useDispatch } from 'react-redux';
 import { createNewLineitemInCart, addQuantityToLineitem } from '../../store/cart';
+import { loadProduct } from '../../store/product';
 import { loadColors } from '../../store/productColors';
 import { loadSKUs } from '../../store/skus';
 
@@ -31,13 +32,15 @@ const singleProduct = () => {
   const {productName} = useParams();
 
   // redux- state: useSelector
-  const product = useSelector(state => (state.products.content.find(product => product.name === productName)));
+  // When I click image of product from cart, products.content is not loading unless path comes from products that dispatches loadproducts. So I made product {} store.
+  // const product = useSelector(state => (state.products.content.find(product => product.name === productName)));
+  const product = useSelector(state => state.product);
   const colors = useSelector(state=>state.productColors);
   const skus = useSelector(state => state.skus);
   const order = useSelector(state => state.order);
   const cart = useSelector(state => state.cart);
   const categories = useSelector(state=>state.categories)
-  const category = categories.find(category => category.id === product.categoryId)
+  const category = categories.find(category => category.id === product&&product.categoryId)
 
   // local state: useState
   const [size, setSize] = useState('');
@@ -50,7 +53,7 @@ const singleProduct = () => {
     imageUrl: '',
     quantity: 1,
     productSKUId: '',
-    categoryName: category.id ? category.categoryName : ''
+    categoryName: category&&category.id ? category.categoryName : ''
   });
   // modal
   const [open, setOpen] = useState(false);
@@ -59,9 +62,16 @@ const singleProduct = () => {
 
   // fetch thunk calls
   useEffect(()=> {
-    dispatch(loadColors(productName)),
-    dispatch(loadSKUs(productName))
-    console.log(skus)
+    // ()=>{
+    //   const urlArray = window.location.href.split('/');
+    //   const productName= decodeURIComponent(urlArray[urlArray.length-1]);
+    //   console.log(productName);
+    //   dispatch(loadProduct(productName));
+    // };
+    dispatch(loadProduct(productName));
+    dispatch(loadColors(productName));
+    dispatch(loadSKUs(productName));
+    console.log(skus);
   }, [])
 
   // For Size DropDown
