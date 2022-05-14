@@ -1,24 +1,26 @@
 import React from "react";
+import { Box, Button, Grid, spacing, TextField, Typography } from "@mui/material";
 
 const ContactUs = () => {
   return (
-    <div>
-      <h2>
-        <center>Customer Support</center>
-      </h2>
-      <h4>Need help?</h4>
-      <h3>Give us a call us on our toll free line!</h3>
-      <div className="phone">1-88-BOUTIQUE</div>
-
-      <h3>Or, send us an email:</h3>
+    <Box textAlign="center" sx={{ p: 2 }}>
       <div>
-        <ul>
-          <li>info@StyleBoutique.com</li>
-          <li>customerservice@StyleBoutique.com</li>
-          <li>careers@StyleBoutique.com</li>
-        </ul>
+        <Typography variant="h4">Customer Support</Typography>
+
+        <h4>Need help?</h4>
+        <h3>Give us a call us on our toll free line!</h3>
+        <p className="phone">
+          <i> 1-88-BOUTIQUE</i>
+        </p>
+
+        <h3>Or, send us an email:</h3>
+        <div>
+          <p>info@StyleBoutique.com</p>
+          <p>customerservice@StyleBoutique.com</p>
+          <p>careers@StyleBoutique.com</p>
+        </div>
       </div>
-    </div>
+    </Box>
   );
 };
 

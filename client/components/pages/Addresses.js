@@ -140,7 +140,7 @@ const Addresses = (props) => {
   };
   if (address) {
     return (
-      <Box textAlign="center" margin-bottom="15px">
+      <Box textAlign="center" sx={{ p: 2 }}>
         <div>
           <Typography variant="h4">Shipping Addresses</Typography>
           <div>
