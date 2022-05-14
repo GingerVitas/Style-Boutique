@@ -1,5 +1,5 @@
 const router = require('express').Router()
-const { models: { User } } = require('../db')
+const { models: { User, Address } } = require('../db')
 module.exports = router
 
 router.get('/', async (req, res, next) => {
@@ -12,6 +12,38 @@ router.get('/', async (req, res, next) => {
     })
     res.json(users)
   } catch (err) {
+    next(err)
+  }
+});
+
+router.put('/address/:id', async(req, res, next)=>{
+  try{
+    const address = await Address.findByPk(req.params.id);
+    await address.update(req.body);
+    res.sendStatus(200)
+  }
+  catch(err){
+    next(err)
+  }
+});
+
+router.post('/address', async(req, res, next)=> {
+  try{
+    const address = await Address.create(req.body);
+    res.send(address)
+  }
+  catch(err){
+    next(err)
+  }
+})
+
+router.delete('/address/:id', async(req, res, next)=>{
+  try{
+    const address = await Address.findByPk(req.params.id);
+    await address.destroy();
+    res.sendStatus(204)
+  }
+  catch(err){
     next(err)
   }
 })

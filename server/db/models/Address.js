@@ -4,6 +4,18 @@ const db = require("../db");
 const countries = ["USA", "Canada", "Mexico"];
 
 const Address = db.define("address", {
+  firstName: {
+    type: Sequelize.STRING,
+    validate: {
+      notEmpty: true
+    }
+  },
+  lastName: {
+    type: Sequelize.STRING,
+    validate: {
+      notEmpty: true
+    }
+  },
   addressLine1: {
     type: Sequelize.STRING,
     allowNull: false,

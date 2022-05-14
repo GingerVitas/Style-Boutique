@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { connect } from "react-redux";
+import axios from 'axios'
 import { Link } from "react-router-dom";
 import {
   Box,
@@ -35,6 +36,8 @@ import {
 
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import { addAddress, deleteAddress } from "/client/store/address";
+import {me} from '../../store/'
+import AddressCard from '../AddressCard';
 
 //import AddressForm from "../AddressForm";
 
@@ -103,107 +106,126 @@ const Addresses = (props) => {
     "WY"
   ];
 
-  const [checked, setChecked] = React.useState(true);
-  const handleChange = (event) => {
+  const [addressArray, setAddressArray] = useState(auth.addresses)
+  const [checked, setChecked] = useState(true);
+  const handleCheckedChange = (event) => {
     setChecked(event.target.checked);
   };
+  
+  useEffect(()=> {
+    dispatch(me())
+  }, [addressArray])
 
-  const handleSubmit = (evt) => {
-    evt.preventDefault();
-    //dispatch(addAddress);
-    //dispatch(deleteAddress);
-  };
 
   const [address, setAddress] = useState({
     userId: auth.id,
+    firstName: '',
+    lastName: '',
     addressLine1: "",
     addressLine2: "",
     city: "",
     state: "",
     zipCode: 12345,
-    country: "USA"
+    country: ""
   });
 
-  //pass in address to thunk, no this or binding
+  const [addAddress, setAddAddress] = useState(false)
 
-  // Loads all addresses:
-  // useEffect(() => {
-  //   dispatch(address);
-  // }, []);
 
-  // For Edit Button
-  const handleEdit = (event) => {};
-
-  // For Remove/Delete Button
-  const handleDelete = (event) => {
-    destroy(address.id);
+  const handleSave = async(evt) => {
+    evt.preventDefault()
+    const newAddress = await axios.post('/api/users/address', address, {
+      headers: {
+        authorization: window.localStorage.getItem('token')
+      }
+    });
+    setAddressArray([...addressArray, newAddress])
+    setAddAddress(false)
+    setAddress({      
+      userId: auth.id,
+      firstName: '',
+      lastName: '',
+      addressLine1: "",
+      addressLine2: "",
+      city: "",
+      state: "",
+      zipCode: 12345,
+      country: ""})
   };
-  if (address) {
+
+  const clearAddressForm = evt => {
+    evt.preventDefault()
+    setAddress({
+      userId: auth.id,
+      firstName: '',
+      lastName: '',
+      addressLine1: "",
+      addressLine2: "",
+      city: "",
+      state: "",
+      zipCode: 12345,
+      country: ""
+    })
+  }
+
+  const handleChange = evt => {
+    setAddress({...address, [evt.target.name]:evt.target.value})
+  }
+
     return (
       <Box textAlign="center" sx={{ p: 2 }}>
         <div>
           <Typography variant="h4">Shipping Addresses</Typography>
-          <div>
-            <ul>
-              {auth.addresses.map((address) => {
-                return `
-            <li>${address.addressLine1}</li>
-            <li>${address.addressLine2} </li>
-            <li>${address.city} </li>
-            <li>${address.state} </li>
-            <li>${address.zip}</li>
-            <li>${address.country}</li>`;
-              })}
-              <div>
-                <Button variant="text" onClick={() => {}} color="black">
-                  Edit
-                </Button>
-                <Button variant="text" onClick={() => remove(address.id)} color="black" sx={{ marginRight: "2rem" }}>
-                  Remove
-                </Button>
-              </div>
-            </ul>
-          </div>
-        </div>
-        <div>
-          <Button color="black" style={{ width: "30%", padding: "10px", fontSize: "1rem" }} variant="contained">
+          <Box sx={{marginTop:'1rem', display:'flex', justifyContent:'center'}}>
+              {auth.addresses.length ? auth.addresses.map((address) => {
+                return (
+                  <div>
+                    <AddressCard key={address.id} address={address} addressArray={addressArray} setAddressArray={setAddressArray}/> 
+                  </div>
+                )
+              }) : '' 
+              }
+          </Box>
+      </div>
+        <div style={{marginTop:'2rem'}}>
+          <Button color="black" style={{ width: "30%", padding: "10px", fontSize: "1rem" }} variant="contained" onClick={()=> setAddAddress(true)}>
             Add A New Address
           </Button>
-          <div>
-            <form className="addAddressForm" name="shippingAddress">
-              <Typography variant="h6">
-                First Name <TextField name="firstName" type="text" size="small" variant="filled" required id="outlined-password-input" style={{ width: "60%" }} />
-              </Typography>
-              <Typography variant="h6">
-                Last Name
-                <TextField name="lastName" type="text" size="small" variant="filled" required id="outlined-password-input" style={{ width: "60%" }} />
-              </Typography>
-              <Typography variant="h6">
-                Street Address
-                <TextField name="addressLine1" type="text" size="small" variant="filled" required id="outlined-basic" style={{ width: "60%" }} />
-              </Typography>
-              <Typography variant="h6">
-                Apt/Suite
-                <TextField name="addressLine2" type="text" size="small" variant="filled" id="outlined-password-input" style={{ width: "60%" }} />
-              </Typography>
-              <Typography variant="h6">
-                City
-                <TextField name="city" type="text" size="small" variant="filled" required id="outlined-password-input" style={{ width: "60%" }} />
-              </Typography>
-              <Typography variant="h6">
-                State/Province
-                <TextField name="state" type="text" size="small" variant="filled" required id="outlined-password-input" style={{ width: "60%" }} />
-              </Typography>
-              <Typography variant="h6">
-                Zip Code
-                <TextField name="zipCode" type="text" size="small" variant="filled" required id="outlined-password-input" style={{ width: "60%" }} />
-              </Typography>
-              <Typography variant="h6">
-                Country <TextField name="country" type="text" size="small" variant="filled" required id="outlined-password-input" style={{ width: "60%" }} />
-              </Typography>
-            </form>
+          <div style={{display:'flex', justifyContent:'center'}}>
+            {addAddress ? 
+            <Card sx={{padding:'1.5rem', textAlign:'center', width:'35vw'}}>
+            <FormControl>
+              <div style={{display:'flex', justifyContent:'space-around'}}>
+                <TextField label='firstName' name='firstName' value={address.firstName} onChange={handleChange}>{address.firstName}</TextField>
+                <TextField label='lastName' name='lastName' value={address.lastName} onChange={handleChange}>{address.lastName}</TextField>
+              </div>
+              <TextField label='addressLine1' name='addressLine1' value={address.addressLine1} onChange={handleChange}>{address.addressLine1}</TextField>
+              {address.addressLine2 ? <TextField label='addressLine2' name='addressLine2' value={address.addressLine2} onChange={handleChange}>{address.addressLine2}</TextField> : null}
+            <div style={{display:'flex', justifyContent:'space-around'}}>
+              <TextField label='city' name='city' value={address.city} onChange={handleChange}>{address.city}</TextField> <TextField label='state' name='state' value={address.state} onChange={handleChange}>{address.state}</TextField> <TextField label='zipCode' name='zipCode' value={address.zipCode} onChange={handleChange}>{address.zipCode}</TextField>
+            </div>
+            <TextField label='country' name='country' value={address.country} onChange={handleChange}>{address.country}</TextField>
+            </FormControl>
+            <div>
+              <FormControlLabel control={<Checkbox checked={checked} color="black" onChange={handleCheckedChange} />} label="Make this my default shipping address." />
+            </div>
+            <div style={{display:'flex', justifyContent:'space-around', marginTop:'1.5rem', marginBottom:'1.5rem'}}>
+              <Button color="black" variant="contained" onClick={(evt) => handleSave(evt)} >
+                Save
+              </Button>
+              <Button color="black" variant="contained" onClick={(evt) => clearAddressForm(evt)} >
+                Clear Form
+              </Button>
+            </div>
+            <Button color="inherit" style={{ width: "30%", padding: "10px", fontSize: "1rem" }} onClick={()=>setAddAddress(false)} variant="contained" sx={{ marginRight: "2rem" }}>
+                Cancel
+              </Button>
+          </Card>
+          : null
+          }
+          
 
-            <div align="center">
+            {/* <div align="center">
               <div>
                 <FormControlLabel control={<Checkbox checked={checked} color="black" onChange={handleChange} />} label="Make this my default shipping address." />
               </div>
@@ -213,68 +235,12 @@ const Addresses = (props) => {
               <Button color="inherit" style={{ width: "30%", padding: "10px", fontSize: "1rem" }} href="/addresses" variant="contained" sx={{ marginRight: "2rem" }}>
                 Cancel
               </Button>
-            </div>
+            </div> */}
           </div>
         </div>
       </Box>
     );
-  } else {
-    return (
-      <Box textAlign="center" margin-bottom="15px">
-        <div>
-          <Button color="black" style={{ width: "30%", padding: "10px", fontSize: "1rem" }} variant="contained">
-            Add A New Address
-          </Button>
-          <div>
-            <form className="addAddressForm" name="shippingAddress">
-              <Typography variant="h6">
-                First Name <TextField name="firstName" type="text" size="small" variant="filled" required id="outlined-password-input" style={{ width: "60%" }} />
-              </Typography>
-              <Typography variant="h6">
-                Last Name
-                <TextField name="lastName" type="text" size="small" variant="filled" required id="outlined-password-input" style={{ width: "60%" }} />
-              </Typography>
-              <Typography variant="h6">
-                Street Address
-                <TextField name="addressLine1" type="text" size="small" variant="filled" required id="outlined-basic" style={{ width: "60%" }} />
-              </Typography>
-              <Typography variant="h6">
-                Apt/Suite
-                <TextField name="addressLine2" type="text" size="small" variant="filled" id="outlined-password-input" style={{ width: "60%" }} />
-              </Typography>
-              <Typography variant="h6">
-                City
-                <TextField name="city" type="text" size="small" variant="filled" required id="outlined-password-input" style={{ width: "60%" }} />
-              </Typography>
-              <Typography variant="h6">
-                State/Province
-                <TextField name="state" type="text" size="small" variant="filled" required id="outlined-password-input" style={{ width: "60%" }} />
-              </Typography>
-              <Typography variant="h6">
-                Zip Code
-                <TextField name="zipCode" type="text" size="small" variant="filled" required id="outlined-password-input" style={{ width: "60%" }} />
-              </Typography>
-              <Typography variant="h6">
-                Country <TextField name="country" type="text" size="small" variant="filled" required id="outlined-password-input" style={{ width: "60%" }} />
-              </Typography>
-            </form>
-
-            <div align="center">
-              <div>
-                <FormControlLabel control={<Checkbox checked={checked} color="black" onChange={handleChange} />} label="Make this my default shipping address." />
-              </div>
-              <Button color="black" style={{ width: "30%", padding: "10px", fontSize: "1rem" }} variant="contained">
-                SAVE
-              </Button>
-              <Button color="inherit" style={{ width: "30%", padding: "10px", fontSize: "1rem" }} href="/addresses" variant="contained" sx={{ marginRight: "2rem" }}>
-                Cancel
-              </Button>
-            </div>
-          </div>
-        </div>
-      </Box>
-    );
-  }
+  
 };
 
 export default connect((state) => state)(Addresses);
