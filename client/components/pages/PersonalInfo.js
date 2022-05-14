@@ -50,39 +50,45 @@ class PersonalInfo extends React.Component {
             {/* <Grid container direction="row" alignItems="center">
               <Grid item>
               </Grid> */}
-
-            <form className="contact-info">
-              <Typography variant="h6">
-                First Name
-                <TextField name="firstName" type="text" size="small" variant="outlined" required id="outlined-password-input" style={{ width: "60%" }} disabled={this.state.edit ? false : true} value={this.state.firstName} onChange={this.handleChange} />
-              </Typography>
-              <Typography variant="h6">
-                Last Name
-                <TextField name="lastName" type="text" size="small" variant="outlined" required id="outlined-password-input" style={{ width: "60%" }} disabled={this.state.edit ? false : true} value={this.state.lastName} onChange={this.handleChange} />
-              </Typography>
-              <Typography variant="h6">
-                Email
-                <TextField name="email" type="email" size="small" variant="outlined" required id="outlined-password-input" style={{ width: "60%" }} disabled={this.state.edit ? false : true} value={this.state.email} onChange={this.handleChange} />
-              </Typography>
-              {/* </Grid> */}
-
-              <Button
-                color="black"
-                variant="contained"
-                onClick={
-                  this.state.edit
-                    ? (ev) => {
-                        this.handleSubmit(ev);
-                      }
-                    : (ev) => {
-                        this.handleEdit(ev);
-                      }
-                }
-              >
-                {this.state.edit ? "SUBMIT" : "EDIT"}
-              </Button>
-            </form>
-
+            <Grid container direction="column" justifyContent="center" alignItems="center" spacing={1}>
+              {/* <form className="contact-info"> */}
+              <Grid item xs={6} sx={{ width: "100%" }}>
+                <Typography variant="h6">
+                  First Name
+                  <TextField name="firstName" type="text" size="small" variant="outlined" required id="outlined-password-input" style={{ width: "60%" }} disabled={this.state.edit ? false : true} value={this.state.firstName} onChange={this.handleChange} />
+                </Typography>
+              </Grid>
+              <Grid item xs={6} sx={{ width: "100%" }}>
+                <Typography variant="h6">
+                  Last Name
+                  <TextField name="lastName" type="text" size="small" variant="outlined" required id="outlined-password-input" style={{ width: "60%" }} disabled={this.state.edit ? false : true} value={this.state.lastName} onChange={this.handleChange} />
+                </Typography>
+              </Grid>
+              <Grid item xs={6} sx={{ width: "100%" }}>
+                <Typography variant="h6">
+                  Email
+                  <TextField name="email" type="email" size="small" variant="outlined" required id="outlined-password-input" style={{ width: "60%" }} disabled={this.state.edit ? false : true} value={this.state.email} onChange={this.handleChange} />
+                </Typography>
+              </Grid>
+              <Grid item xs={6} sx={{ width: "100%" }}>
+                <Button
+                  color="black"
+                  variant="contained"
+                  onClick={
+                    this.state.edit
+                      ? (ev) => {
+                          this.handleSubmit(ev);
+                        }
+                      : (ev) => {
+                          this.handleEdit(ev);
+                        }
+                  }
+                >
+                  {this.state.edit ? "SUBMIT" : "EDIT"}
+                </Button>
+                {/* </form> */}
+              </Grid>{" "}
+            </Grid>
             <div>
               <Button color="black" style={{ width: "80%", padding: "10px", fontSize: "1rem" }} variant="contained">
                 {/* component={Link} to={Password} */}
