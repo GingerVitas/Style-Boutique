@@ -4,6 +4,7 @@ import { connect } from "react-redux";
 import { me } from "../../store/auth"
 
 import { Button, Grid, Typography, Modal, Box } from '@mui/material';
+import CloseIcon from '@mui/icons-material/Close';
 import { DataGrid, GridApi } from '@mui/x-data-grid';
 
 const style = {
@@ -118,12 +119,15 @@ const OrderHistory = (props) => {
                 alignItems="center"
                 sx={{ margin: '1rem 0' }}
               >
-                <Grid item xs={3}></Grid>
-                <Grid item xs={2.5}>Name</Grid>
+                <Grid item xs={2.5}></Grid>
+                <Grid item xs={2}>Name</Grid>
                 <Grid item xs={1.5}>Color</Grid>
                 <Grid item xs={1.5}>Unit price</Grid>
                 <Grid item xs={2}>Quantity</Grid>
                 <Grid item xs={1.5}>Total</Grid>
+                <Grid item xs={1}>
+                  <Button onClick={handleClose} sx={{ position: 'absolute', top: '0' }}><CloseIcon sx={{ fontSize: 'large' }} color='black'></CloseIcon></Button>
+                </Grid>
               </Grid>
               <hr/>
               {item?.row.line_items.map(item=>{
@@ -134,10 +138,10 @@ const OrderHistory = (props) => {
                     justifyContent="center"
                     alignItems="center"
                   >
-                    <Grid item xs={3}>
+                    <Grid item xs={2.5}>
                       <img src={item.imageUrl} style={{ width: '100%', display: 'block' }} />
                     </Grid>
-                    <Grid item xs={2.5}>
+                    <Grid item xs={2}>
                       {item.productName}
                     </Grid>
                     <Grid item xs={1.5}>
@@ -149,7 +153,7 @@ const OrderHistory = (props) => {
                     <Grid item xs={2}>
                       {item.quantity}
                     </Grid>
-                    <Grid item xs={1.5}>
+                    <Grid item xs={2}>
                       ${item.total}
                     </Grid>
                   </Grid>
