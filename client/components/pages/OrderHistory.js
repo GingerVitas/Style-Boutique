@@ -45,7 +45,7 @@ const OrderHistory = (props) => {
           console.log('clicked!!', params);
           handleOpen()
         };
-        return <Button onClick={onClick}>View Details</Button>;
+        return <Button onClick={onClick}>View Order</Button>;
       }
     },
     {
