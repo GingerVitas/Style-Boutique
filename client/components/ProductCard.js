@@ -10,7 +10,7 @@ import { deleteProduct } from '../store/admin'
 import { Grid, Card, CardActionArea, Button, Modal, Box, CardContent, Typography, Rating } from '@mui/material';
 
 const ProductCard = (props) => {
-  const { product, adminView, category, setProductArr, productArr } = props;
+  const { product, adminView, category, setProductArr, productArr, products } = props;
 
   //hooks
   const dispatch = useDispatch();
@@ -24,20 +24,24 @@ const ProductCard = (props) => {
   }
   useEffect(() => {
     getPrice();
+    setProductArr(products)
   }, [])
-
-  console.log(productArr)
 
   // For admin delete modal
   const [open, setOpen] = useState(false);
-  const handleOpen = () => setOpen(true);
+  const handleOpen = () => {
+    setOpen(true);
+    console.log(productArr)
+  }
   const handleClose = () => setOpen(false);
   const handleDelete = (_product) => {
     dispatch(deleteProduct(_product));
-    setProductArr(...productArr.filter(__product => __product.id =! product.id))
+    setProductArr([...productArr.filter(__product => __product.id =! _product.id)])
 
     setOpen(false)
   }
+
+  console.log('Inserting change to test push ability')
 
   const style = {
     position: 'absolute',
