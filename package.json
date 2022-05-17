@@ -61,7 +61,7 @@
     "mocha": "^6.2.3",
     "navbar": "^2.1.0",
     "nodemon": "^1.19.4",
-    "react": "^16.8.6",
+    "react": "^17.0.2",
     "react-dom": "^16.8.6",
     "react-redux": "^7.0.1",
     "react-router-dom": "^5.0.0",
