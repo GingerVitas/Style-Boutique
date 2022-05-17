@@ -11,7 +11,7 @@ import { clearOrder } from "../../store/order";
 import { AppBar, Toolbar, MenuItem, IconButton, Typography, Popover, Grid } from "@mui/material";
 import { ShoppingCart } from "@mui/icons-material";
 import { StyledBadge } from "../../../public/styles";
-import { makeStyles } from "@material-ui/core/styles";
+import { makeStyles } from "@mui/styles";
 
 // Child components
 import ClothingMenu from "./ClothingMenu";
