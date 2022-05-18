@@ -108,7 +108,7 @@ const Navbar = ({ handleClick, empty_cart, clearOrder, isLoggedIn, lineItems, au
       <nav>
         {isLoggedIn ? (
           <div>
-            <AppBar position="fixed" sx={{ bgcolor: "white" }} ref={appBar}>
+            <AppBar position="fixed" sx={{ bgcolor: "white" }}>
               <Toolbar sx={{ borderBottom: "solid 1px grey" }}>
                 <MenuItem component={Link} to={"/home"} sx={{ "&:hover": { bgcolor: "transparent" } }}>
                   <Typography variant="logo">STYLE BOUTIQUE</Typography>
@@ -129,11 +129,10 @@ const Navbar = ({ handleClick, empty_cart, clearOrder, isLoggedIn, lineItems, au
                 >
                   <Typography
                     variant='menuitem'
-                    ref={popoverAnchor}
                     // aria-owns="mouse-over-popover"
                     // aria-haspopup="true"
-                    onMouseEnter={popoverEnter}
-                    onMouseLeave={popoverLeave}
+                    // onMouseEnter={popoverEnter}
+                    // onMouseLeave={popoverLeave}
                   >
                     Hello, {firstName ? firstName : auth.username}
                   </Typography>
