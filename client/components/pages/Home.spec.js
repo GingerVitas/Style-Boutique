@@ -2,12 +2,11 @@
 
 import { expect } from "chai";
 import React from "react";
-import enzyme, { shallow } from "enzyme";
-import Adapter from "enzyme-adapter-react-16";
+import Enzyme, { shallow } from "enzyme";
+import Adapter from '@wojtekmaj/enzyme-adapter-react-17';
 import { Home } from "./Home";
 
-const adapter = new Adapter();
-enzyme.configure({ adapter });
+Enzyme.configure({ adapter: new Adapter() });
 
 describe("Home", () => {
   let home;
