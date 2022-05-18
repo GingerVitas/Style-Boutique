@@ -11,21 +11,21 @@ import { clearOrder } from "../../store/order";
 import { AppBar, Toolbar, MenuItem, IconButton, Typography, Popover, Grid } from "@mui/material";
 import { ShoppingCart } from "@mui/icons-material";
 import { StyledBadge } from "../../../public/styles";
-import { makeStyles } from "@mui/styles";
+// import { makeStyles } from "@mui/styles";
 
 // Child components
 import ClothingMenu from "./ClothingMenu";
 import AccessoriesMenu from "./AccessoriesMenu";
 
-const useStyles = makeStyles(theme => ({
-  popover: {
-    pointerEvents: 'none',
-  },
-  popoverContent: {
-    pointerEvents: 'auto',
-    padding: theme.spacing(1)
-  },
-}));
+// const useStyles = makeStyles(theme => ({
+//   popover: {
+//     pointerEvents: 'none',
+//   },
+//   popoverContent: {
+//     pointerEvents: 'auto',
+//     padding: theme.spacing(1)
+//   },
+// }));
 
 const Navbar = ({ handleClick, empty_cart, clearOrder, isLoggedIn, lineItems, auth, firstName }) => {
   const clothingLink = useRef(null);
@@ -70,37 +70,37 @@ const Navbar = ({ handleClick, empty_cart, clearOrder, isLoggedIn, lineItems, au
   }
 
 
-  const useStyles = makeStyles(theme => ({
-    popover: {
-      pointerEvents: 'none',
-    },
-    popoverContent: {
-      pointerEvents: 'auto',
-      padding: theme.spacing(1)
-    },
-  }));
+  // const useStyles = makeStyles(theme => ({
+  //   popover: {
+  //     pointerEvents: 'none',
+  //   },
+  //   popoverContent: {
+  //     pointerEvents: 'auto',
+  //     padding: theme.spacing(1)
+  //   },
+  // }));
 
 
   // For user account pop-over at hover
-  const [openedPopover, setOpenedPopover] = useState(false)
-  const popoverAnchor = useRef(null);
-  const popoverEnter = () => {
-    setOpenedPopover(true)
-  };
-  const popoverLeave = () => {
-    setOpenedPopover(false)
-  };
-  const classes = useStyles();
+  // const [openedPopover, setOpenedPopover] = useState(false)
+  // const popoverAnchor = useRef(null);
+  // const popoverEnter = () => {
+  //   setOpenedPopover(true)
+  // };
+  // const popoverLeave = () => {
+  //   setOpenedPopover(false)
+  // };
+  // // const classes = useStyles();
 
-  const appBar = useRef(null);
-  console.log(appBar.current)
-  useEffect(() => {
-    popoverLeave();
-    () => {
-      appBar.current.ariaHidden = false;
-      popoverLeave();
-    }
-  }, []);
+  // const appBar = useRef(null);
+  // console.log(appBar.current)
+  // useEffect(() => {
+  //   popoverLeave();
+  //   () => {
+  //     appBar.current.ariaHidden = false;
+  //     popoverLeave();
+  //   }
+  // }, []);
 
 
   return (
@@ -137,7 +137,7 @@ const Navbar = ({ handleClick, empty_cart, clearOrder, isLoggedIn, lineItems, au
                   >
                     Hello, {firstName ? firstName : auth.username}
                   </Typography>
-                  <Popover
+                  {/* <Popover
                     id="mouse-over-popover"
                     className={classes.popover}
                     classes={{
@@ -155,7 +155,7 @@ const Navbar = ({ handleClick, empty_cart, clearOrder, isLoggedIn, lineItems, au
                     }}
                     PaperProps={{ onMouseEnter: popoverEnter, onMouseLeave: popoverLeave }}
                     disableRestoreFocus
-                  >
+                  > */}
                     <Grid container direction="column" justifyContent="center" alignItems="center">
                       <Grid item xs={4}>
                         <Link to={"/account"} sx={{ textDecoration: "none" }}>
@@ -183,7 +183,7 @@ const Navbar = ({ handleClick, empty_cart, clearOrder, isLoggedIn, lineItems, au
                         </Link>
                       </Grid>
                     </Grid>
-                  </Popover>
+                  {/* </Popover> */}
                 </MenuItem>
                 <MenuItem component={Link} to={"/cart"} sx={{ "&:hover": { bgcolor: "transparent" } }}>
                   <IconButton aria-label="cart">
