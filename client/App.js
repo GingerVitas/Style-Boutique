@@ -17,7 +17,7 @@ const App = () => {
   return (
     <div>
       <ThemeProvider theme={theme}>
-        <Navbar />
+        {/* <Navbar /> */}
         <Routes />
       </ThemeProvider>
     </div>
