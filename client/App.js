@@ -1,7 +1,7 @@
-import React, {useEffect} from "react";
+import React, { useEffect } from "react";
 import Navbar from "./components/Navbar/index";
 import Routes from "./Routes";
-import { useDispatch } from 'react-redux';
+import { useDispatch } from "react-redux";
 import { loadCart } from "./store/cart";
 
 import { ThemeProvider } from "@mui/material/styles";
@@ -11,13 +11,13 @@ const App = () => {
   // load saved guest cart when window re-opened.
   const dispatch = useDispatch();
   useEffect(() => {
-    dispatch(loadCart({}))
-  }, [])
+    dispatch(loadCart({}));
+  }, []);
 
   return (
     <div>
       <ThemeProvider theme={theme}>
-        {/* <Navbar /> */}
+        <Navbar />
         <Routes />
       </ThemeProvider>
     </div>
