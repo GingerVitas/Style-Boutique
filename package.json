@@ -41,7 +41,8 @@
     "react-scripts": "^5.0.1",
     "react-social-login-buttons": "^3.6.0",
     "sequelize": "^6.3.5",
-    "styled-components": "^5.3.5"
+    "styled-components": "^5.3.5",
+    "@faker-js/faker": "^6.1.2"
   },
   "devDependencies": {
     "@babel/core": "^7.12.10",
