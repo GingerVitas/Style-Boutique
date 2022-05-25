@@ -2,7 +2,6 @@ const Sequelize = require("sequelize");
 const db = require("../db");
 const jwt = require("jsonwebtoken");
 const bcrypt = require("bcrypt");
-const axios = require("axios");
 
 const SALT_ROUNDS = 5;
 
@@ -12,8 +11,8 @@ const User = db.define("user", {
     unique: true,
     allowNull: false,
     validate: {
-      notEmpty: true
-    }
+      notEmpty: true,
+    },
   },
   password: {
     type: Sequelize.STRING,
@@ -48,12 +47,12 @@ const User = db.define("user", {
   },
   currentOrder: {
     type: Sequelize.BOOLEAN,
-    defaultValue: false
+    defaultValue: false,
   },
   isAdmin: {
     type: Sequelize.BOOLEAN,
-    defaultValue: false
-  }
+    defaultValue: false,
+  },
 });
 
 module.exports = User;
@@ -100,20 +99,19 @@ User.findByToken = async function (token) {
 };
 
 User.isAdmin = async (token) => {
-  try{
-    const {id} = await jwt.verify(token, process.env.JWT);
+  try {
+    const { id } = await jwt.verify(token, process.env.JWT);
     const user = await User.findByPk(id);
     if (!user.isAdmin) {
-      throw 'Noooooo!';
+      throw "Noooooo!";
     }
-    return user
-  }
-  catch(err){
-    const error = Error('User is not admin');
+    return user;
+  } catch (err) {
+    const error = Error("User is not admin");
     error.status = 401;
-    throw error
+    throw error;
   }
-}
+};
 
 /**
  * hooks
