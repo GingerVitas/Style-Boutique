@@ -1,5 +1,5 @@
 import React, { useEffect } from "react";
-import Navbar from "./components/Navbar/index";
+import Navbar from "./components/NavBar/index";
 import Routes from "./Routes";
 import { useDispatch } from "react-redux";
 import { loadCart } from "./store/cart";

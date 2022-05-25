@@ -11,7 +11,7 @@ import { clearOrder } from "../../store/order";
 import { AppBar, Toolbar, MenuItem, IconButton, Typography, Popover, Grid } from "@mui/material";
 import { ShoppingCart } from "@mui/icons-material";
 import { StyledBadge } from "../../../public/styles";
-// import { makeStyles } from "@mui/styles";
+import { makeStyles } from "@mui/styles";
 
 // Child components
 import ClothingMenu from "./ClothingMenu";
@@ -37,38 +37,37 @@ const Navbar = ({ handleClick, empty_cart, clearOrder, isLoggedIn, lineItems, au
   const handleClothingLinkClick = () => {
     setAccessoriesChecked(false);
     setClothingChecked(!clothingChecked);
-    clothingLink.current.firstChild.style.color = 'black';
-    footwearLink.current.firstChild.style.color = 'grey';
-    accessoriesLink.current.firstChild.style.color = 'grey';
-  }
+    clothingLink.current.firstChild.style.color = "black";
+    footwearLink.current.firstChild.style.color = "grey";
+    accessoriesLink.current.firstChild.style.color = "grey";
+  };
 
   //For Accessories Dropdown
   const [accessoriesChecked, setAccessoriesChecked] = useState(false);
   const handleAccessoriesLinkClick = () => {
     setClothingChecked(false);
     setAccessoriesChecked(!accessoriesChecked);
-    accessoriesLink.current.firstChild.style.color = 'black';
-    clothingLink.current.firstChild.style.color = 'grey';
-    footwearLink.current.firstChild.style.color = 'grey';
-  }
+    accessoriesLink.current.firstChild.style.color = "black";
+    clothingLink.current.firstChild.style.color = "grey";
+    footwearLink.current.firstChild.style.color = "grey";
+  };
 
   //For Footwear Dropdown
   const handleFootwearLinkClick = () => {
     setClothingChecked(false);
     setAccessoriesChecked(false);
-    footwearLink.current.firstChild.style.color = 'black';
-    clothingLink.current.firstChild.style.color = 'grey';
-    accessoriesLink.current.firstChild.style.color = 'grey';
-  }
+    footwearLink.current.firstChild.style.color = "black";
+    clothingLink.current.firstChild.style.color = "grey";
+    accessoriesLink.current.firstChild.style.color = "grey";
+  };
 
   const closeClothingMenu = () => {
     setClothingChecked(false);
-  }
+  };
 
   const closeAccessoriesMenu = () => {
     setAccessoriesChecked(false);
-  }
-
+  };
 
   // const useStyles = makeStyles(theme => ({
   //   popover: {
@@ -79,7 +78,6 @@ const Navbar = ({ handleClick, empty_cart, clearOrder, isLoggedIn, lineItems, au
   //     padding: theme.spacing(1)
   //   },
   // }));
-
 
   // For user account pop-over at hover
   // const [openedPopover, setOpenedPopover] = useState(false)
@@ -102,7 +100,6 @@ const Navbar = ({ handleClick, empty_cart, clearOrder, isLoggedIn, lineItems, au
   //   }
   // }, []);
 
-
   return (
     <div>
       <nav>
@@ -122,13 +119,17 @@ const Navbar = ({ handleClick, empty_cart, clearOrder, isLoggedIn, lineItems, au
                   ""
                 )}
 
-                <MenuItem component={Link} to={"/account"} sx={{
-                  "&:hover": { bgcolor: "transparent" },
-                  "&.Mui-focusVisible": { bgcolor: "transparent" },
-                  marginLeft: "auto" }}
+                <MenuItem
+                  component={Link}
+                  to={"/account"}
+                  sx={{
+                    "&:hover": { bgcolor: "transparent" },
+                    "&.Mui-focusVisible": { bgcolor: "transparent" },
+                    marginLeft: "auto",
+                  }}
                 >
                   <Typography
-                    variant='menuitem'
+                    variant="menuitem"
                     // aria-owns="mouse-over-popover"
                     // aria-haspopup="true"
                     // onMouseEnter={popoverEnter}
@@ -155,33 +156,36 @@ const Navbar = ({ handleClick, empty_cart, clearOrder, isLoggedIn, lineItems, au
                     PaperProps={{ onMouseEnter: popoverEnter, onMouseLeave: popoverLeave }}
                     disableRestoreFocus
                   > */}
-                    <Grid container direction="column" justifyContent="center" alignItems="center">
-                      <Grid item xs={4}>
-                        <Link to={"/account"} sx={{ textDecoration: "none" }}>
-                          <Typography sx={{ p: 1 }}>Account</Typography>
-                        </Link>
-                      </Grid>
-                      <Grid item xs={4}>
-                        <Link to={"/order_history"} sx={{ textDecoration: "none" }}>
-                          <Typography sx={{ p: 1 }}>Orders</Typography>
-                        </Link>
-                      </Grid>
-                      <Grid item xs={4}>
-                        <Link to={"/contact_us"} sx={{ textDecoration: "none" }}>
-                          <Typography sx={{ p: 1 }}>Contact Us</Typography>
-                        </Link>
-                      </Grid>
-                      <Grid item xs={4}>
-                        <Link onClick={() => {
+                  <Grid container direction="column" justifyContent="center" alignItems="center">
+                    <Grid item xs={4}>
+                      <Link to={"/account"} sx={{ textDecoration: "none" }}>
+                        <Typography sx={{ p: 1 }}>Account</Typography>
+                      </Link>
+                    </Grid>
+                    <Grid item xs={4}>
+                      <Link to={"/order_history"} sx={{ textDecoration: "none" }}>
+                        <Typography sx={{ p: 1 }}>Orders</Typography>
+                      </Link>
+                    </Grid>
+                    <Grid item xs={4}>
+                      <Link to={"/contact_us"} sx={{ textDecoration: "none" }}>
+                        <Typography sx={{ p: 1 }}>Contact Us</Typography>
+                      </Link>
+                    </Grid>
+                    <Grid item xs={4}>
+                      <Link
+                        onClick={() => {
                           handleClick();
                           empty_cart();
                           clearOrder();
-                        }} to={"/home"} sx={{ textDecoration: "none" }}>
-
-                          <Typography sx={{ p: 1 }}>Log Out</Typography>
-                        </Link>
-                      </Grid>
+                        }}
+                        to={"/home"}
+                        sx={{ textDecoration: "none" }}
+                      >
+                        <Typography sx={{ p: 1 }}>Log Out</Typography>
+                      </Link>
                     </Grid>
+                  </Grid>
                   {/* </Popover> */}
                 </MenuItem>
                 <MenuItem component={Link} to={"/cart"} sx={{ "&:hover": { bgcolor: "transparent" } }}>
@@ -194,23 +198,17 @@ const Navbar = ({ handleClick, empty_cart, clearOrder, isLoggedIn, lineItems, au
               </Toolbar>
 
               <Toolbar sx={{ ["@media(min-width: 600px)"]: { minHeight: 10 } }}>
-                <MenuItem onClick={ handleClothingLinkClick } className='clothingLink' ref={clothingLink} sx={{ "&:hover": { bgcolor: "transparent" } }}>
+                <MenuItem onClick={handleClothingLinkClick} className="clothingLink" ref={clothingLink} sx={{ "&:hover": { bgcolor: "transparent" } }}>
                   <Typography variant="menuitem">Clothing</Typography>
                 </MenuItem>
-                <MenuItem onClick={handleAccessoriesLinkClick} className='accessoriesLink' ref={accessoriesLink} sx={{ "&:hover": { bgcolor: "transparent" } }}>
+                <MenuItem onClick={handleAccessoriesLinkClick} className="accessoriesLink" ref={accessoriesLink} sx={{ "&:hover": { bgcolor: "transparent" } }}>
                   <Typography variant="menuitem">Accessories</Typography>
                 </MenuItem>
-                <MenuItem component={Link} to={`/shop/shoes`} onClick={handleFootwearLinkClick} className='footwearLink' ref={footwearLink} sx={{ "&:hover": { bgcolor: "transparent" } }}>
+                <MenuItem component={Link} to={`/shop/shoes`} onClick={handleFootwearLinkClick} className="footwearLink" ref={footwearLink} sx={{ "&:hover": { bgcolor: "transparent" } }}>
                   <Typography variant="menuitem">Footwear</Typography>
                 </MenuItem>
               </Toolbar>
-              {
-                clothingChecked? 
-                  <ClothingMenu closeClothingMenu={closeClothingMenu}/>
-                : accessoriesChecked?
-                <AccessoriesMenu closeAccessoriesMenu={closeAccessoriesMenu}/>
-                : <></>
-              }
+              {clothingChecked ? <ClothingMenu closeClothingMenu={closeClothingMenu} /> : accessoriesChecked ? <AccessoriesMenu closeAccessoriesMenu={closeAccessoriesMenu} /> : <></>}
             </AppBar>
           </div>
         ) : (
@@ -236,24 +234,18 @@ const Navbar = ({ handleClick, empty_cart, clearOrder, isLoggedIn, lineItems, au
                 </MenuItem>
               </Toolbar>
 
-                <Toolbar sx={{ ["@media(min-width: 600px)"]: { minHeight: 10 } }}>
-                  <MenuItem onClick={handleClothingLinkClick} className='clothingLink' ref={clothingLink} sx={{ "&:hover": { bgcolor: "transparent" } }}>
-                    <Typography variant="menuitem">Clothing</Typography>
-                  </MenuItem>
-                  <MenuItem onClick={handleAccessoriesLinkClick} className='accessoriesLink' ref={accessoriesLink} sx={{ "&:hover": { bgcolor: "transparent" } }}>
-                    <Typography variant="menuitem">Accessories</Typography>
-                  </MenuItem>
-                  <MenuItem component={Link} to={`/shop/shoes`} onClick={handleFootwearLinkClick} className='footwearLink' ref={footwearLink} sx={{ "&:hover": { bgcolor: "transparent" } }}>
-                    <Typography variant="menuitem">Footwear</Typography>
-                  </MenuItem>
-                </Toolbar>
-                {
-                  clothingChecked ?
-                    <ClothingMenu closeClothingMenu={closeClothingMenu} />
-                    : accessoriesChecked ?
-                      <AccessoriesMenu closeAccessoriesMenu={closeAccessoriesMenu} />
-                      : <></>
-                }
+              <Toolbar sx={{ ["@media(min-width: 600px)"]: { minHeight: 10 } }}>
+                <MenuItem onClick={handleClothingLinkClick} className="clothingLink" ref={clothingLink} sx={{ "&:hover": { bgcolor: "transparent" } }}>
+                  <Typography variant="menuitem">Clothing</Typography>
+                </MenuItem>
+                <MenuItem onClick={handleAccessoriesLinkClick} className="accessoriesLink" ref={accessoriesLink} sx={{ "&:hover": { bgcolor: "transparent" } }}>
+                  <Typography variant="menuitem">Accessories</Typography>
+                </MenuItem>
+                <MenuItem component={Link} to={`/shop/shoes`} onClick={handleFootwearLinkClick} className="footwearLink" ref={footwearLink} sx={{ "&:hover": { bgcolor: "transparent" } }}>
+                  <Typography variant="menuitem">Footwear</Typography>
+                </MenuItem>
+              </Toolbar>
+              {clothingChecked ? <ClothingMenu closeClothingMenu={closeClothingMenu} /> : accessoriesChecked ? <AccessoriesMenu closeAccessoriesMenu={closeAccessoriesMenu} /> : <></>}
             </AppBar>
           </div>
         )}
@@ -266,7 +258,7 @@ const mapState = (state) => {
     lineItems: state.cart,
     isLoggedIn: !!state.auth.id,
     auth: state.auth,
-    firstName: state.auth.firstName
+    firstName: state.auth.firstName,
   };
 };
 
@@ -280,7 +272,7 @@ const mapDispatch = (dispatch) => {
     },
     clearOrder() {
       dispatch(clearOrder());
-    }
+    },
   };
 };
 
