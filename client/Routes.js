@@ -32,8 +32,8 @@ import Products from "./components/Products";
 class Routes extends Component {
   componentDidMount() {
     this.props.loadInitialData();
-    this.props.fetchProducts();
     this.props.fetchCategories();
+    // this.props.fetchProducts();
   }
 
   componentDidUpdate(prevProps) {
@@ -103,7 +103,7 @@ const mapState = (state) => {
     // Otherwise, state.auth will be an empty object, and state.auth.id will be falsey
     isLoggedIn: !!state.auth.id,
     auth: state.auth,
-    order: state.order
+    order: state.order,
   };
 };
 
@@ -126,7 +126,7 @@ const mapDispatch = (dispatch) => {
     },
     transformGuestCartToUserCart(order) {
       dispatch(transformGuestCartToUserCart(order));
-    }
+    },
   };
 };
 
