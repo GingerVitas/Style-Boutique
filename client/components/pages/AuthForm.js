@@ -13,7 +13,11 @@ import Button from "@mui/material/Button";
 import Alert from "@mui/material/Alert";
 
 //SOCIAL BTNS
-import { FacebookLoginButton, GoogleLoginButton, AppleLoginButton } from "react-social-login-buttons";
+import {
+  FacebookLoginButton,
+  GoogleLoginButton,
+  AppleLoginButton,
+} from "react-social-login-buttons";
 
 const AuthForm = (props) => {
   const { name, displayName, handleSubmit, error, routeProps } = props;
@@ -32,12 +36,67 @@ const AuthForm = (props) => {
         </div>
       )}
       <form onSubmit={handleSubmit} name={name}>
-        <TextField id="outlined-basic" label="Username" variant="outlined" name="username" type="text" style={{ width: "100%" }} />
+        <TextField
+          id="outlined-basic"
+          label="Username"
+          variant="outlined"
+          name="username"
+          type="text"
+          style={{ width: "100%" }}
+        />
         <br />
-        <TextField id="outlined-password-input" label="Password" variant="outlined" name="password" type="password" style={{ width: "100%" }} />
+        <TextField
+          id="outlined-password-input"
+          label="Password"
+          variant="outlined"
+          name="password"
+          type="password"
+          style={{ width: "100%" }}
+        />
         <br />
-        <Button type="submit" color="black" variant="contained" fullWidth>
+        <Button type="submit" variant="contained" fullWidth color="whitee">
           {displayName}
+        </Button>
+        <Button
+          onClick={() =>
+            handleSubmit({
+              target: {
+                name: "login",
+                username: {
+                  value: "murphy",
+                },
+                password: {
+                  value: "123",
+                },
+              },
+            })
+          }
+          color="black"
+          variant="contained"
+          fullWidth
+          sx={{ marginTop: "10px" }}
+        >
+          Sign in as a Demo User
+        </Button>
+        <Button
+          onClick={() =>
+            handleSubmit({
+              target: {
+                name: "login",
+                username: {
+                  value: "Scott",
+                },
+                password: {
+                  value: "123",
+                },
+              },
+            })
+          }
+          variant="contained"
+          fullWidth
+          sx={{ marginTop: "10px", backgroundColor: "#54b2d1" }}
+        >
+          Sign in as an Admin
         </Button>
         <hr />
         <FacebookLoginButton onClick={() => alert("Hello")} className="fbbttn" align="center">
@@ -59,7 +118,7 @@ const mapLogin = (state) => {
   return {
     name: "login",
     displayName: "Login",
-    error: state.auth.error
+    error: state.auth.error,
   };
 };
 
@@ -67,19 +126,19 @@ const mapSignup = (state) => {
   return {
     name: "signup",
     displayName: "Create Account",
-    error: state.auth.error
+    error: state.auth.error,
   };
 };
 
 const mapDispatch = (dispatch) => {
   return {
     handleSubmit(evt) {
-      evt.preventDefault();
+      if (evt.preventDefault) evt.preventDefault();
       const formName = evt.target.name;
       const username = evt.target.username.value;
       const password = evt.target.password.value;
       dispatch(authenticate(username, password, formName));
-    }
+    },
   };
 };
 
